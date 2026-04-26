@@ -34,9 +34,18 @@ class MetricsOrchestrator(IntegrationOrchestrator):
 
     def __init__(self, *args, **kwargs):
         self._wall_time_limit_s: Optional[float] = kwargs.pop("wall_clock_limit_s", None)
+        self._saturation_stop_enabled: bool = kwargs.pop("saturation_stop_enabled", False)
+        self._saturation_burn_in_steps: int = kwargs.pop("saturation_burn_in_steps", 300)
+        self._saturation_window: int = kwargs.pop("saturation_window", 100)
+        self._saturation_queue_frac: float = kwargs.pop("saturation_queue_frac", 0.9)
+        self._saturation_backlog_growth_min: int = kwargs.pop("saturation_backlog_growth_min", 1)
+        self._saturation_drop_growth_min: int = kwargs.pop("saturation_drop_growth_min", 1)
+        self._saturation_consecutive_windows: int = kwargs.pop("saturation_consecutive_windows", 3)
         super().__init__(*args, **kwargs)
 
         self._hit_wall_clock_ceiling: bool = False
+        self._hit_saturation_ceiling: bool = False
+        self._saturation_consecutive_hits: int = 0
 
         # Allocation timing
         self._allocation_times_ms: List[float] = []
@@ -54,6 +63,43 @@ class MetricsOrchestrator(IntegrationOrchestrator):
 
         # Time series
         self._tasks_completed_over_time: List[int] = []
+        self._pending_over_time: List[int] = []
+        self._dropped_over_time: List[int] = []
+
+    def _check_saturation_window(self) -> bool:
+        if not self._saturation_stop_enabled:
+            return False
+
+        if self.current_timestep < self._saturation_burn_in_steps:
+            return False
+
+        if len(self._queue_depth_snapshots) < self._saturation_window:
+            return False
+
+        recent_q = self._queue_depth_snapshots[-self._saturation_window :]
+        avg_recent_q = float(np.mean(recent_q)) if recent_q else 0.0
+        queue_threshold = self._saturation_queue_frac * float(self.induct_queue_capacity)
+        queue_near_cap = avg_recent_q >= queue_threshold
+
+        if len(self._pending_over_time) <= self._saturation_window:
+            pending_prev = self._pending_over_time[0]
+        else:
+            pending_prev = self._pending_over_time[-self._saturation_window - 1]
+        pending_now = self._pending_over_time[-1]
+        backlog_growth = pending_now - pending_prev
+
+        if len(self._dropped_over_time) <= self._saturation_window:
+            drops_prev = self._dropped_over_time[0]
+        else:
+            drops_prev = self._dropped_over_time[-self._saturation_window - 1]
+        drops_now = self._dropped_over_time[-1]
+        drop_growth = drops_now - drops_prev
+
+        overload_signal = (
+            backlog_growth >= self._saturation_backlog_growth_min
+            or drop_growth >= self._saturation_drop_growth_min
+        )
+        return queue_near_cap and overload_signal
     
     def run_allocation(self) -> None:
         pending = len(self._pending_task_ids)
@@ -78,6 +124,21 @@ class MetricsOrchestrator(IntegrationOrchestrator):
                     )
                     break
             self.step()
+
+            if self._check_saturation_window():
+                self._saturation_consecutive_hits += 1
+                if self._saturation_consecutive_hits >= self._saturation_consecutive_windows:
+                    self._hit_saturation_ceiling = True
+                    tqdm.write(
+                        f"[t={self.current_timestep}] SATURATION STOP "
+                        f"(window={self._saturation_window}, burn_in={self._saturation_burn_in_steps}, "
+                        f"queue>={self._saturation_queue_frac:.2f}*cap for "
+                        f"{self._saturation_consecutive_windows} windows)."
+                    )
+                    break
+            else:
+                self._saturation_consecutive_hits = 0
+
             q        = float(np.mean(list(self._induct_queue_depth.values()))) if self._induct_queue_depth else 0
             active   = sum(1 for a in self.agent_states if not a.is_charging and not a.is_navigating_to_charger)
             nav_chg  = sum(1 for a in self.agent_states if a.is_navigating_to_charger)
@@ -116,6 +177,8 @@ class MetricsOrchestrator(IntegrationOrchestrator):
             self._prev_stuck[i] = currently_stuck
 
         self._tasks_completed_over_time.append(len(self.completed_task_ids))
+        self._pending_over_time.append(len(self._pending_task_ids))
+        self._dropped_over_time.append(int(self._tasks_dropped_by_cap))
         return result
     
     def collect_steady_state_metrics(self, warmup_timesteps: int, **kwargs) -> RunMetrics:
@@ -216,6 +279,15 @@ class MetricsOrchestrator(IntegrationOrchestrator):
             and self.current_timestep >= max_timesteps - 1
         )
         m.hit_wall_clock_ceiling = self._hit_wall_clock_ceiling
+        m.hit_saturation_ceiling = self._hit_saturation_ceiling
+        if m.hit_wall_clock_ceiling:
+            m.stop_reason = "wall_clock_ceiling"
+        elif m.hit_saturation_ceiling:
+            m.stop_reason = "saturation_ceiling"
+        elif m.hit_timestep_ceiling:
+            m.stop_reason = "timestep_ceiling"
+        else:
+            m.stop_reason = "all_tasks_completed" if (self.completed_task_ids >= self.all_task_ids) else "completed"
         m.wall_time_seconds = round(wall_time, 3)
 
         # ── Computation ───────────────────────────────────────────
@@ -301,6 +373,13 @@ def run_single_steady_state_experiment(
     initial_tasks: int = 0,
     allocation_timeout_s: Optional[float] = None,
     wall_clock_limit_s: Optional[float] = None,
+    saturation_stop_enabled: bool = False,
+    saturation_burn_in_steps: int = 300,
+    saturation_window: int = 100,
+    saturation_queue_frac: float = 0.9,
+    saturation_backlog_growth_min: int = 1,
+    saturation_drop_growth_min: int = 1,
+    saturation_consecutive_windows: int = 3,
     max_plan_time: int = 200,
     path_planner: str = "ca_star",
     rhcr_replanning_period: int = None,
@@ -325,6 +404,13 @@ def run_single_steady_state_experiment(
         allocation_method=allocation_method,
         allocation_timeout_s=allocation_timeout_s,
         wall_clock_limit_s=wall_clock_limit_s,
+        saturation_stop_enabled=saturation_stop_enabled,
+        saturation_burn_in_steps=saturation_burn_in_steps,
+        saturation_window=saturation_window,
+        saturation_queue_frac=saturation_queue_frac,
+        saturation_backlog_growth_min=saturation_backlog_growth_min,
+        saturation_drop_growth_min=saturation_drop_growth_min,
+        saturation_consecutive_windows=saturation_consecutive_windows,
         path_planner=path_planner,
         rhcr_replanning_period=rhcr_replanning_period,
         charger_planner=charger_planner,
@@ -426,6 +512,8 @@ def run_single_batch_experiment(
         max_timesteps=max_timesteps,
         wall_time=wall_time,
     )
+    if metrics.all_tasks_completed:
+        metrics.stop_reason = "all_tasks_completed"
 
     if output_dir is not None:
         run_dir = os.path.join(output_dir, metrics.run_id)

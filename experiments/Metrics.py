@@ -32,6 +32,8 @@ class RunMetrics:
     total_steps: int = 0
     hit_timestep_ceiling: bool = False
     hit_wall_clock_ceiling: bool = False
+    hit_saturation_ceiling: bool = False
+    stop_reason: str = ""   # "all_tasks_completed" | "timestep_ceiling" | "wall_clock_ceiling" | "saturation_ceiling"
 
     # ── Throughput (steady-state) ──────────────────────────────────────────────
     throughput: float = 0.0                   # PRIMARY — tasks/timestep post-warmup

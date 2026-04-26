@@ -49,6 +49,7 @@ def get_experiment_configs(
     path_planner: str = "ca_star",
     rhcr_replanning_period: int = None,
     methods: List[str] = None,
+    ss_initial_tasks: int = 0,
 ) -> List[Dict]:
     """
     Builds list of experiment configurations to run based on the selected mode and map parameters. 
@@ -72,8 +73,17 @@ def get_experiment_configs(
     WALL_CLOCK_LIMIT_S = 2400.0
 
     SS_MAX_TIMESTEPS = 1500
-    SS_INITIAL_TASKS = 2 * num_agents
+    SS_INITIAL_TASKS = max(0, ss_initial_tasks)
     BATCH_MAX_TIMESTEPS = 3000
+
+    # Steady-state overload stop (method-agnostic)
+    SS_SATURATION_STOP_ENABLED = True
+    SS_SATURATION_BURN_IN_STEPS = 300
+    SS_SATURATION_WINDOW = 100
+    SS_SATURATION_QUEUE_FRAC = 0.9
+    SS_SATURATION_BACKLOG_GROWTH_MIN = 1
+    SS_SATURATION_DROP_GROWTH_MIN = 1
+    SS_SATURATION_CONSECUTIVE_WINDOWS = 3
 
     configs = []
 
@@ -148,6 +158,13 @@ def get_experiment_configs(
                 "queue_max_depth": QUEUE_MAX_DEPTH,
                 "allocation_timeout_s": ALLOCATION_TIMEOUT_S,
                 "wall_clock_limit_s": WALL_CLOCK_LIMIT_S,
+                "saturation_stop_enabled": SS_SATURATION_STOP_ENABLED,
+                "saturation_burn_in_steps": SS_SATURATION_BURN_IN_STEPS,
+                "saturation_window": SS_SATURATION_WINDOW,
+                "saturation_queue_frac": SS_SATURATION_QUEUE_FRAC,
+                "saturation_backlog_growth_min": SS_SATURATION_BACKLOG_GROWTH_MIN,
+                "saturation_drop_growth_min": SS_SATURATION_DROP_GROWTH_MIN,
+                "saturation_consecutive_windows": SS_SATURATION_CONSECUTIVE_WINDOWS,
                 "seeds": seeds,
                 "path_planner": path_planner,
                 "rhcr_replanning_period": rhcr_replanning_period,
@@ -172,6 +189,13 @@ def get_experiment_configs(
                 "queue_max_depth": QUEUE_MAX_DEPTH,
                 "allocation_timeout_s": ALLOCATION_TIMEOUT_S,
                 "wall_clock_limit_s": WALL_CLOCK_LIMIT_S,
+                "saturation_stop_enabled": False,
+                "saturation_burn_in_steps": 0,
+                "saturation_window": 0,
+                "saturation_queue_frac": 0.0,
+                "saturation_backlog_growth_min": 0,
+                "saturation_drop_growth_min": 0,
+                "saturation_consecutive_windows": 0,
                 "seeds": seeds,
                 "path_planner": path_planner,
                 "rhcr_replanning_period": rhcr_replanning_period,
@@ -192,7 +216,7 @@ CSV_FIELDS = [
     "run_id", "config_name", "allocation_method", "path_planner", "experiment_type",
     "seed", "num_agents", "task_arrival_rate", "initial_tasks", "comm_range", "rerun_interval",
     # Validity
-    "total_steps", "hit_timestep_ceiling", "hit_wall_clock_ceiling",
+    "total_steps", "hit_timestep_ceiling", "hit_wall_clock_ceiling", "hit_saturation_ceiling", "stop_reason",
     # Throughput (steady-state)
     "throughput", "throughput_per_agent", "avg_task_wait_time", "max_task_wait_time",
     "steady_state_tasks_completed", "total_tasks_injected", "tasks_dropped_by_queue_cap", "avg_queue_depth",
@@ -237,6 +261,13 @@ def _run_task(task: Dict):
             initial_tasks=task["initial_tasks"],
             allocation_timeout_s=task["allocation_timeout_s"],
             wall_clock_limit_s=task["wall_clock_limit_s"],
+            saturation_stop_enabled=task["saturation_stop_enabled"],
+            saturation_burn_in_steps=task["saturation_burn_in_steps"],
+            saturation_window=task["saturation_window"],
+            saturation_queue_frac=task["saturation_queue_frac"],
+            saturation_backlog_growth_min=task["saturation_backlog_growth_min"],
+            saturation_drop_growth_min=task["saturation_drop_growth_min"],
+            saturation_consecutive_windows=task["saturation_consecutive_windows"],
             max_plan_time=task["max_plan_time"],
             path_planner=task["path_planner"],
             rhcr_replanning_period=task["rhcr_replanning_period"],
@@ -383,6 +414,13 @@ def main():
         help="Allocation methods to run (default: all four). E.g. --methods gcbba dmchba",
     )
 
+    parser.add_argument(
+        "--ss-initial-tasks",
+        type=int,
+        default=0,
+        help="Initial seeded tasks for steady-state runs (default: 0)",
+    )
+
     args = parser.parse_args()
 
     map_name = args.map.replace(".yaml", "")
@@ -416,6 +454,7 @@ def main():
         path_planner=args.path_planner,
         rhcr_replanning_period=args.rhcr_replanning_period,
         methods=args.methods,
+        ss_initial_tasks=args.ss_initial_tasks,
         )
 
     num_workers = args.workers if args.workers > 0 else os.cpu_count()
@@ -465,6 +504,13 @@ def main():
                 "initial_tasks": cfg["initial_tasks"],
                 "allocation_timeout_s": cfg["allocation_timeout_s"],
                 "wall_clock_limit_s": cfg["wall_clock_limit_s"],
+                "saturation_stop_enabled": cfg["saturation_stop_enabled"],
+                "saturation_burn_in_steps": cfg["saturation_burn_in_steps"],
+                "saturation_window": cfg["saturation_window"],
+                "saturation_queue_frac": cfg["saturation_queue_frac"],
+                "saturation_backlog_growth_min": cfg["saturation_backlog_growth_min"],
+                "saturation_drop_growth_min": cfg["saturation_drop_growth_min"],
+                "saturation_consecutive_windows": cfg["saturation_consecutive_windows"],
                 "max_plan_time": _map_plan_time,
                 "path_planner": cfg["path_planner"],
                 "rhcr_replanning_period": cfg["rhcr_replanning_period"],
