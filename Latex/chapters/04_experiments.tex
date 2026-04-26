@@ -39,8 +39,13 @@ All experiments sweep the following parameters:
   \item \textbf{Batch tasks per induct station} in stress mode:
     $\{10, 20, 30, 40\}$ (overload analysis, reported separately).
   \item \textbf{Steady-state arrival fractions} in full mode:
-    $\{0.5, 0.7, 0.85, 1.0, 1.1\}$ times the map-specific
+    $\{0.25, 0.4, 0.55, 0.7, 0.85\}$ times the map-specific
     estimated steady-state capacity.
+  \item \textbf{Steady-state arrival fractions} in quick mode:
+    $\{0.5, 0.8\}$ times the map-specific estimated steady-state capacity.
+  \item \textbf{Steady-state arrival fractions} in stress mode:
+    $\{0.6, 0.8, 1.0, 1.2, 1.4\}$ times the map-specific estimated
+    steady-state capacity.
   \item \textbf{Rerun interval} (Dynamic GCBBA only)
         $\in \{10, 25, 50, 100, 200\}$ timesteps, with $ri = 50$
         as the canonical configuration.
@@ -48,6 +53,10 @@ All experiments sweep the following parameters:
 
 Each configuration is repeated across two random seeds ($42$, $123$) in full mode.
 The maximum timestep budget is 1500 for steady-state and 3000 for batch runs.
+
+For steady-state experiments, quick mode is now a low-load smoke check,
+full mode is intentionally conservative so that the main thesis figures focus on
+stable operating regions, and stress mode is reserved for overload behavior.
 
 A complete sweep-count table is omitted here for brevity and will be added in
 the final manuscript revision after steady-state result integration.
@@ -249,11 +258,130 @@ When available, completed-only makespan is shown via
   \label{fig:batch_timeout_heatmaps_stress_maps}
 \end{figure}
 
-\subsubsection*{Steady-State Figures (Pending)}
+\subsubsection*{Steady-State Figures (Rolling Integration)}
 
-Steady-state results are being generated in a separate run. The final chapter version
-will add steady-state figures after those results are available, following the same
-reliability-first policy used for batch analysis.
+Steady-state results are being integrated incrementally as map runs finish.
+At this revision, \texttt{gridworld\_warehouse\_small} and
+\texttt{gridworld\_crossdock} are available and plotted.
+The remaining maps will be inserted using the same compact-view structure used for
+batch: throughput, wait-time, completion, queue-depth, capacity frontier,
+tradeoff, and degradation-by-communication-range.
+
+Current steady-state compact-view path:
+\begin{itemize}
+  \item \texttt{results/experiments/gridworld\_warehouse\_small/20260425\_133314/ss\_results/compact\_views/}
+  \item \texttt{results/experiments/gridworld\_crossdock/20260425\_142347/ss\_results/compact\_views/}
+\end{itemize}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260425_133314/ss_results/compact_views/compact_heatmap_throughput.png}
+    \caption{Warehouse-small: throughput}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260425_133314/ss_results/compact_views/compact_heatmap_wait_time.png}
+    \caption{Warehouse-small: wait time}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260425_133314/ss_results/compact_views/compact_heatmap_queue_depth.png}
+    \caption{Warehouse-small: queue depth}
+  \end{subfigure}
+
+  \vspace{0.7em}
+
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260425_142347/ss_results/compact_views/compact_heatmap_throughput.png}
+    \caption{Crossdock: throughput}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260425_142347/ss_results/compact_views/compact_heatmap_wait_time.png}
+    \caption{Crossdock: wait time}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260425_142347/ss_results/compact_views/compact_heatmap_queue_depth.png}
+    \caption{Crossdock: queue depth}
+  \end{subfigure}
+  \caption{Steady-state core heatmaps for currently completed SS maps. Rows are maps and columns are core metrics, matching the compact batch-style comparison layout while using arrival-rate/communication-range axes.}
+  \label{fig:ss_heatmaps_current_maps}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260425_133314/ss_results/compact_views/compact_capacity_curve.png}
+    \caption{Warehouse-small: capacity frontier}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260425_133314/ss_results/compact_views/compact_tradeoff.png}
+    \caption{Warehouse-small: throughput--wait tradeoff}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260425_133314/ss_results/compact_views/compact_throughput_degradation_by_comm_range.png}
+    \caption{Warehouse-small: throughput degradation}
+  \end{subfigure}
+
+  \vspace{0.7em}
+
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260425_142347/ss_results/compact_views/compact_capacity_curve.png}
+    \caption{Crossdock: capacity frontier}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260425_142347/ss_results/compact_views/compact_tradeoff.png}
+    \caption{Crossdock: throughput--wait tradeoff}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260425_142347/ss_results/compact_views/compact_throughput_degradation_by_comm_range.png}
+    \caption{Crossdock: throughput degradation}
+  \end{subfigure}
+  \caption{Steady-state frontier/tradeoff/degradation summary for currently completed SS maps.}
+  \label{fig:ss_frontier_tradeoff_degradation_current_maps}
+\end{figure}
+
+\paragraph{Batch-Style Multi-Map SS Template (to be filled as runs finish).}
+The final steady-state section will keep the same map grouping policy as batch
+(main-analysis maps, secondary maps, stress-regime maps) after SS reliability
+screening is complete. For each map, the chapter will include the following files
+from \texttt{.../ss\_results/compact\_views/}:
+\begin{itemize}
+  \item \texttt{compact\_heatmap\_throughput.png}
+  \item \texttt{compact\_heatmap\_wait\_time.png}
+  \item \texttt{compact\_heatmap\_completion\_rate.png}
+  \item \texttt{compact\_heatmap\_queue\_depth.png}
+  \item \texttt{compact\_capacity\_curve.png}
+  \item \texttt{compact\_tradeoff.png}
+  \item \texttt{compact\_throughput\_degradation\_by\_comm\_range.png}
+  \item \texttt{compact\_wait\_time\_degradation\_by\_comm\_range.png}
+\end{itemize}
+
+Pending steady-state map folders (currently running):
+\begin{itemize}
+  \item \texttt{results/experiments/gridworld\_kiva/<ss\_timestamp>/ss\_results/compact\_views/}
+  \item \texttt{results/experiments/gridworld\_warehouse\_large/<ss\_timestamp>/ss\_results/compact\_views/}
+  \item \texttt{results/experiments/gridworld\_kiva\_large/<ss\_timestamp>/ss\_results/compact\_views/}
+  \item \texttt{results/experiments/gridworld\_shelf\_aisle/<ss\_timestamp>/ss\_results/compact\_views/}
+\end{itemize}
 
 
 \subsection{Metrics}
@@ -268,9 +396,18 @@ The primary batch metrics used in this chapter are:
   \item \textbf{Critical-load frontier}: maximum load with completion at or above 95\%.
 \end{itemize}
 
+The primary steady-state metrics used in this chapter are:
+\begin{itemize}
+  \item \textbf{Throughput}: completed steady-state tasks per timestep.
+  \item \textbf{Average task wait time}: responsiveness under continuous arrivals.
+  \item \textbf{Queue depth and queue-pressure indicators}: stability under sustained load.
+  \item \textbf{Arrival-rate capacity frontier}: highest arrival rate sustaining near-peak throughput.
+  \item \textbf{Throughput--wait tradeoff}: efficiency vs latency operating points.
+\end{itemize}
+
 Secondary diagnostics (idle ratio, balance, deadlocks, and allocation timing)
-are available in the detailed plot suites and are used where relevant in the
-appendix-level discussion.
+are available in the compact and detailed suites and are used where relevant in
+the appendix-level discussion.
 
 
 \subsection{Baselines}
