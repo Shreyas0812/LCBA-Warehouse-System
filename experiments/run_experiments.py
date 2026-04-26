@@ -90,8 +90,8 @@ def get_experiment_configs(
         seeds = [42]
         # One sparse range (35% diagonal) and one full-connectivity range
         range_fracs = [0.35, 1.2]
-        # Light and moderate load only
-        ss_capacity_fracs = [0.9, 1.1]
+        # Lightweight steady-state smoke test.
+        ss_capacity_fracs = [0.5, 0.8]
 
         # Fixed workload in tasks per induct station.
         batch_tasks_per_induct = [10, 15]
@@ -101,8 +101,8 @@ def get_experiment_configs(
         seeds = [42, 123]
         # 5 points spanning near-disconnected to full-connectivity
         range_fracs = [0.1, 0.2, 0.35, 0.6, 1.2]
-        # 5 points from 50% to 110% of ss capacity
-        ss_capacity_fracs = [0.5, 0.7, 0.85, 1.0, 1.1]
+        # Conservative steady-state ladder for reliable main-analysis coverage.
+        ss_capacity_fracs = [0.25, 0.4, 0.55, 0.7, 0.85]
         
         # Reliability-first workload ladder in tasks per induct station.
         batch_tasks_per_induct = [8, 10, 12, 15]
@@ -112,8 +112,8 @@ def get_experiment_configs(
         seeds = [42, 123]
         # 5 points spanning near-disconnected to full-connectivity
         range_fracs = [0.1, 0.2, 0.35, 0.6, 1.2]
-        # 5 points from 75% to 175% of ss capacity
-        ss_capacity_fracs = [0.75, 1.0, 1.25, 1.5, 1.75]
+        # Softer overload ladder: still stressful, but less collapse-prone.
+        ss_capacity_fracs = [0.6, 0.8, 1.0, 1.2, 1.4]
 
         # Stress workload ladder in tasks per induct station.
         batch_tasks_per_induct = [10, 20, 30, 40]
