@@ -18,9 +18,12 @@
 \subsection{Environment Configuration}
 \label{subsec:exp_environment}
 
-\todo{Describe the simulation environment used for all experiments:
-  30$\times$30 grid, 6 agents, 8 induct stations, 38 eject stations.
-  YAML config file parameters. Timestep definition.}
+All experiments are run in the same warehouse gridworld simulation stack,
+with map-specific geometry, agent count, induct stations, and eject stations
+loaded from YAML configuration files. One simulation timestep corresponds to
+one discrete planning/execution update in the environment. Unless otherwise
+noted, all allocation methods share the same downstream path-planning and
+collision-avoidance pipeline to isolate the effect of task-allocation logic.
 
 
 \subsection{Parameters Swept}
@@ -29,47 +32,256 @@
 All experiments sweep the following parameters:
 
 \begin{itemize}
-  \item \textbf{Communication range} $\comm \in \{3, 5, 8, 13, 20, 45\}$
-        grid units, ranging from fully isolated to fully connected.
-  \item \textbf{Tasks per induct station} $\in \{2, 5, 10\}$,
-        yielding 16, 40, and 80 total tasks respectively.
+  \item \textbf{Communication range} is map-scaled from diagonal fractions
+    $\{0.1, 0.2, 0.35, 0.6, 1.2\}$ and rounded to grid units.
+  \item \textbf{Batch tasks per induct station} in full mode:
+    $\{8, 10, 12, 15\}$ (reliability-first sweep).
+  \item \textbf{Batch tasks per induct station} in stress mode:
+    $\{10, 20, 30, 40\}$ (overload analysis, reported separately).
+  \item \textbf{Steady-state arrival fractions} in full mode:
+    $\{0.5, 0.7, 0.85, 1.0, 1.1\}$ times the map-specific
+    estimated steady-state capacity.
   \item \textbf{Rerun interval} (Dynamic GCBBA only)
         $\in \{10, 25, 50, 100, 200\}$ timesteps, with $ri = 50$
         as the canonical configuration.
 \end{itemize}
 
-Each configuration is repeated across 5 random seeds.
-The maximum timestep budget is 800 per run.
+Each configuration is repeated across two random seeds ($42$, $123$) in full mode.
+The maximum timestep budget is 1500 for steady-state and 3000 for batch runs.
 
-\todo{Add table summarising all parameter combinations and
-total run counts per mode (quick/medium/full).}
+A complete sweep-count table is omitted here for brevity and will be added in
+the final manuscript revision after steady-state result integration.
+
+
+\subsection{Batch Reliability Screening Across Maps}
+\label{subsec:exp_batch_reliability_screen}
+
+To ensure that the main thesis comparisons are based on stable operating regimes,
+we screened each map using the latest full-mode batch runs and marked a load point
+as \emph{reliable} when the wall-clock timeout rate was at most $20\%$.
+
+Table~\ref{tab:batch_reliability_screen} summarizes the maximum reliable batch load
+per map and the recommended reporting role in this thesis.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption{Batch reliability screen from full-mode runs. A map is marked
+       as main-analysis-ready when it provides usable low-to-mid load
+       comparisons without timeout-dominated behavior.}
+  \label{tab:batch_reliability_screen}
+  \begin{tabular}{lccc}
+    \hline
+    Map & Max reliable task count & Completed-only makespan usable & Recommended use \\
+    \hline
+    gridworld\_crossdock       & 90  & Yes & Main analysis \\
+    gridworld\_warehouse\_small & 120 & Partial (best at lower loads) & Main analysis \\
+    gridworld\_warehouse\_large & 144 & Partial (exclude top load in main) & Main analysis \\
+    gridworld\_kiva            & 75  & No (timestep-ceiling dominated) & Secondary / partial-completion \\
+    gridworld\_kiva\_large      & N/A & No & Stress / appendix \\
+    gridworld\_shelf\_aisle      & N/A & No & Stress / appendix \\
+    \hline
+  \end{tabular}
+\end{table}
+
+The resulting presentation policy is: (i) use crossdock, warehouse\_small,
+and warehouse\_large as the primary cross-map batch comparison set,
+(ii) report kiva primarily through completion-fraction and timeout behavior,
+and (iii) treat kiva\_large and shelf\_aisle as stress-test regimes.
+
+The compact batch figures used for this screening were generated from:
+\begin{itemize}
+  \item \texttt{results/experiments/gridworld\_warehouse\_small/20260425\_012846/batch\_results/compact\_views/}
+  \item \texttt{results/experiments/gridworld\_crossdock/20260425\_022224/batch\_results/compact\_views/}
+  \item \texttt{results/experiments/gridworld\_kiva/20260425\_030403/batch\_results/compact\_views/}
+  \item \texttt{results/experiments/gridworld\_warehouse\_large/20260425\_044219/batch\_results/compact\_views/}
+  \item \texttt{results/experiments/gridworld\_kiva\_large/20260425\_062503/batch\_results/compact\_views/}
+  \item \texttt{results/experiments/gridworld\_shelf\_aisle/20260425\_074507/batch\_results/compact\_views/}
+\end{itemize}
+
+For each run, the primary reliability visuals are:
+\texttt{compact\_heatmap\_completion\_rate.png},
+\texttt{compact\_heatmap\_timeout\_rate.png},
+\texttt{compact\_capacity\_curve.png}, and
+\texttt{compact\_completion\_degradation\_by\_comm\_range.png}.
+When available, completed-only makespan is shown via
+\texttt{compact\_makespan\_completed\_by\_comm\_range.png}.
+
+\subsubsection*{Main-Map Reliability Figures}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260425_022224/batch_results/compact_views/compact_heatmap_completion_rate.png}
+    \caption{Crossdock}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260425_012846/batch_results/compact_views/compact_heatmap_completion_rate.png}
+    \caption{Warehouse-small}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_large/20260425_044219/batch_results/compact_views/compact_heatmap_completion_rate.png}
+    \caption{Warehouse-large}
+  \end{subfigure}
+  \caption{Completion-rate heatmaps for the three main-analysis maps used in the batch reliability screen.}
+  \label{fig:batch_completion_heatmaps_main_maps}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260425_022224/batch_results/compact_views/compact_heatmap_timeout_rate.png}
+    \caption{Crossdock}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260425_012846/batch_results/compact_views/compact_heatmap_timeout_rate.png}
+    \caption{Warehouse-small}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_large/20260425_044219/batch_results/compact_views/compact_heatmap_timeout_rate.png}
+    \caption{Warehouse-large}
+  \end{subfigure}
+  \caption{Timeout-rate heatmaps for main-analysis maps. Low-to-mid loads are stable, while top loads show map-dependent degradation.}
+  \label{fig:batch_timeout_heatmaps_main_maps}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260425_022224/batch_results/compact_views/compact_capacity_curve.png}
+    \caption{Crossdock}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260425_012846/batch_results/compact_views/compact_capacity_curve.png}
+    \caption{Warehouse-small}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_large/20260425_044219/batch_results/compact_views/compact_capacity_curve.png}
+    \caption{Warehouse-large}
+  \end{subfigure}
+  \caption{Critical-load frontier curves (completion threshold $\geq 0.95$) for main-analysis maps.}
+  \label{fig:batch_capacity_main_maps}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260425_022224/batch_results/compact_views/compact_completion_degradation_by_comm_range.png}
+    \caption{Crossdock}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260425_012846/batch_results/compact_views/compact_completion_degradation_by_comm_range.png}
+    \caption{Warehouse-small}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_large/20260425_044219/batch_results/compact_views/compact_completion_degradation_by_comm_range.png}
+    \caption{Warehouse-large}
+  \end{subfigure}
+  \caption{Completion-vs-load degradation curves by communication range for main-analysis maps. These plots show graceful vs sharp degradation regimes and support the load-screening decisions in Table~\ref{tab:batch_reliability_screen}.}
+  \label{fig:batch_degradation_main_maps}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260425_022224/batch_results/compact_views/compact_tradeoff.png}
+    \caption{Crossdock}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260425_012846/batch_results/compact_views/compact_tradeoff.png}
+    \caption{Warehouse-small}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_large/20260425_044219/batch_results/compact_views/compact_tradeoff.png}
+    \caption{Warehouse-large}
+  \end{subfigure}
+  \caption{Completion-versus-wall-time tradeoff for main-analysis maps. Pareto-favorable regions correspond to high completion at lower wall-time.}
+  \label{fig:batch_tradeoff_main_maps}
+\end{figure}
+
+\subsubsection*{Stress-Regime Figures}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_kiva/20260425_030403/batch_results/compact_views/compact_heatmap_timeout_rate.png}
+    \caption{Kiva (secondary)}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_kiva_large/20260425_062503/batch_results/compact_views/compact_heatmap_timeout_rate.png}
+    \caption{Kiva-large (stress)}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_shelf_aisle/20260425_074507/batch_results/compact_views/compact_heatmap_timeout_rate.png}
+    \caption{Shelf-aisle (stress)}
+  \end{subfigure}
+  \caption{Timeout-rate heatmaps for secondary/stress maps. These are interpreted as robustness stress regimes rather than primary efficiency comparisons.}
+  \label{fig:batch_timeout_heatmaps_stress_maps}
+\end{figure}
+
+\subsubsection*{Steady-State Figures (Pending)}
+
+Steady-state results are being generated in a separate run. The final chapter version
+will add steady-state figures after those results are available, following the same
+reliability-first policy used for batch analysis.
 
 
 \subsection{Metrics}
 \label{subsec:exp_metrics}
 
-\todo{Define each metric precisely:
-  \textbf{Makespan}: timesteps to complete all tasks ($-1$ if DNF);
-  \textbf{Completion rate}: fraction of seeds where all tasks complete;
-  \textbf{Sub-optimality ratio}: method makespan / SGA makespan
-    (only computed where both methods complete);
-  \textbf{Distinct stuck events}: number of agent transitions
-    into the stuck state (NOT cumulative stuck timesteps);
-  \textbf{Vertex collisions}: post-hoc count of two agents at
-    the same cell at the same timestep;
-  \textbf{Task balance std}: std dev of tasks completed per agent;
-  \textbf{Average idle ratio}: fraction of timesteps each agent
-    spends not moving.}
+The primary batch metrics used in this chapter are:
+\begin{itemize}
+  \item \textbf{Completion rate}: fraction of tasks completed within run limits.
+  \item \textbf{Timeout rate}: fraction of runs that hit the wall-clock ceiling.
+  \item \textbf{Completed-only makespan}: completion time, reported only for fully completed runs.
+  \item \textbf{Wall-clock runtime}: end-to-end runtime per run.
+  \item \textbf{Critical-load frontier}: maximum load with completion at or above 95\%.
+\end{itemize}
+
+Secondary diagnostics (idle ratio, balance, deadlocks, and allocation timing)
+are available in the detailed plot suites and are used where relevant in the
+appendix-level discussion.
 
 
 \subsection{Baselines}
 \label{subsec:exp_baselines}
 
-\todo{One paragraph each on SGA and CBBA as implemented.
-  Reiterate that all methods share the same collision avoidance
-  pipeline -- this is the key design decision for fair comparison.
-  Note the SGA caveat: on disconnected graphs, SGA runs per
-  connected component independently (generous upper bound).}
+The compared methods are LCBA (internal key \texttt{gcbba}), CBBA, SGA,
+and DMCHBA. All methods use the same simulation and path-planning stack so
+that differences primarily reflect allocation behavior. DMCHBA is retained as
+a high-performance reference baseline, while LCBA/CBBA/SGA provide
+decentralized-style comparisons with varying robustness under communication and
+load stress.
 
 
 % ── 4.2 ─────────────────────────────────────────────────────────
@@ -81,15 +293,15 @@ total run counts per mode (quick/medium/full).}
 \subsection{Task Completion Rate}
 \label{subsec:exp_completion_rate}
 
-\todo{Write analysis of completion rate results.
-  Key finding: Dynamic GCBBA achieves 100\% completion at $\comm = 13$
-  (barely connected) and disconnected ranges where Static GCBBA and
-  CBBA achieve 0\%. Reference Figure~\ref{fig:completion_rate}.}
+This subsection will be finalized after steady-state outputs are available.
+For the current batch-only reliability analysis, completion behavior is
+summarized in Figure~\ref{fig:batch_completion_heatmaps_main_maps} and
+Figure~\ref{fig:batch_degradation_main_maps}.
 
 \begin{figure}[htbp]
   \centering
   % \includegraphics[width=\textwidth]{completion_rate}
-  \todo{Insert completion\_rate.png}
+  \emph{[Steady-state completion-rate figure pending SS run outputs.]}
   \caption{Task completion rate by communication range, aggregated
            across all task loads and seeds. The shaded region
            indicates disconnected graph configurations
@@ -100,7 +312,7 @@ total run counts per mode (quick/medium/full).}
 \begin{figure}[htbp]
   \centering
   % \includegraphics[width=\textwidth]{completion_rate_by_tpi}
-  \todo{Insert completion\_rate\_by\_tpi.png}
+  \emph{[Steady-state completion-by-load figure pending SS run outputs.]}
   \caption{Task completion rate broken down by task load.}
   \label{fig:completion_rate_by_tpi}
 \end{figure}
@@ -109,18 +321,14 @@ total run counts per mode (quick/medium/full).}
 \subsection{Makespan Under Varying Connectivity}
 \label{subsec:exp_makespan_comm}
 
-\todo{Analyse makespan vs communication range.
-  For connected graphs ($\comm \geq 13$), all methods complete
-  tasks -- focus on efficiency differences.
-  For disconnected graphs, only Dynamic GCBBA completes --
-  discuss why (event-driven replanning allows agents to
-  reassign when connectivity changes as robots move).
-  Reference Figure~\ref{fig:makespan_vs_comm}.}
+This subsection is reserved for the steady-state analysis pass.
+For current batch data, makespan is interpreted only on completed runs and is
+used as a secondary metric behind completion and timeout.
 
 \begin{figure}[htbp]
   \centering
   % \includegraphics[width=\textwidth]{makespan_vs_comm_range}
-  \todo{Insert makespan\_vs\_comm\_range.png}
+  \emph{[Steady-state makespan-vs-communication figure pending SS outputs.]}
   \caption{Makespan vs.\ communication range for all methods
            across three task loads.}
   \label{fig:makespan_vs_comm}
@@ -136,18 +344,13 @@ total run counts per mode (quick/medium/full).}
 \subsection{Sub-Optimality Ratio vs.\ SGA}
 \label{subsec:exp_suboptimality}
 
-\todo{Present sub-optimality ratio results.
-  Key message: on connected graphs, Dynamic GCBBA achieves
-  ratio $\approx 1.0$--$1.X$, well within the theoretical
-  bound of 2.0. Static GCBBA shows higher ratio due to
-  inability to reallocate as tasks complete.
-  Reference Figure~\ref{fig:optimality_ratio}.}
+This sub-optimality analysis is deferred to the steady-state section once the
+SS runs are complete.
 
 \begin{figure}[htbp]
   \centering
   % \includegraphics[width=\textwidth]{optimality_ratio}
-  \todo{Insert optimality\_ratio.png. Include the theoretical
-  bound line at 2.0 and the SGA reference line at 1.0.}
+  \emph{[Sub-optimality ratio figure pending SS outputs.]}
   \caption{Sub-optimality ratio (method makespan / SGA makespan)
            vs.\ communication range. Only runs where both the
            method and SGA completed are included.
@@ -160,15 +363,12 @@ total run counts per mode (quick/medium/full).}
 \subsection{Makespan Gap Relative to SGA}
 \label{subsec:exp_makespan_gap}
 
-\todo{Analyse improvement\_ratio.png.
-  Show that on fully connected graphs, Dynamic GCBBA is within
-  X\% of SGA. Note that on disconnected graphs, SGA is not a
-  fair reference (it runs per component).}
+This subsection remains pending steady-state outputs.
 
 \begin{figure}[htbp]
   \centering
   % \includegraphics[width=\textwidth]{improvement_ratio}
-  \todo{Insert improvement\_ratio.png}
+  \emph{[Improvement-ratio figure pending SS outputs.]}
   \caption{Makespan gap relative to SGA, expressed as a
            percentage. Positive values indicate slower
            performance than SGA. Only runs where both the
@@ -181,18 +381,13 @@ total run counts per mode (quick/medium/full).}
 \section{Rerun Interval Sensitivity}
 \label{sec:exp_sensitivity}
 
-\todo{Present the rerun interval sweep results.
-  Key message: performance is not critically sensitive to the
-  chosen value of $ri$, validating the $ri = 50$ design choice.
-  Very low $ri$ (10) may degrade due to computational overhead
-  of frequent replanning. Very high $ri$ (200) degrades
-  completion rate at lower comm ranges.
-  Reference Figure~\ref{fig:ri_sweep}.}
+Rerun-interval sensitivity is currently pending dedicated steady-state output
+processing and will be finalized in the SS update pass.
 
 \begin{figure}[htbp]
   \centering
   % \includegraphics[width=\textwidth]{rerun_interval_sweep}
-  \todo{Insert rerun\_interval\_sweep.png}
+  \emph{[Rerun-interval sensitivity figure pending SS outputs.]}
   \caption{Makespan (top) and completion rate (bottom) for
            Dynamic GCBBA across rerun interval values.
            The canonical $ri = 50$ is shown with a solid line.}
@@ -204,19 +399,13 @@ total run counts per mode (quick/medium/full).}
 \section{Safety: Collisions and Deadlocks}
 \label{sec:exp_safety}
 
-\todo{Present collision and deadlock results.
-  Expected finding: vertex collisions should be zero or near-zero
-  (the collision avoidance pipeline works). If non-zero, explain
-  under what conditions they occur.
-  Stuck events should decrease with higher comm range / lower
-  task load. Reference Figure~\ref{fig:collision_deadlock}.
-  Clearly state that stuck events are transition-based
-  (one event per agent entry into stuck state, not per timestep).}
+Safety diagnostics are available in detailed result CSVs and plots, and will be
+reported in the final version after the steady-state run is incorporated.
 
 \begin{figure}[htbp]
   \centering
   % \includegraphics[width=\textwidth]{collision_deadlock}
-  \todo{Insert collision\_deadlock.png}
+  \emph{[Collision/deadlock figure pending final safety aggregation.]}
   \caption{Post-hoc vertex collision count (left) and distinct
            agent stuck events (right) by communication range.}
   \label{fig:collision_deadlock}
@@ -227,20 +416,13 @@ total run counts per mode (quick/medium/full).}
 \section{Computational Overhead}
 \label{sec:exp_timing}
 
-\todo{Present GCBBA timing results.
-  Key question: does the extra overhead of dynamic replanning
-  justify the completion rate gains?
-  Show avg allocation time per call vs task count.
-  Show number of allocation reruns vs comm range.
-  Dynamic GCBBA does more reallocation calls -- is the wall-clock
-  cost acceptable for real-time use?
-  Reference Figure~\ref{fig:gcbba_timing} and
-  Figure~\ref{fig:trigger_breakdown}.}
+Computation-time diagnostics are available from run summaries and will be
+inserted after steady-state results complete the cross-regime comparison.
 
 \begin{figure}[htbp]
   \centering
   % \includegraphics[width=\textwidth]{gcbba_timing}
-  \todo{Insert gcbba\_timing.png}
+  \emph{[Allocation-timing figure pending final integration.]}
   \caption{Average allocation computation time per call (left)
            and number of allocation reruns per run (right),
            grouped by task load.}
@@ -250,7 +432,7 @@ total run counts per mode (quick/medium/full).}
 \begin{figure}[htbp]
   \centering
   % \includegraphics[width=\textwidth]{trigger_breakdown}
-  \todo{Insert trigger\_breakdown.png}
+  \emph{[Trigger-breakdown figure pending final integration.]}
   \caption{GCBBA rerun trigger breakdown for Dynamic GCBBA
            ($ri = 50$): batch-triggered (task completions)
            vs.\ interval-triggered reruns.}
@@ -262,105 +444,23 @@ total run counts per mode (quick/medium/full).}
 \section{Batch Summary Views}
 \label{sec:exp_compact_views}
 
-The slice plots above are useful for detailed inspection, but they
-create a large number of figures when both communication range and
-task load are swept. For the thesis, the same batch results are also
-summarized with heatmaps that place communication range on the
-x-axis and initial task count on the y-axis. Each heatmap panel shows
-one algorithm, so the four panels together provide a complete view of
-how performance changes across the full grid of batch configurations
-without repeating one figure per slice.
-
-Figure~\ref{fig:compact_views_summary} condenses the same batch data into
-four high-level views. Completion rate shows the main robustness pattern:
-DMCHBA remains robust across larger task loads, GCBBA is intermediate,
-and CBBA/SGA degrade sharply as load increases. Timeout rate highlights
-that CBBA and SGA are the most timeout-prone methods, while DMCHBA is the
-most stable in wall-clock terms. Makespan shows that low completion time
-is not sufficient on its own if the method fails to complete higher-load
-cases. Wall time makes the computational cost tradeoff explicit:
-DMCHBA is consistently faster than the other methods, while CBBA and SGA
-become expensive under heavy load.
-
-The plotting script also generates two supplementary summary plots: a
-critical-load curve and a completion-vs-runtime tradeoff scatter. These
-are useful appendix-level views and can be inserted later if a shorter
-results narrative is needed.
-
-\begin{figure}[htbp]
-  \centering
-  \begin{minipage}{0.48\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{figures/gridworld_warehouse_small/20260424_020252/compact_heatmap_completion_rate.png}
-    \par\smallskip\textbf{Completion rate}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{0.48\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{figures/gridworld_warehouse_small/20260424_020252/compact_heatmap_timeout_rate.png}
-    \par\smallskip\textbf{Timeout rate}
-  \end{minipage}
-
-  \vspace{0.8em}
-
-  \begin{minipage}{0.48\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{figures/gridworld_warehouse_small/20260424_020252/compact_heatmap_makespan_completed.png}
-    \par\smallskip\textbf{Makespan (completed runs only)}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{0.48\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{figures/gridworld_warehouse_small/20260424_020252/compact_heatmap_wall_time_seconds.png}
-    \par\smallskip\textbf{Wall time}
-  \end{minipage}
-
-  \caption{Heatmap summary of the batch sweep results.
-           The four panels show completion rate, timeout rate,
-           makespan for completed runs only, and wall-clock time,
-           each indexed by communication range (columns) and initial
-           task count (rows).}
-  \label{fig:compact_views_summary}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \begin{minipage}{0.48\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{figures/gridworld_warehouse_small/20260424_020252/compact_capacity_curve.png}
-    \par\smallskip\textbf{Critical-load curve}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{0.48\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{figures/gridworld_warehouse_small/20260424_020252/compact_tradeoff.png}
-    \par\smallskip\textbf{Completion/runtime tradeoff}
-  \end{minipage}
-
-  \caption{Supplementary summary views. The left panel shows the
-           maximum task count that still achieves at least 95\%
-           completion as communication range varies. The right panel
-           shows the tradeoff between completion rate and wall-clock
-           runtime across the batch sweep.}
-  \label{fig:compact_views_supplementary}
-\end{figure}
+The compact-view figures embedded earlier in this chapter (main-map and
+stress-regime panels) are the authoritative batch summary visuals for this
+manuscript revision. Legacy single-map compact-view examples were removed to
+avoid duplication and stale file references.
 
 
 % ── 4.7 ─────────────────────────────────────────────────────────
 \section{Agent Utilisation and Load Balance}
 \label{sec:exp_utilisation}
 
-\todo{Present agent utilisation results.
-  Key question: does GCBBA distribute tasks fairly across agents?
-  Compare task\_balance\_std across methods.
-  Dynamic GCBBA should show better balance (replanning corrects
-  early imbalances as tasks complete).
-  Reference Figure~\ref{fig:utilisation}.}
+Agent-utilization and load-balance analysis is retained for the final revision
+after steady-state results are integrated.
 
 \begin{figure}[htbp]
   \centering
   % \includegraphics[width=\textwidth]{agent_utilization}
-  \todo{Insert agent\_utilization.png}
+  \emph{[Utilization/balance figure pending final integration.]}
   \caption{Agent idle ratio (left) and task balance standard
            deviation (right) by task load. Lower balance std
            indicates more even task distribution.}
@@ -372,18 +472,13 @@ results narrative is needed.
 \section{Throughput Analysis}
 \label{sec:exp_throughput}
 
-\todo{Present throughput curves (cumulative tasks completed
-  over time) for the most informative configurations:
-  lowest comm range (most stress) and highest (baseline).
-  Show the difference in curve shape between Static and Dynamic
-  GCBBA at low comm ranges -- Static plateaus early, Dynamic
-  continues completing tasks.
-  Reference Figure~\ref{fig:throughput}.}
+Throughput-over-time figures are scheduled for the steady-state integration
+pass, where cumulative behavior is most informative.
 
 \begin{figure}[htbp]
   \centering
   % \includegraphics[width=\textwidth]{throughput_curves}
-  \todo{Insert throughput\_curves.png}
+  \emph{[Throughput-over-time figure pending SS outputs.]}
   \caption{Cumulative task completion over time at the lowest
            (left) and highest (right) communication ranges,
            for maximum task load.}
@@ -395,21 +490,13 @@ results narrative is needed.
 \section{Summary of Results}
 \label{sec:exp_summary}
 
-\todo{Write a 1-page synthesis. Use the results table
-  (Table~\ref{tab:results}) as the anchor. Structured around
-  the three research questions from Chapter 1:
-  RQ1 (completion under disconnected graphs): answered by
-    Section~\ref{sec:exp_comm_robustness};
-  RQ2 (near-optimality on connected graphs): answered by
-    Section~\ref{sec:exp_optimality};
-  RQ3 (replanning frequency): answered by
-    Section~\ref{sec:exp_sensitivity}.}
+Current chapter status is batch-complete and steady-state-pending. The final
+one-page synthesis will be written after steady-state figures and corresponding
+tables are added, preserving the same reliability-screening policy.
 
 \begin{table}[htbp]
   \centering
-  \todo{Insert results\_table.tex generated by plot\_results.py.
-  Use \textbackslash input\{results\_table\} once the file is
-  generated.}
+  \emph{[Final consolidated results table pending SS integration.]}
   \caption{Summary of experimental results across all methods,
            task loads, and communication ranges.}
   \label{tab:results}
