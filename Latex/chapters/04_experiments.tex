@@ -98,23 +98,23 @@ and warehouse\_large as the primary cross-map batch comparison set,
 (ii) report kiva primarily through completion-fraction and timeout behavior,
 and (iii) treat kiva\_large and shelf\_aisle as stress-test regimes.
 
-The compact batch figures used for this screening were generated from:
-\begin{itemize}
-  \item \texttt{results/experiments/gridworld\_warehouse\_small/20260425\_012846/batch\_results/compact\_views/}
-  \item \texttt{results/experiments/gridworld\_crossdock/20260425\_022224/batch\_results/compact\_views/}
-  \item \texttt{results/experiments/gridworld\_kiva/20260425\_030403/batch\_results/compact\_views/}
-  \item \texttt{results/experiments/gridworld\_warehouse\_large/20260425\_044219/batch\_results/compact\_views/}
-  \item \texttt{results/experiments/gridworld\_kiva\_large/20260425\_062503/batch\_results/compact\_views/}
-  \item \texttt{results/experiments/gridworld\_shelf\_aisle/20260425\_074507/batch\_results/compact\_views/}
-\end{itemize}
-
-For each run, the primary reliability visuals are:
-\texttt{compact\_heatmap\_completion\_rate.png},
-\texttt{compact\_heatmap\_timeout\_rate.png},
-\texttt{compact\_capacity\_curve.png}, and
-\texttt{compact\_completion\_degradation\_by\_comm\_range.png}.
-When available, completed-only makespan is shown via
-\texttt{compact\_makespan\_completed\_by\_comm\_range.png}.
+% The compact batch figures used for this screening were generated from:
+% \begin{itemize}
+%   \item \texttt{results/experiments/gridworld\_warehouse\_small/20260425\_012846/batch\_results/compact\_views/}
+%   \item \texttt{results/experiments/gridworld\_crossdock/20260425\_022224/batch\_results/compact\_views/}
+%   \item \texttt{results/experiments/gridworld\_kiva/20260425\_030403/batch\_results/compact\_views/}
+%   \item \texttt{results/experiments/gridworld\_warehouse\_large/20260425\_044219/batch\_results/compact\_views/}
+%   \item \texttt{results/experiments/gridworld\_kiva\_large/20260425\_062503/batch\_results/compact\_views/}
+%   \item \texttt{results/experiments/gridworld\_shelf\_aisle/20260425\_074507/batch\_results/compact\_views/}
+% \end{itemize}
+%
+% For each run, the primary reliability visuals are:
+% \texttt{compact\_heatmap\_completion\_rate.png},
+% \texttt{compact\_heatmap\_timeout\_rate.png},
+% \texttt{compact\_capacity\_curve.png}, and
+% \texttt{compact\_completion\_degradation\_by\_comm\_range.png}.
+% When available, completed-only makespan is shown via
+% \texttt{compact\_makespan\_completed\_by\_comm\_range.png}.
 
 \subsubsection*{Main-Map Reliability Figures}
 
@@ -277,12 +277,12 @@ The saturation early-stop did not trigger in these maps, so the current
 improvement comes from the revised arrival policy rather than from aggressive
 early termination.
 
-Current steady-state compact-view path:
-\begin{itemize}
-  \item \texttt{results/experiments/gridworld\_warehouse\_small/20260426\_135556/ss\_results/compact\_views/}
-  \item \texttt{results/experiments/gridworld\_crossdock/20260426\_141042/ss\_results/compact\_views/}
-  \item \texttt{results/experiments/gridworld\_kiva/20260426\_195056/ss\_results/compact\_views/}
-\end{itemize}
+% Current steady-state compact-view path:
+% \begin{itemize}
+%   \item \texttt{results/experiments/gridworld\_warehouse\_small/20260426\_135556/ss\_results/compact\_views/}
+%   \item \texttt{results/experiments/gridworld\_crossdock/20260426\_141042/ss\_results/compact\_views/}
+%   \item \texttt{results/experiments/gridworld\_kiva/20260426\_195056/ss\_results/compact\_views/}
+% \end{itemize}
 
 \begin{figure}[htbp]
   \centering
@@ -408,25 +408,25 @@ real-time control benchmark.
   \label{fig:ss_kiva_capacity_progress_stress}
 \end{figure}
 
-\paragraph{Batch-Style Multi-Map SS Template (to be filled as runs finish).}
-The final steady-state section will keep the same map grouping policy as batch
-(main-analysis maps, secondary maps, stress-regime maps) after SS reliability
-screening is complete. For each map, the chapter will include the following files
-from \texttt{.../ss\_results/compact\_views/}:
-\begin{itemize}
-  \item \texttt{compact\_heatmap\_throughput.png}
-  \item \texttt{compact\_heatmap\_wait\_time.png}
-  \item \texttt{compact\_capacity\_curve.png}
-  \item \texttt{compact\_completion\_progress\_all\_tasks\_completed.png}
-  \item \texttt{compact\_completion\_progress\_timestep\_ceiling.png}
-\end{itemize}
-
-Pending steady-state map folders (currently running):
-\begin{itemize}
-  \item \texttt{results/experiments/gridworld\_warehouse\_large/<ss\_timestamp>/ss\_results/compact\_views/}
-  \item \texttt{results/experiments/gridworld\_kiva\_large/<ss\_timestamp>/ss\_results/compact\_views/}
-  \item \texttt{results/experiments/gridworld\_shelf\_aisle/<ss\_timestamp>/ss\_results/compact\_views/}
-\end{itemize}
+% \paragraph{Batch-Style Multi-Map SS Template (to be filled as runs finish).}
+% The final steady-state section will keep the same map grouping policy as batch
+% (main-analysis maps, secondary maps, stress-regime maps) after SS reliability
+% screening is complete. For each map, the chapter will include the following files
+% from \texttt{.../ss\_results/compact\_views/}:
+% \begin{itemize}
+%   \item \texttt{compact\_heatmap\_throughput.png}
+%   \item \texttt{compact\_heatmap\_wait\_time.png}
+%   \item \texttt{compact\_capacity\_curve.png}
+%   \item \texttt{compact\_completion\_progress\_all\_tasks\_completed.png}
+%   \item \texttt{compact\_completion\_progress\_timestep\_ceiling.png}
+% \end{itemize}
+%
+% Pending steady-state map folders (currently running):
+% \begin{itemize}
+%   \item \texttt{results/experiments/gridworld\_warehouse\_large/<ss\_timestamp>/ss\_results/compact\_views/}
+%   \item \texttt{results/experiments/gridworld\_kiva\_large/<ss\_timestamp>/ss\_results/compact\_views/}
+%   \item \texttt{results/experiments/gridworld\_shelf\_aisle/<ss\_timestamp>/ss\_results/compact\_views/}
+% \end{itemize}
 
 
 \subsection{Metrics}
