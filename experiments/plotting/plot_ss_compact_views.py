@@ -14,6 +14,8 @@ Structure:
 3. Tradeoff scatter: throughput (X) vs avg task wait time (Y).
 4. Throughput degradation curves, grouped by comm_range.
 5. Wait-time degradation curves, grouped by comm_range.
+6. Completion-progress curves: steady-state tasks completed and total steps
+    vs comm_range, split by stop reason.
 
 Outputs are written to:
     results/experiments/<map_name>/<timestamp>/ss_results/compact_views/
@@ -92,6 +94,12 @@ def load_ss(csv_path: str, include_wall_clock_timeouts: bool) -> pd.DataFrame:
     if not include_wall_clock_timeouts:
         df = df[~df["hit_wall_clock_ceiling"]].copy()
 
+    return df
+
+
+def filter_method(df: pd.DataFrame, allocation_method: str | None) -> pd.DataFrame:
+    if allocation_method:
+        return df[df["allocation_method"] == allocation_method].copy()
     return df
 
 
@@ -432,6 +440,61 @@ def plot_wait_time_degradation(df: pd.DataFrame, out_dir: str, map_name: str, sa
     save_or_show(fig, out, save)
 
 
+def plot_completion_progress(df: pd.DataFrame, out_dir: str, map_name: str, save: bool, min_seeds: int):
+    """Show how much work gets done before a run stops, split by stop reason."""
+    if "stop_reason" not in df.columns:
+        print("No data for completion-progress plot.")
+        return
+
+    tasks = mean_with_min_seeds(
+        df,
+        ["allocation_method", "comm_range", "stop_reason"],
+        "steady_state_tasks_completed",
+        min_seeds,
+    )
+    if tasks.empty:
+        print("No data for completion-progress plot.")
+        return
+
+    methods = [m for m in ALG_ORDER if m in tasks["allocation_method"].unique()]
+    if not methods:
+        print("No allocation methods available for completion-progress plot.")
+        return
+
+    stop_order = [s for s in ["all_tasks_completed", "timestep_ceiling", "wall_clock_ceiling", "saturation_ceiling"] if s in tasks["stop_reason"].unique()]
+    if not stop_order:
+        stop_order = sorted(tasks["stop_reason"].unique())
+
+    for stop_reason in stop_order:
+        fig, ax = plt.subplots(figsize=(9, 4.8))
+        sub_stop = tasks[tasks["stop_reason"] == stop_reason]
+        if sub_stop.empty:
+            continue
+
+        for alg in methods:
+            sub_alg = sub_stop[sub_stop["allocation_method"] == alg].sort_values("comm_range")
+            if sub_alg.empty:
+                continue
+            ax.plot(
+                sub_alg["comm_range"],
+                sub_alg["steady_state_tasks_completed"],
+                marker="o",
+                linestyle="-",
+                linewidth=2,
+                label=ALG_LABELS.get(alg, alg),
+                color=ALG_COLORS.get(alg),
+            )
+
+        ax.set_title(f"Completed tasks before stop: {stop_reason.replace('_', ' ')} - {map_name}")
+        ax.set_xlabel("comm range")
+        ax.set_ylabel("steady-state tasks completed")
+        ax.grid(alpha=0.3)
+        ax.legend(fontsize=7, ncol=2)
+
+        out = os.path.join(out_dir, f"compact_completion_progress_{stop_reason}.png")
+        save_or_show(fig, out, save)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--csv", required=True, help="Path to summary.csv")
@@ -440,16 +503,19 @@ def main():
     parser.add_argument("--min-seeds", type=int, default=MIN_SEEDS_DEFAULT)
     parser.add_argument("--include-wall-clock-timeouts", action="store_true")
     parser.add_argument("--throughput-threshold", type=float, default=0.9, help="Fraction of peak throughput to define stability (capacity curve)")
+    parser.add_argument("--allocation-method", default=None, choices=["gcbba", "cbba", "dmchba", "sga"], help="Optional filter to plot a single allocation method")
 
     parser.add_argument("--all", action="store_true", help="Generate all compact views")
     parser.add_argument("--heatmaps", action="store_true")
     parser.add_argument("--capacity", action="store_true")
     parser.add_argument("--tradeoff", action="store_true")
     parser.add_argument("--degradation", action="store_true", help="Throughput and wait-time degradation curves by comm range")
+    parser.add_argument("--completion-progress", action="store_true", help="Completed-work and run-length proxy by stop reason")
 
     args = parser.parse_args()
 
     df = load_ss(args.csv, include_wall_clock_timeouts=args.include_wall_clock_timeouts)
+    df = filter_method(df, args.allocation_method)
     if df.empty:
         print("No steady-state rows found after filtering.")
         return
@@ -469,6 +535,7 @@ def main():
             "min_seeds": args.min_seeds,
             "include_wall_clock_timeouts": args.include_wall_clock_timeouts,
             "throughput_threshold": args.throughput_threshold,
+            "allocation_method": args.allocation_method,
             "mode": "compact",
             "save": args.save,
         },
@@ -491,6 +558,9 @@ def main():
     if do_all or args.degradation:
         plot_throughput_degradation(df, out_dir, map_name, args.save, args.min_seeds)
         plot_wait_time_degradation(df, out_dir, map_name, args.save, args.min_seeds)
+
+    if do_all or args.completion_progress:
+        plot_completion_progress(df, out_dir, map_name, args.save, args.min_seeds)
 
 
 if __name__ == "__main__":
