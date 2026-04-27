@@ -1,0 +1,14 @@
+Batch Plot Run Manifest
+=======================
+timestamp: 2026-04-25T16:01:46
+command: python experiments/plotting/plot_batch_results.py --csv results/experiments/gridworld_warehouse_large/20260425_044219/summary.csv --save --separate --sweep-task-counts --sweep-comm-ranges --include-wall-clock-timeouts
+csv: results/experiments/gridworld_warehouse_large/20260425_044219/summary.csv
+fixed_comm_range: 51
+fixed_task_count: None
+include_wall_clock_timeouts: True
+min_seeds: 2
+mode: sweep
+save_combined: True
+save_separate: True
+sweep_comm_ranges: True
+sweep_task_counts: True
