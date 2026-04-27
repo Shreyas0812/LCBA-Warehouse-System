@@ -688,6 +688,21 @@ section is in preparation.
 The \texttt{IntegrationOrchestrator} drives the simulation through a
 per-timestep loop.
 At each timestep $t$, the following operations are executed in order:
+Figure~\ref{fig:io_flowchart} summarizes this loop visually.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{0.92\linewidth}{!}{\input{figures/IntegrationOrchestrator_flowchart.tex}}
+
+  \caption{IntegrationOrchestrator per-timestep simulation loop. At each
+           timestep ($t = 0, 1, 2, \ldots$), the system injects tasks in
+           steady-state mode, checks allocation triggers, optionally invokes
+           LCBA, classifies agent roles, selects a planner per role, executes
+           collision-free paths, manages energy, and records metrics. Color
+           coding is used for start/end, process, and decision nodes.}
+  \label{fig:io_flowchart}
+\end{figure}
+
 \begin{enumerate}
   \item \textbf{Task injection.}
         In steady-state mode, each induct station injects a task when at least

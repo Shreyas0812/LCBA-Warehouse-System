@@ -1,0 +1,73 @@
+%% IntegrationOrchestrator Per-Timestep Loop Flowchart
+%% Generated for GCBBA Warehouse System thesis
+%% Usage: \input{results/IntegrationOrchestrator_flowchart.tex} in thesis
+%%        or compile the standalone wrapper file in this folder.
+
+\begin{tikzpicture}[
+  node distance=1.8cm,
+  every node/.style={font=\small},
+  decision/.style={diamond, draw, line width=1.5pt, minimum width=2.8cm, minimum height=1.4cm, inner sep=0.15cm, fill=yellow!20},
+  process/.style={rectangle, draw, line width=1.5pt, minimum width=3.2cm, minimum height=0.9cm, inner sep=0.1cm, fill=blue!10},
+  startstop/.style={rectangle, rounded corners=3pt, draw, line width=1.5pt, minimum width=2.8cm, minimum height=0.9cm, inner sep=0.1cm, fill=green!20},
+  arrow/.style={-Latex, line width=2pt},
+  label_style/.style={font=\scriptsize, font=\bfseries}
+  ]
+  
+  % ===== TIMESTEP START =====
+  \node[startstop] (start) {Start Timestep $t$};
+  
+  % ===== TASK INJECTION =====
+  \node[process, below=of start] (task_inject) {Task Injection\\(steady-state mode)};
+  \draw[arrow] (start) -- (task_inject);
+  
+  % ===== ALLOCATION TRIGGER CHECK =====
+  \node[decision, below=of task_inject] (trigger_check) {Allocation\\Trigger\\Met?};
+  \draw[arrow] (task_inject) -- (trigger_check);
+  
+  % ===== YES BRANCH: INVOKE LCBA =====
+  \node[process, below left=1.5cm and 3cm of trigger_check] (lcba) {Invoke LCBA\\(Bundle build \& consensus)};
+  \draw[arrow] (trigger_check.west) -- node[label_style, above, sloped] {YES} (lcba);
+  
+  % ===== NO BRANCH: SKIP TO NEXT STEP =====
+  \node[coordinate, right=4cm of trigger_check] (skip_alloc) {};
+  \draw[arrow] (trigger_check.east) -- node[label_style, above] {NO} (skip_alloc);
+  
+  % ===== ROLE CLASSIFICATION (CONVERGENCE) =====
+  \node[process, below=3cm of lcba] (role_class) {Classify Agent Roles\\(Task / Charger / Idle)};
+  \draw[arrow] (lcba) -- (role_class);
+  \draw[arrow] (skip_alloc) |- (role_class);
+  
+  % ===== PLANNER SELECTION BY ROLE =====
+  \node[process, below=of role_class] (planner_assign) {Select Planner per Role\\(CA* / PBS / RHCR)};
+  \draw[arrow] (role_class) -- (planner_assign);
+  
+  % ===== PATH PLANNING =====
+  \node[process, below=of planner_assign] (path_plan) {Path Planning\\(Space-Time Search)};
+  \draw[arrow] (planner_assign) -- (path_plan);
+  
+  % ===== AGENT EXECUTION =====
+  \node[process, below=of path_plan] (agent_exec) {Agent Execution\\(advance 1 step, collision check)};
+  \draw[arrow] (path_plan) -- (agent_exec);
+  
+  % ===== ENERGY MANAGEMENT CHECK =====
+  \node[decision, below=of agent_exec] (energy_check) {Agent Energy\\Below\\Threshold?};
+  \draw[arrow] (agent_exec) -- (energy_check);
+  
+  % ===== YES: CHARGING REROUTE =====
+  \node[process, below left=1.5cm and 3cm of energy_check] (charging) {Reroute to\\Charging Station};
+  \draw[arrow] (energy_check.west) -- node[label_style, above, sloped] {YES} (charging);
+  
+  % ===== NO: CONTINUE =====
+  \node[coordinate, right=4cm of energy_check] (no_energy) {};
+  \draw[arrow] (energy_check.east) -- node[label_style, above] {NO} (no_energy);
+  
+  % ===== METRICS RECORDING (CONVERGENCE) =====
+  \node[process, below=3cm of charging] (metrics) {Record Metrics\\(positions, tasks, queue depth)};
+  \draw[arrow] (charging) -- (metrics);
+  \draw[arrow] (no_energy) |- (metrics);
+  
+  % ===== TIMESTEP END =====
+  \node[startstop, below=of metrics] (end) {End Timestep $t$};
+  \draw[arrow] (metrics) -- (end);
+
+\end{tikzpicture}
