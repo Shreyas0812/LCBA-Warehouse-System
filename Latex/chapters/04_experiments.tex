@@ -46,7 +46,7 @@ All experiments sweep the following parameters:
   \item \textbf{Steady-state arrival fractions} in stress mode:
     $\{0.6, 0.8, 1.0, 1.2, 1.4\}$ times the map-specific estimated
     steady-state capacity.
-  \item \textbf{Rerun interval} (Dynamic GCBBA only)
+  \item \textbf{Rerun interval} (LCBA only)
         $\in \{10, 25, 50, 100, 200\}$ timesteps, with $ri = 50$
         as the canonical configuration.
 \end{itemize}
@@ -470,7 +470,7 @@ load stress.
 \section{Communication Robustness}
 \label{sec:exp_comm_robustness}
 
-% THE KEY RESULT. Dynamic GCBBA completes tasks where static fails.
+% THE KEY RESULT. LCBA completes tasks where static fails.
 
 \subsection{Task Completion Rate}
 \label{subsec:exp_completion_rate}
@@ -515,7 +515,7 @@ Figure~\ref{fig:batch_tradeoff_main_maps}.
 \section{Optimality Analysis}
 \label{sec:exp_optimality}
 
-% Second key result: GCBBA stays near SGA on connected graphs.
+% Second key result: LCBA stays near SGA on connected graphs.
 
 \subsection{Sub-Optimality Ratio vs.\ SGA}
 \label{subsec:exp_suboptimality}
