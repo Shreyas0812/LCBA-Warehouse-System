@@ -262,101 +262,104 @@ When available, completed-only makespan is shown via
 
 Steady-state results are being integrated incrementally as map runs finish.
 At this revision, \texttt{gridworld\_warehouse\_small} and
-\texttt{gridworld\_crossdock} are available and plotted.
-The remaining maps will be inserted using the same compact-view structure used for
-batch: throughput, wait-time, completion, queue-depth, capacity frontier,
-tradeoff, and degradation-by-communication-range.
+\texttt{gridworld\_crossdock} are available and plotted using the latest SS runs.
+The remaining maps will use the same compact-view structure as the final SS thesis
+presentation: throughput, wait-time, capacity frontier, and completion progress
+split by stop reason.
+
+The newest steady-state runs are more representative than the earlier warm-started
+versions: warehouse-small now completes more cleanly with much lower wait time,
+while crossdock still shows timeout pressure but with substantially less wall-clock
+domination than before. The saturation early-stop did not trigger in either map,
+so the current improvement comes from the revised arrival policy rather than from
+aggressive early termination.
 
 Current steady-state compact-view path:
 \begin{itemize}
-  \item \texttt{results/experiments/gridworld\_warehouse\_small/20260425\_133314/ss\_results/compact\_views/}
-  \item \texttt{results/experiments/gridworld\_crossdock/20260425\_142347/ss\_results/compact\_views/}
+  \item \texttt{results/experiments/gridworld\_warehouse\_small/20260426\_135556/ss\_results/compact\_views/}
+  \item \texttt{results/experiments/gridworld\_crossdock/20260426\_141042/ss\_results/compact\_views/}
 \end{itemize}
 
 \begin{figure}[htbp]
   \centering
-  \begin{subfigure}[t]{0.32\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260425_133314/ss_results/compact_views/compact_heatmap_throughput.png}
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_heatmap_throughput.png}
     \caption{Warehouse-small: throughput}
   \end{subfigure}
   \hfill
-  \begin{subfigure}[t]{0.32\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260425_133314/ss_results/compact_views/compact_heatmap_wait_time.png}
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_heatmap_wait_time.png}
     \caption{Warehouse-small: wait time}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.32\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260425_133314/ss_results/compact_views/compact_heatmap_queue_depth.png}
-    \caption{Warehouse-small: queue depth}
   \end{subfigure}
 
   \vspace{0.7em}
 
-  \begin{subfigure}[t]{0.32\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260425_142347/ss_results/compact_views/compact_heatmap_throughput.png}
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260426_141042/ss_results/compact_views/compact_heatmap_throughput.png}
     \caption{Crossdock: throughput}
   \end{subfigure}
   \hfill
-  \begin{subfigure}[t]{0.32\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260425_142347/ss_results/compact_views/compact_heatmap_wait_time.png}
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260426_141042/ss_results/compact_views/compact_heatmap_wait_time.png}
     \caption{Crossdock: wait time}
   \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.32\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260425_142347/ss_results/compact_views/compact_heatmap_queue_depth.png}
-    \caption{Crossdock: queue depth}
-  \end{subfigure}
-  \caption{Steady-state core heatmaps for currently completed SS maps. Rows are maps and columns are core metrics, matching the compact batch-style comparison layout while using arrival-rate/communication-range axes.}
-  \label{fig:ss_heatmaps_current_maps}
+  \caption{Steady-state throughput and wait-time heatmaps for the currently completed SS maps.}
+  \label{fig:ss_throughput_wait_heatmaps_current_maps}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
-  \begin{subfigure}[t]{0.32\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260425_133314/ss_results/compact_views/compact_capacity_curve.png}
-    \caption{Warehouse-small: capacity frontier}
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_capacity_curve.png}
+    \caption{Warehouse-small}
   \end{subfigure}
   \hfill
-  \begin{subfigure}[t]{0.32\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260425_133314/ss_results/compact_views/compact_tradeoff.png}
-    \caption{Warehouse-small: throughput--wait tradeoff}
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260426_141042/ss_results/compact_views/compact_capacity_curve.png}
+    \caption{Crossdock}
   \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.32\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260425_133314/ss_results/compact_views/compact_throughput_degradation_by_comm_range.png}
-    \caption{Warehouse-small: throughput degradation}
-  \end{subfigure}
+  \caption{Steady-state capacity frontier for the currently completed SS maps.}
+  \label{fig:ss_capacity_current_maps}
+\end{figure}
 
-  \vspace{0.7em}
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_completion_progress_all_tasks_completed.png}
+    \caption{Warehouse-small}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260426_141042/ss_results/compact_views/compact_completion_progress_all_tasks_completed.png}
+    \caption{Crossdock}
+  \end{subfigure}
+  \caption{Steady-state completion progress for runs that finished all tasks.}
+  \label{fig:ss_completion_progress_completed_current_maps}
+\end{figure}
 
-  \begin{subfigure}[t]{0.32\textwidth}
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260425_142347/ss_results/compact_views/compact_capacity_curve.png}
-    \caption{Crossdock: capacity frontier}
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_completion_progress_timestep_ceiling.png}
+    \caption{Warehouse-small}
   \end{subfigure}
   \hfill
-  \begin{subfigure}[t]{0.32\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260425_142347/ss_results/compact_views/compact_tradeoff.png}
-    \caption{Crossdock: throughput--wait tradeoff}
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260426_141042/ss_results/compact_views/compact_completion_progress_timestep_ceiling.png}
+    \caption{Crossdock}
   \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.32\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{../results/experiments/gridworld_crossdock/20260425_142347/ss_results/compact_views/compact_throughput_degradation_by_comm_range.png}
-    \caption{Crossdock: throughput degradation}
-  \end{subfigure}
-  \caption{Steady-state frontier/tradeoff/degradation summary for currently completed SS maps.}
-  \label{fig:ss_frontier_tradeoff_degradation_current_maps}
+  \caption{Steady-state completion progress for runs that reached the timestep ceiling.}
+  \label{fig:ss_completion_progress_timestep_ceiling_current_maps}
 \end{figure}
 
 \paragraph{Batch-Style Multi-Map SS Template (to be filled as runs finish).}
@@ -367,12 +370,9 @@ from \texttt{.../ss\_results/compact\_views/}:
 \begin{itemize}
   \item \texttt{compact\_heatmap\_throughput.png}
   \item \texttt{compact\_heatmap\_wait\_time.png}
-  \item \texttt{compact\_heatmap\_completion\_rate.png}
-  \item \texttt{compact\_heatmap\_queue\_depth.png}
   \item \texttt{compact\_capacity\_curve.png}
-  \item \texttt{compact\_tradeoff.png}
-  \item \texttt{compact\_throughput\_degradation\_by\_comm\_range.png}
-  \item \texttt{compact\_wait\_time\_degradation\_by\_comm\_range.png}
+  \item \texttt{compact\_completion\_progress\_all\_tasks\_completed.png}
+  \item \texttt{compact\_completion\_progress\_timestep\_ceiling.png}
 \end{itemize}
 
 Pending steady-state map folders (currently running):
