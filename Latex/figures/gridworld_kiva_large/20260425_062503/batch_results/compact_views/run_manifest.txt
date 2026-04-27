@@ -1,0 +1,11 @@
+Batch Plot Run Manifest
+=======================
+command: python experiments/plotting/plot_batch_compact_views.py --csv results/experiments/gridworld_kiva_large/20260425_062503/summary.csv --all --save --include-wall-clock-timeouts
+completion_threshold: 0.95
+csv: results/experiments/gridworld_kiva_large/20260425_062503/summary.csv
+include_wall_clock_timeouts: True
+map_name: gridworld_kiva_large
+min_seeds: 2
+mode: compact
+save: True
+timestamp: 20260425_062503
