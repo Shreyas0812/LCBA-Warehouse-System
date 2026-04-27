@@ -262,22 +262,26 @@ When available, completed-only makespan is shown via
 
 Steady-state results are being integrated incrementally as map runs finish.
 At this revision, \texttt{gridworld\_warehouse\_small} and
-\texttt{gridworld\_crossdock} are available and plotted using the latest SS runs.
-The remaining maps will use the same compact-view structure as the final SS thesis
-presentation: throughput, wait-time, capacity frontier, and completion progress
-split by stop reason.
+\texttt{gridworld\_crossdock} are available as the current stable-regime SS maps,
+and \texttt{gridworld\_kiva} is now available as a stress-regime SS map.
+The SS thesis presentation uses the same compact-view structure across maps:
+throughput, wait-time, capacity frontier, and completion progress split by stop
+reason.
 
 The newest steady-state runs are more representative than the earlier warm-started
 versions: warehouse-small now completes more cleanly with much lower wait time,
 while crossdock still shows timeout pressure but with substantially less wall-clock
-domination than before. The saturation early-stop did not trigger in either map,
-so the current improvement comes from the revised arrival policy rather than from
-aggressive early termination.
+domination than before. Kiva remains ceiling-dominated, so it is interpreted as a
+stress-regime robustness case rather than a stable-regime efficiency comparison.
+The saturation early-stop did not trigger in these maps, so the current
+improvement comes from the revised arrival policy rather than from aggressive
+early termination.
 
 Current steady-state compact-view path:
 \begin{itemize}
   \item \texttt{results/experiments/gridworld\_warehouse\_small/20260426\_135556/ss\_results/compact\_views/}
   \item \texttt{results/experiments/gridworld\_crossdock/20260426\_141042/ss\_results/compact\_views/}
+  \item \texttt{results/experiments/gridworld\_kiva/20260426\_195056/ss\_results/compact\_views/}
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -362,6 +366,48 @@ Current steady-state compact-view path:
   \label{fig:ss_completion_progress_timestep_ceiling_current_maps}
 \end{figure}
 
+\paragraph{Kiva Stress-Regime Steady-State Insertion.}
+The latest Kiva steady-state run is included as a stress-regime result.
+Kiva does not currently produce a completed-runs progress panel in this run
+because the completed stop reason is absent; therefore, the chapter reports
+throughput/wait heatmaps, capacity frontier, and timestep-ceiling completion progress.
+This run is useful for robustness interpretation, but it should not be read as a
+real-time control benchmark.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_kiva/20260426_195056/ss_results/compact_views/compact_heatmap_throughput.png}
+    \caption{Kiva: throughput}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_kiva/20260426_195056/ss_results/compact_views/compact_heatmap_wait_time.png}
+    \caption{Kiva: wait time}
+  \end{subfigure}
+  \caption{Steady-state throughput and wait-time heatmaps for Kiva (stress regime).}
+  \label{fig:ss_kiva_heatmaps_stress}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_kiva/20260426_195056/ss_results/compact_views/compact_capacity_curve.png}
+    \caption{Kiva: capacity frontier}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../results/experiments/gridworld_kiva/20260426_195056/ss_results/compact_views/compact_completion_progress_timestep_ceiling.png}
+    \caption{Kiva: timestep-ceiling completion progress}
+  \end{subfigure}
+  \caption{Kiva stress-regime steady-state summary: capacity frontier and completion progress conditioned on timestep-ceiling stops.}
+  \label{fig:ss_kiva_capacity_progress_stress}
+\end{figure}
+
 \paragraph{Batch-Style Multi-Map SS Template (to be filled as runs finish).}
 The final steady-state section will keep the same map grouping policy as batch
 (main-analysis maps, secondary maps, stress-regime maps) after SS reliability
@@ -377,7 +423,6 @@ from \texttt{.../ss\_results/compact\_views/}:
 
 Pending steady-state map folders (currently running):
 \begin{itemize}
-  \item \texttt{results/experiments/gridworld\_kiva/<ss\_timestamp>/ss\_results/compact\_views/}
   \item \texttt{results/experiments/gridworld\_warehouse\_large/<ss\_timestamp>/ss\_results/compact\_views/}
   \item \texttt{results/experiments/gridworld\_kiva\_large/<ss\_timestamp>/ss\_results/compact\_views/}
   \item \texttt{results/experiments/gridworld\_shelf\_aisle/<ss\_timestamp>/ss\_results/compact\_views/}

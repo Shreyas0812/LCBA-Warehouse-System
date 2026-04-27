@@ -431,8 +431,8 @@ The outer iteration loop provides a fallback bound of $N_{\min} = \min(\Nt,\,\Lt
 iterations, ensuring termination even if early convergence is never detected.
 Early termination significantly reduces computational cost in practice, since
 convergence often occurs well before the theoretical $N_{\min}$-iteration bound.
-This is especially important in the real-time warehouse setting, where each
-allocation call must complete within a per-timestep budget.
+This is especially important in the budgeted steady-state warehouse setting,
+where each allocation call must complete within a per-timestep budget.
 
 
 %% ── 3.4.5 ──────────────────────────────────────────────────────
@@ -633,8 +633,8 @@ and allocation changes within the window.
 RHCR decouples planning complexity from the total mission horizon: even if the
 full mission spans thousands of timesteps, each planning call only considers
 $w$ timesteps.
-This is particularly beneficial in the steady-state setting where missions have
-no defined end.
+This is particularly beneficial in the ceiling-aware steady-state setting,
+where missions have no defined end.
 The trade-off is that plans may be suboptimal near the window boundary, as
 agents cannot anticipate conflicts that arise just beyond $t + w$.
 
