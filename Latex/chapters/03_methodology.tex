@@ -513,7 +513,7 @@ Task agents are the throughput-critical path and should use the most capable
 strategy the deployment can afford.
 Exposing three independent slots allows practitioners to tune this
 trade-off without modifying the core algorithm, and it enables the
-experiments in Section~\ref{sec:exp_planners} to vary the task planner in
+experiments in Section~\ref{sec:exp_compact_views} to vary the task planner in
 isolation while holding charger and idle routing fixed.
 
 
@@ -607,8 +607,8 @@ PBS is complete under the assumption that a conflict-free solution exists.
 In practice, PBS tends to produce slightly shorter aggregate paths than CA*
 because it can reassign priorities to avoid unnecessary detours, at the cost of
 a higher worst-case planning time.
-For the warehouse sizes considered in this thesis ($\Na = 6$), the difference
-between CA* and PBS in both path quality and computation time is modest.
+For the primary development environment ($\Na = 6$, \texttt{warehouse\_small}),
+the difference between CA* and PBS in both path quality and computation time is modest.
 
 
 %% ── 3.5.4 ──────────────────────────────────────────────────────
@@ -673,8 +673,9 @@ planners without modification.
 For the allocation comparison experiments (Sections~\ref{sec:exp_batch} and
 \ref{sec:exp_steady_state}), CA* is held fixed across all methods as an
 experimental control to isolate the effect of the allocation algorithm.
-Section~\ref{sec:exp_planners} presents a dedicated comparison of all three
-planners to characterise the throughput--compute trade-off.
+Section~\ref{sec:exp_compact_views} presents the batch compact-view summaries
+used to compare planner behaviour across maps; a dedicated planner comparison
+section is in preparation.
 
 
 %% ── 3.6 ─────────────────────────────────────────────────────────

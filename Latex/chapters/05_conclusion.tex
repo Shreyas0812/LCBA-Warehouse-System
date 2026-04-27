@@ -73,30 +73,91 @@ operating point for warehouse coordination under communication constraints.
 % Be honest. Committees will ask about limitations regardless.
 % Naming them yourself shows rigour.
 
-\todo{Discuss limitations honestly. Suggested:
-  (1) Centralised collision avoidance does not scale to
-      truly decentralised settings (single point of failure
-      in the path planner);
-  (2) Experiments are simulation-only on a 30$\times$30 grid;
-      real warehouses are larger and have different obstacle layouts;
-  (3) SGA on disconnected graphs runs per component -- the
-      sub-optimality ratio comparison is generous to SGA;
-  (4) Fixed robot speeds and no sensor noise -- real robots
-      have actuation uncertainty;
-  (5) The 800-timestep ceiling may not be long enough for
-      very high task loads at low comm range.}
+While the results demonstrate that LCBA is robust and practical in
+stability-first operating regimes, several limitations should be acknowledged.
+
+\textbf{Centralised path planning.}
+Although task allocation is logically decentralised, the collision-avoidance
+layer uses a shared space-time reservation table maintained by a central
+orchestrator.
+This constitutes a single point of failure and a communication bottleneck:
+if the orchestrator is unavailable, path planning halts.
+A fully decentralised deployment would require distributed reservation tables
+or a per-component CBS-style planner, neither of which is implemented here.
+
+\textbf{Simulation-only evaluation.}
+All experiments are conducted in a discrete gridworld simulator.
+Real warehouses differ in important respects: sensor noise, actuation
+uncertainty, non-uniform robot speeds, and layout features (curved aisles,
+varying shelf heights, human pedestrians) that the grid model does not capture.
+The degree to which simulation results transfer to physical hardware
+remains an open question.
+
+\textbf{Generous SGA comparison on disconnected graphs.}
+When the communication graph is disconnected, SGA is run independently on
+each connected component.
+This means SGA's sub-optimality guarantee applies per-component, not globally,
+and the resulting SGA solution may itself be suboptimal relative to the true
+global optimum.
+Comparing LCBA against per-component SGA therefore represents a conservative
+(generous) baseline for LCBA's sub-optimality ratio on disconnected graphs.
+
+\textbf{Homogeneous fleet.}
+All agents are assumed to have identical speeds, energy capacities, and task
+capabilities.
+Real fleets are often heterogeneous; the LCBA bid computation and energy
+filter would need to be extended to handle agents with different operating
+envelopes.
+
+\textbf{Timestep ceiling at extreme conditions.}
+At very high task loads combined with low communication ranges, the 3000-timestep
+batch ceiling may terminate runs before the system has settled into a steady
+operating regime.
+This means that the worst-case completion data at $\comm = 4$,
+$\text{tc} = 120$ reflects a timeout rather than a converged failure,
+and caution is warranted when interpreting those data points.
 
 
 % ── 5.4 ─────────────────────────────────────────────────────────
 \section{Future Work}
 \label{sec:conclusion_future}
 
-\todo{Describe concrete future directions. Suggested:
-  (1) Fully decentralised collision avoidance
-      (distributed reservation tables or CBS-based);
-  (2) Extension to time-windowed tasks (task deadlines);
-  (3) Scaling to larger grids and higher agent counts;
-  (4) Heterogeneous agents (different speeds, capacities);
-  (5) Real robot implementation and evaluation;
-  (6) Learning-based communication graph prediction to
-      anticipate connectivity changes before they happen.}
+Several directions would naturally extend this work.
+
+\textbf{Fully decentralised collision avoidance.}
+Replacing the central reservation table with a distributed planning scheme ---
+such as per-component CBS or a distributed RHCR variant --- would remove the
+single point of failure in the path planning layer and make the system fully
+decentralised end-to-end.
+
+\textbf{Time-windowed and deadline-constrained tasks.}
+Real warehouse tasks often carry soft deadlines (orders must be processed
+within a service-level window).
+Extending the RPT utility function to penalise deadline violations would
+enable LCBA to balance throughput against latency more explicitly, at the cost
+of a more complex bid computation.
+
+\textbf{Scaling to larger environments.}
+The \texttt{shelf\_aisle} environment (200 agents, $161\times63$ grid)
+represents the limit of what the current simulation stack can evaluate.
+Experiments on even larger environments, or on real warehouse floor plans
+extracted from operational data, would test whether the conclusions
+transfer to production scale.
+
+\textbf{Heterogeneous fleets.}
+Extending the energy-budget filter and bid scoring to handle robots with
+different speeds, battery capacities, and payload restrictions would
+increase the practical applicability of LCBA in deployments where the
+fleet is not uniform.
+
+\textbf{Hardware validation.}
+A hardware-in-the-loop experiment on a small fleet of physical robots would
+validate the simulation findings and expose any gap between the grid model
+and real robot dynamics (actuation noise, imprecise positioning, sensor
+latency).
+
+\textbf{Learned communication graph prediction.}
+The current system reacts to topology changes after they occur.
+A learning-based module that predicts imminent connectivity changes
+from trajectory history could allow proactive reallocation before
+agents disconnect, reducing the performance dip during topology transitions.
