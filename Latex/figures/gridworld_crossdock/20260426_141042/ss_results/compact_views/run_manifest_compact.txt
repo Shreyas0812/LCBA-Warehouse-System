@@ -1,0 +1,12 @@
+Steady-State Compact Plot Run Manifest
+========================================
+command: python experiments/plotting/plot_ss_compact_views.py --csv results/experiments/gridworld_crossdock/20260426_141042/summary.csv --completion-progress --save
+allocation_method: None
+csv: results/experiments/gridworld_crossdock/20260426_141042/summary.csv
+include_wall_clock_timeouts: False
+map_name: gridworld_crossdock
+min_seeds: 2
+mode: compact
+save: True
+throughput_threshold: 0.9
+timestamp: 20260426_141042
