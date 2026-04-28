@@ -15,6 +15,8 @@
   
   % ===== TIMESTEP START =====
   \node[startstop] (start) {Start Timestep $t$};
+  % ===== CONFIGURATION BOX =====
+  \node[rectangle, draw, line width=1.2pt, minimum width=3.6cm, inner sep=0.14cm, fill=orange!10, font=\small, align=left, left=4cm of start, yshift=-3mm] (config) {\textbf{LCBA configuration}\\Task Planner: RHCR\\Charger Planner: CA*};
   
   % ===== TASK INJECTION =====
   \node[process, below=of start] (task_inject) {Task Injection\\(steady-state mode)};
