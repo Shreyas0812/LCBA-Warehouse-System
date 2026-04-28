@@ -354,13 +354,13 @@ non-increasing in $p_i$ under the RPT metric, confirming the DMG property.
 \label{subsec:method_bundle}
 
 Each agent $i$ maintains:
-a \emph{bundle} $b_i \subseteq \mathcal{T}$ (the set of tasks currently
-assigned to it, unordered),
-an ordered \emph{path} $p_i$ (the execution order of $b_i$),
-a \emph{bid vector} $y \in \mathbb{R}^{|\mathcal{T}|}$ recording the best bid
-seen for each task across all agents, and
-a \emph{winner vector} $z \in \mathcal{A}^{|\mathcal{T}|}$ recording the
-current winning agent for each task.
+  - a \emph{bundle} $b_i \subseteq \mathcal{T}$ (the set of tasks currently
+    assigned to it, unordered),
+  - an ordered \emph{path} $p_i$ (the execution order of $b_i$),
+  - a \emph{bid vector} $y \in \mathbb{R}^{|\mathcal{T}|}$ recording the best bid
+    seen for each task across all agents, and
+  - a \emph{winner vector} $z \in \mathcal{A}^{|\mathcal{T}|}$ recording the
+    current winning agent for each task.
 
 Algorithm~\ref{alg:bundle_building} describes the bundle building phase.
 Each iteration, agent $i$ greedily adds the highest-marginal-gain task that it
