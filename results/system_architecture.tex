@@ -1,6 +1,6 @@
 % System architecture diagram (TikZ). Included from chapters/03_methodology.tex
 \usetikzlibrary{positioning,arrows.meta,shapes,fit}
-\begin{tikzpicture}[node distance=12mm, >=Stealth, every node/.style={font=\small}]
+\begin{tikzpicture}[node distance=20mm, >=Stealth, every node/.style={font=\small}]
   % Styles
   \tikzset{
     comp/.style={draw, rounded corners, minimum width=36mm, minimum height=10mm, align=center, fill=gray!6},
@@ -11,23 +11,42 @@
 
   % Nodes
   \node[comp] (io) {IntegrationOrchestrator};
-  \node[module, above=10mm of io] (gcbba) {GCBBA / LCBA \\\ (GCBBA\_Orchestrator)};
-  \node[module, right=22mm of io] (planner) {Path Planner \\\ (CA*/PBS/RHCR)};
-  \node[data, left=22mm of io] (agentstate) {AgentState \\\ (positions, energy, role)};
-  \node[draw, rounded corners, below=10mm of io, minimum width=70mm, minimum height=14mm, align=center, fill=yellow!6] (agents) {Agents / Local Comm. \\\ (per-agent bid vectors, local neighbourhood G(t))};
+  \node[module, above=10mm of io] (gcbba) {GCBBA / LCBA \\ (GCBBA\_Orchestrator)};
+  \node[module, right=35mm of io] (planner) {Path Planner \\ (CA*/PBS/RHCR)};
+  \node[data, left=22mm of io] (agentstate) {AgentState \\ (positions, energy, role)};
+  \node[draw, rounded corners, below=10mm of io, minimum width=70mm, minimum height=14mm, align=center, fill=yellow!6] (agents) {Agents / Local Comm. \\ (per-agent bid vectors, local neighbourhood G(t))};
 
-  % Annotations
-  \node[anchor=north east, font=\footnotesize] at (io.north east) {Simulator hub};
+  % Annotation
+  \node[anchor=south, font=\scriptsize] at (gcbba.north) {Simulator hub};
 
-  % Arrows (dataflow)
-  \draw[arrow] (agentstate.east) -- ++(6mm,0) |- (planner.west) node[midway, right, font=\footnotesize] {needs\_new\_path};
-  \draw[arrow] (planner.west) -- ++(-6mm,0) |- (io.east) node[pos=0.25, right, font=\footnotesize] {reservations / paths};
-  \draw[arrow] (io.north) -- (gcbba.south) node[midway, right=2mm, font=\footnotesize] {invokes / simulates};
-  \draw[arrow] (gcbba.south) -- (io.north) node[midway, left=2mm, font=\footnotesize] {assignments / bids};
-  \draw[arrow] (io.west) -- (agentstate.east) node[midway, above, font=\footnotesize] {state updates};
-  \draw[arrow] (agentstate.south) -- (agents.north) node[midway, left=2mm, font=\footnotesize] {agent telemetry};
-  \draw[arrow] (agents.north) -- (io.south) node[midway, left=2mm, font=\footnotesize] {local messages / events};
-  \draw[arrow, dashed] (agents.east) -- ++(10mm,0) |- (gcbba.west) node[midway, above, font=\footnotesize] {neighbourhood msgs (simulated)};
+  % Arrows: gcbba <-> io (x-shifted to avoid overlap)
+  \draw[arrow] ([xshift=3mm]io.north) -- ([xshift=3mm]gcbba.south)
+      node[midway, right=1mm, font=\scriptsize] {invokes / simulates};
+  \draw[arrow] ([xshift=-3mm]gcbba.south) -- ([xshift=-3mm]io.north)
+      node[midway, left=1mm, font=\scriptsize] {assignments / bids};
+
+  % agentstate -> planner: route above gcbba to avoid crossing io
+  \draw[arrow] (agentstate.north) -- ++(0,30mm) -| (planner.north)
+      node[pos=0.25, above, font=\scriptsize] {needs\_new\_path};
+
+  % planner -> io
+  \draw[arrow] (planner.west) -- (io.east)
+      node[midway, above, font=\scriptsize] {reservations / paths};
+
+  % io -> agentstate
+  \draw[arrow] (io.west) -- (agentstate.east) node[midway, above, font=\scriptsize] {state updates};
+
+  % agentstate -> agents (right-angled: down then right into agents.west)
+  \draw[arrow] (agentstate.south) |- (agents.west)
+      node[pos=0.3, left=1mm, font=\scriptsize] {agent telemetry};
+
+  % agents -> io
+  \draw[arrow] (agents.north) -- (io.south)
+      node[midway, right=1mm, font=\scriptsize] {local messages / events};
+
+  % agents -> gcbba (dashed, neighbourhood msgs): route right of planner, then up, then left
+  \draw[arrow, dashed] (agents.east) -- ++(55mm,0) |- (gcbba.east)
+      node[pos=0.82, above, font=\scriptsize] {neighbourhood msgs (simulated)};
 
   % Background fit (visual grouping)
   \begin{scope}[on background layer]
