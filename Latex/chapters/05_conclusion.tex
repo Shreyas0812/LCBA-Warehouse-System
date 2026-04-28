@@ -20,28 +20,24 @@
 
 This thesis studied multi-robot coordination in warehouse environments under
 communication constraints, using a hybrid allocation-and-planning stack that
-	combines LCBA with prioritized path planning and event-driven replanning.
-The experimental results show that the method is most convincing in stable,
-reliability-first operating regimes: it is competitive on the main batch maps
-and provides a strong decentralized baseline, but it is not the universal best
-performer under overload or timeout-dominated conditions.
+combines LCBA with prioritized path planning and event-driven replanning.
 
-The later steady-state runs reinforce the same conclusion from a different
-angle: when the arrival process is made more realistic, the smaller warehouse
-case becomes cleanly analyzable and crossdock improves without fully shedding
-its timeout pressure. This supports the thesis claim that the method is
-practical in stable regimes, but still map- and load-sensitive.
+The experimental results show that LCBA is competitive in stable, reliability-first
+operating regimes and provides a robust decentralized baseline. Performance
+degrades under overload or timeout-dominated conditions and is sensitive to map
+geometry and load.
 
-The stable-regime maps provide primary efficiency evidence, while the stress-regime
-cases (Kiva, Kiva-Large, Shelf-Aisle) demonstrate robustness under extreme conditions
-(see Figures~\ref{fig:ss_kiva_heatmaps_stress}, \ref{fig:ss_kiva_large_heatmaps_stress},
-and \ref{fig:ss_shelf_aisle_heatmaps_stress}).
+Steady-state experiments corroborate this pattern: LCBA maintains flat
+throughput across the connectivity spectrum in stable regimes, while
+stress-regime maps (Kiva, Kiva-Large, Shelf-Aisle) expose layout- and
+congestion-induced failure modes (see Figures~\ref{fig:ss_kiva_heatmaps_stress},
+\ref{fig:ss_kiva_large_heatmaps_stress}, and \ref{fig:ss_shelf_aisle_heatmaps_stress}).
 
-The batch results demonstrate that LCBA achieves robust performance and interpretability
-across regimes that matter for the main thesis claims: communication robustness,
-optimality preservation, and scalability under load. Performance depends on map
-difficulty and load conditions, and should be interpreted within each specific
-experimental context rather than as a universal superiority condition.
+The batch results support the main thesis claims of communication robustness,
+preservation of near-optimality on connected graphs, and scalable behavior
+under realistic loads. These findings are conditioned on map difficulty and
+load; they do not imply unconditional superiority over all baselines in every
+setting.
 
 
 % ── 5.2 ─────────────────────────────────────────────────────────
@@ -56,9 +52,8 @@ hybrid architecture is effective in the reliability-first batch regimes, the
 dynamic replanning mechanism provides a meaningful responsiveness advantage
 when communication and load remain within a usable range, and the overall
 system behaves predictably enough to separate main-analysis maps from
-stress-only maps. The contribution is therefore not that the method dominates
-every baseline everywhere, but that it gives a practical and defensible
-operating point for warehouse coordination under communication constraints.
+stress-only maps. LCBA provides a practical, robust decentralized baseline for
+warehouse coordination under communication constraints.
 
 
 % ── 5.3 ─────────────────────────────────────────────────────────
