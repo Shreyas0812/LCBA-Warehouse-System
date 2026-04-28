@@ -1,5 +1,5 @@
 % System architecture diagram (TikZ). Included from chapters/03_methodology.tex
-\usetikzlibrary{positioning,arrows.meta,shapes,fit}
+\usetikzlibrary{positioning,arrows.meta,shapes,fit,backgrounds}
 \begin{tikzpicture}[node distance=20mm, >=Stealth, every node/.style={font=\small}]
   % Styles
   \tikzset{
@@ -47,6 +47,9 @@
   % agents -> gcbba (dashed, neighbourhood msgs): route right of planner, then up, then left
   \draw[arrow, dashed] (agents.east) -- ++(55mm,0) |- (gcbba.east)
       node[pos=0.82, above, font=\scriptsize] {neighbourhood msgs (simulated)};
+
+  % Phantom path on left to balance bounding box (makes centering symmetric around io)
+  \path ([xshift=-75mm]agents.west);
 
   % Background fit (visual grouping)
   \begin{scope}[on background layer]

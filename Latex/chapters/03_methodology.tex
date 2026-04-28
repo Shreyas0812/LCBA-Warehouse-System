@@ -88,7 +88,9 @@ and a \emph{path planner}, integrated through a centralised
 \begin{figure}[htbp]
   \centering
   % \includegraphics[width=0.9\textwidth]{figures/system_architecture}
-  \input{figures/system_architecture}
+  \resizebox{\textwidth}{!}{%
+    \input{figures/system_architecture}%
+  }
   \caption{System architecture overview. The \texttt{IntegrationOrchestrator}
            coordinates the LCBA task allocator with one of three interchangeable
            path planners. Allocation is logically decentralised (agents run
@@ -127,6 +129,34 @@ status.
 The per-timestep simulation loop, described in
 Section~\ref{sec:method_dynamic}, drives agents forward along their planned
 paths and triggers replanning events as needed.
+
+\subsection{Per-Timestep Execution Loop}
+\label{sec:method_execution_loop}
+
+Figure~\ref{fig:system_flowchart} illustrates the complete per-timestep
+sequence that orchestrates the system components shown in Figure~\ref{fig:system_architecture}.
+At each timestep, the orchestrator injects newly arriving tasks, triggers the
+allocation algorithm conditionally based on system events, classifies agent roles
+(task execution, charging, or idle), selects the appropriate path planner for
+each role, executes one step of agent motion with collision checking, and
+manages energy and charging transitions.
+This architecture tightly couples allocation decisions with execution state,
+enabling dynamic replanning at critical points: when agents complete tasks,
+charge transitions occur, or collisions require local repair.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{0.90\textwidth}{!}{%
+    \input{figures/IntegrationOrchestrator_flowchart}%
+  }
+  \caption{Per-timestep execution loop of the \texttt{IntegrationOrchestrator}.
+           The flowchart shows the sequence of decision points and execution
+           phases during each simulation timestep. Allocation is triggered
+           conditionally (Task Injection, energy events, etc.); once triggered,
+           bundle construction and consensus run to completion, followed by
+           role-based path planning and agent execution.}
+  \label{fig:system_flowchart}
+\end{figure}
 
 
 %% ── 3.3 ─────────────────────────────────────────────────────────
