@@ -324,12 +324,12 @@ GCBBA introduces the \emph{Repeated Path Times} (RPT) utility
 function~\cite{kha2025enhancing}:
 \begin{equation}
   S_i^{\text{RPT}}(p_i) = -\sum_{j \in p_i}
-    \tau_{ij}\!\bigl(p_i^{\preceq j}\bigr),
+    \tau_{ij}\!\bigl(p_i^{\le j}\bigr),
   \label{eq:rpt}
 \end{equation}
 where $p_i$ is an ordered sequence of tasks assigned to agent $i$,
-$p_i^{\preceq j}$ denotes the subsequence of $p_i$ up to and including task $j$,
-and $\tau_{ij}(p_i^{\preceq j})$ is the \emph{completion time} of task $j$
+$p_i^{\le j}$ denotes the subsequence of $p_i$ up to and including task $j$,
+and $\tau_{ij}(p_i^{\le j})$ is the \emph{completion time} of task $j$
 given that agent $i$ executes the preceding tasks in order before $j$.
 In the warehouse setting, $\tau_{ij}$ is computed using the BFS-precomputed
 grid distance from the agent's estimated position after completing the
