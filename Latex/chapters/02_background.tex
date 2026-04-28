@@ -199,7 +199,7 @@ applies cooperative A* within a fixed-size time window.
 By planning only $w$ timesteps ahead, WHCA* avoids the long-horizon complexity
 of full MAPF at the cost of potentially suboptimal paths near the window
 boundary.
-This idea is formalised and extended by the rolling horizon approach described
+This idea is formalized and extended by the rolling horizon approach described
 in Section~\ref{subsec:bg_mapf_lifelong}.
 
 All A*-based planners share the same admissible heuristic: the shortest
@@ -231,8 +231,8 @@ mission horizon.
 RHCR is one of the three planning strategies evaluated in this thesis
 (Section~\ref{subsec:method_rhcr}).
 
-A key design insight from \citet{li2021lifelong} is that optimising for
-throughput requires different priority rules than optimising for makespan.
+A key design insight from \citet{li2021lifelong} is that optimizing for
+throughput requires different priority rules than optimizing for makespan.
 In particular, agents that are stuck or far from their goals should receive
 \emph{higher} planning priority to prevent them from blocking high-throughput
 agents near their goals.
@@ -377,7 +377,7 @@ degrades throughput and energy efficiency.
 These are precisely the failure modes that the allocation and path planning
 components of LCBA are designed to avoid.
 
-For the purposes of this thesis, the warehouse is modelled as a discrete grid
+For the purposes of this thesis, the warehouse is modeled as a discrete grid
 with fixed station positions.
 While real warehouses are larger and have more complex layouts, the $30 \times
 30$ grid used here captures the essential structural features (aisle corridors,

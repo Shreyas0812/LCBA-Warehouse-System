@@ -72,7 +72,7 @@ same timestep (edge conflict).
 Agents have finite energy and must periodically visit a designated charging
 station; they may not execute tasks while charging.
 All decisions must be made using only information locally available to an agent
-within its communication neighbourhood $\mathcal{N}_i(t) = \{k : (i,k) \in E(t)\}$.
+within its communication neighborhood $\mathcal{N}_i(t) = \{k : (i,k) \in E(t)\}$.
 
 
 %% ── 3.2 ─────────────────────────────────────────────────────────
@@ -105,7 +105,7 @@ It is \emph{logically decentralized}: each agent maintains its own bid and
 assignment vectors and communicates only with its current communication
 neighbors.
 The orchestrator simulates this communication by invoking the GCBBA update
-rules for each agent using only the neighbourhood defined by $G(t)$.
+rules for each agent using only the neighborhood defined by $G(t)$.
 
 The path planner (Section~\ref{sec:method_collision}) is \emph{physically
 centralized} in the simulation: the orchestrator has global visibility of
@@ -254,7 +254,7 @@ This \emph{energy-budget filter} prevents agents from winning bids on tasks
 they cannot physically complete before needing to recharge, which would
 otherwise cause a mid-execution hand-off and wasted travel.
 
-The energy configuration is validated at initialisation: if any reachable
+The energy configuration is validated at initialization: if any reachable
 grid position is so far from all chargers that $\alpha \cdot d > E_{\max}$,
 an error is raised at startup, guaranteeing that a correctly configured
 system can always reach a charger from any occupied cell.
@@ -293,7 +293,7 @@ tables over the obstacle-free grid, not Euclidean distance.
 This is crucial: Euclidean distance systematically underestimates travel time
 near obstacle clusters, causing agents to bid too aggressively on distant tasks
 and producing suboptimal assignments.
-The BFS tables are computed once at initialisation and shared across all agents.
+The BFS tables are computed once at initialization and shared across all agents.
 
 
 %% ── 3.4 ─────────────────────────────────────────────────────────
@@ -335,7 +335,7 @@ grid distance from the agent's estimated position after completing the
 preceding tasks to $s_j^{\text{in}}$, and then from $s_j^{\text{in}}$ to
 $s_j^{\text{ej}}$.
 
-Intuitively, RPT penalises both the number of tasks and their cumulative
+Intuitively, RPT penalizes both the number of tasks and their cumulative
 completion time, naturally aligning the utility function with makespan
 minimization.
 The marginal gain of adding task $j^*$ to an existing path $p_i$ is
@@ -479,7 +479,7 @@ $s_j^{\text{ej}}$.
 
 \textbf{(2) BFS-precomputed distance tables.}
 A BFS from every grid cell to every other cell is precomputed once at
-initialisation and stored as a distance table.
+initialization and stored as a distance table.
 At runtime, each call to $\tau_{ij}$ is a single table lookup, making the
 marginal gain computation $O(1)$ per task rather than $O(|\mathcal{W}|)$.
 
@@ -647,7 +647,7 @@ Rolling Horizon Collision Resolution (RHCR), introduced by
 computational challenge of planning for many agents over long horizons by
 restricting attention to a sliding time window.
 
-RHCR is parameterised by a \emph{window size} $w$ (the number of timesteps
+RHCR is parameterized by a \emph{window size} $w$ (the number of timesteps
 ahead to plan) and a \emph{replanning period} $h \leq w$ (the number of
 timesteps to execute before replanning).
 At each replanning event, all agents plan paths for the next $w$ timesteps
@@ -777,7 +777,7 @@ because a competing agent bid higher on it during a reallocation.
 The LCBA allocation is invoked under five conditions, listed in priority order:
 
 \begin{enumerate}
-  \item \textbf{Initialisation.} At $t = 0$ (or after a system reset),
+  \item \textbf{Initialization.} At $t = 0$ (or after a system reset),
         allocation always runs.
   \item \textbf{Charging state change.} When an agent starts or finishes
         charging, its available capacity changes, justifying immediate

@@ -11,8 +11,8 @@
 
 Modern warehouses operate at a scale that exceeds the reach of any centralized
 controller.
-Amazon's fulfillment centres deploy tens of thousands of drive units; Ocado's
-customer fulfillment centres run more than a thousand robots on a single grid
+Amazon's fulfillment centers deploy tens of thousands of drive units; Ocado's
+customer fulfillment centers run more than a thousand robots on a single grid
 floor.
 At peak throughput, each robot receives a new task within seconds of completing
 the last one, and a fleet of hundreds must navigate shared aisles without
@@ -38,7 +38,7 @@ and high robot density produce an intermittently connected network of links.
 \emph{Decentralized} approaches distribute the coordination decision across
 the fleet.
 Each robot runs a local planning algorithm using only the information available
-within its communication neighbourhood, achieving resilience to node failures
+within its communication neighborhood, achieving resilience to node failures
 and communication outages at the cost of solution quality guarantees.
 The Consensus-Based Bundle Algorithm (CBBA)~\cite{choi2009consensus} and its
 global extension GCBBA~\cite{kha2025enhancing} represent the state of the art
@@ -71,7 +71,7 @@ appears attractive to a low-energy agent may be unreachable before the
 agent must divert to a charger; an idle agent holding position in a busy
 corridor may block the paths of several active agents simultaneously.
 A coordination system evaluated only on path quality and task completion
-rate --- without modelling energy or congestion from idle robots --- will
+rate --- without modeling energy or congestion from idle robots --- will
 miss these failure modes entirely and may perform poorly when deployed
 on real hardware.
 
@@ -136,9 +136,9 @@ algorithm depend on the paths that agents will follow, which in turn depend on
 the decisions of other agents.
 A practical system must handle this coupling through event-driven replanning
 rather than by solving the joint problem exactly.
-
-
-%% ── 1.3 ─────────────────────────────────────────────────────────
+More importantly, it must operate
+using only information locally
+available within each agent's communication neighborhood. ─────────────────────────────────────────────────────────
 \section{Research Questions}
 \label{sec:intro_questions}
 

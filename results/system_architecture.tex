@@ -14,7 +14,7 @@
   \node[module, above=10mm of io] (gcbba) {LCBA \\ (GCBBA\_Orchestrator)};
   \node[module, right=35mm of io] (planner) {Path Planner \\ (CA*/PBS/RHCR)};
   \node[data, left=22mm of io] (agentstate) {AgentState \\ (positions, energy, role)};
-  \node[draw, rounded corners, below=10mm of io, minimum width=70mm, minimum height=14mm, align=center, fill=yellow!6] (agents) {Agents / Local Comm. \\ (per-agent bid vectors, local neighbourhood G(t))};
+  \node[draw, rounded corners, below=10mm of io, minimum width=70mm, minimum height=14mm, align=center, fill=yellow!6] (agents) {Agents / Local Comm. \\ (per-agent bid vectors, local neighborhood G(t))};
 
   % Annotation
   \node[anchor=south, font=\scriptsize] at (gcbba.north) {Simulator hub};
@@ -44,9 +44,9 @@
   \draw[arrow] (agents.north) -- (io.south)
       node[midway, right=1mm, font=\scriptsize] {local messages / events};
 
-  % agents -> gcbba (dashed, neighbourhood msgs): route right of planner, then up, then left
+  % agents -> gcbba (dashed, neighborhood msgs): route right of planner, then up, then left
   \draw[arrow, dashed] (agents.east) -- ++(55mm,0) |- (gcbba.east)
-      node[pos=0.82, above, font=\scriptsize] {neighbourhood msgs (simulated)};
+      node[pos=0.82, above, font=\scriptsize] {neighborhood msgs (simulated)};
 
   % Phantom path on left to balance bounding box (makes centering symmetric around io)
   \path ([xshift=-75mm]agents.west);
