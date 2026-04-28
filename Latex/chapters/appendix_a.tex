@@ -14,8 +14,7 @@
 \label{app:full_table}
 
 Full per-run result data (all methods, maps, seeds, communication ranges,
-and task loads) are available in the accompanying summary CSV files under
-\texttt{results/experiments/<map>/<timestamp>/summary.csv}.
+and task loads) are available in the accompanying code repository.
 A condensed cross-map results summary is provided in Chapter~\ref{sec:exp_throughput}
 for all six experimental maps, integrating both stable-regime and stress-regime
 steady-state results.
@@ -26,9 +25,7 @@ steady-state results.
 
 Dedicated rerun-interval sensitivity experiments were run for
 $ri \in \{10, 25, 50, 100, 200\}$ timesteps on all six maps.
-Raw summaries are stored in
-\texttt{results/experiments/<map>/rerun\_interval\_sensitivity/}.
-Preliminary analysis of the summary CSVs indicates that completion rate
+Preliminary analysis of the results indicates that completion rate
 and throughput are largely insensitive to $ri$ above 25 at
 light-to-moderate loads; $ri = 10$ increases allocation overhead without
 meaningful throughput gains; $ri = 200$ introduces latency in responding
