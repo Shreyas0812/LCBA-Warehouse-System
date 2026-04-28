@@ -212,28 +212,28 @@ serve as stress-test regimes.
   \label{fig:batch_degradation_main_maps}
 \end{figure}
 
-\begin{figure}[htbp]
-  \centering
-  \begin{subfigure}[t]{0.32\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/gridworld_crossdock/20260425_022224/batch_results/compact_views/compact_tradeoff.png}
-    \caption{Crossdock}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.32\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/gridworld_warehouse_small/20260425_012846/batch_results/compact_views/compact_tradeoff.png}
-    \caption{Warehouse-small}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.32\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/gridworld_warehouse_large/20260425_044219/batch_results/compact_views/compact_tradeoff.png}
-    \caption{Warehouse-large}
-  \end{subfigure}
-  \caption{Completion-versus-wall-time tradeoff for main-analysis maps. Pareto-favorable regions correspond to high completion at lower wall-time.}
-  \label{fig:batch_tradeoff_main_maps}
-\end{figure}
+%\begin{figure}[htbp]
+%  \centering
+%  \begin{subfigure}[t]{0.32\textwidth}
+%    \centering
+%    \includegraphics[width=\textwidth]{figures/gridworld_crossdock/20260425_022224/batch_results/compact_views/compact_tradeoff.png}
+%    \caption{Crossdock}
+%  \end{subfigure}
+%  \hfill
+%  \begin{subfigure}[t]{0.32\textwidth}
+%    \centering
+%    \includegraphics[width=\textwidth]{figures/gridworld_warehouse_small/20260425_012846/batch_results/compact_views/compact_tradeoff.png}
+%    \caption{Warehouse-small}
+%  \end{subfigure}
+%  \hfill
+%  \begin{subfigure}[t]{0.32\textwidth}
+%    \centering
+%    \includegraphics[width=\textwidth]{figures/gridworld_warehouse_large/20260425_044219/batch_results/compact_views/compact_tradeoff.png}
+%    \caption{Warehouse-large}
+%  \end{subfigure}
+%  \caption{Completion-versus-wall-time tradeoff for main-analysis maps. Pareto-favorable regions correspond to high completion at lower wall-time.}
+%  \label{fig:batch_tradeoff_main_maps}
+%\end{figure}
 
 \subsubsection*{Stress-Regime Figures}
 
@@ -267,8 +267,8 @@ Steady-state experiments are evaluated on three stable-regime maps
 \texttt{gridworld\_warehouse\_large}) and three stress-regime maps
 (\texttt{gridworld\_kiva}, \texttt{gridworld\_kiva\_large}, and
 \texttt{gridworld\_shelf\_aisle}). All results use a consistent compact-view
-visualization structure across maps: throughput, wait-time, capacity frontier,
-and completion progress stratified by termination reason.
+visualization structure across maps: throughput, wait-time, and capacity
+frontier.
 
 Stable-regime maps show clean convergence with low wait time under sustained
 load, while stress-regime maps probe algorithm robustness under extreme
@@ -347,39 +347,39 @@ communication constraints and layout-induced congestion.
   \label{fig:ss_capacity_current_maps}
 \end{figure}
 
-\begin{figure}[htbp]
-  \centering
-  \begin{subfigure}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_completion_progress_all_tasks_completed.png}
-    \caption{Warehouse-small}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/gridworld_crossdock/20260426_141042/ss_results/compact_views/compact_completion_progress_all_tasks_completed.png}
-    \caption{Crossdock}
-  \end{subfigure}
-  \caption{Steady-state completion progress for runs that finished all tasks.}
-  \label{fig:ss_completion_progress_completed_current_maps}
-\end{figure}
+%\begin{figure}[htbp]
+%  \centering
+%  \begin{subfigure}[t]{0.48\textwidth}
+%    \centering
+%    \includegraphics[width=\textwidth]{figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_completion_progress_all_tasks_completed.png}
+%    \caption{Warehouse-small}
+%  \end{subfigure}
+%  \hfill
+%  \begin{subfigure}[t]{0.48\textwidth}
+%    \centering
+%    \includegraphics[width=\textwidth]{figures/gridworld_crossdock/20260426_141042/ss_results/compact_views/compact_completion_progress_all_tasks_completed.png}
+%    \caption{Crossdock}
+%  \end{subfigure}
+%  \caption{Steady-state completion progress for runs that finished all tasks.}
+%  \label{fig:ss_completion_progress_completed_current_maps}
+%\end{figure}
 
-\begin{figure}[htbp]
-  \centering
-  \begin{subfigure}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_completion_progress_timestep_ceiling.png}
-    \caption{Warehouse-small}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/gridworld_crossdock/20260426_141042/ss_results/compact_views/compact_completion_progress_timestep_ceiling.png}
-    \caption{Crossdock}
-  \end{subfigure}
-  \caption{Steady-state completion progress for runs that reached the timestep ceiling.}
-  \label{fig:ss_completion_progress_timestep_ceiling_current_maps}
-\end{figure}
+%\begin{figure}[htbp]
+%  \centering
+%  \begin{subfigure}[t]{0.48\textwidth}
+%    \centering
+%    \includegraphics[width=\textwidth]{figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_completion_progress_timestep_ceiling.png}
+%    \caption{Warehouse-small}
+%  \end{subfigure}
+%  \hfill
+%  \begin{subfigure}[t]{0.48\textwidth}
+%    \centering
+%    \includegraphics[width=\textwidth]{figures/gridworld_crossdock/20260426_141042/ss_results/compact_views/compact_completion_progress_timestep_ceiling.png}
+%    \caption{Crossdock}
+%  \end{subfigure}
+%  \caption{Steady-state completion progress for runs that reached the timestep ceiling.}
+%  \label{fig:ss_completion_progress_timestep_ceiling_current_maps}
+%\end{figure}
 
 \paragraph{Stress-Regime Maps: Congestion Failure Limits.}
 
@@ -387,13 +387,14 @@ The stress-regime maps (Kiva, Kiva-Large, and Shelf-Aisle) are evaluated exclusi
 to test LCBA's robustness at the upper bounds of system congestion and communication
 constraint. These environments are not intended to represent practical operating
 points; rather, they stress-test the algorithm under conditions where task completion
-and throughput collapse. Results on stress-regime maps are reported through throughput,
-wait-time, capacity frontier, and diagnostic tradeoff curves.
+and throughput collapse. Results on stress-regime maps are reported primarily through
+throughput and capacity-frontier visuals, while the timeout diagnostics are deferred
+to Appendix~\ref{app:stress_timeout_diagnostics}.
 
 \paragraph{Kiva Results.}
 Kiva (40×40 grid, up to 100 agents) represents narrow-aisle congestion constraints.
-Results show throughput, wait-time, and capacity frontier behavior stratified by termination
-reason, demonstrating algorithm behavior approaching system saturation limits.
+Results show throughput and capacity-frontier behavior, demonstrating algorithm
+behavior approaching system saturation limits.
 
 \begin{figure}[htbp]
   \centering
@@ -402,15 +403,20 @@ reason, demonstrating algorithm behavior approaching system saturation limits.
     \includegraphics[width=\textwidth]{figures/gridworld_kiva/20260426_195056/ss_results/compact_views/compact_heatmap_throughput.png}
     \caption{Kiva: throughput}
   \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/gridworld_kiva/20260426_195056/ss_results/compact_views/compact_heatmap_wait_time.png}
-    \caption{Kiva: wait time}
-  \end{subfigure}
-  \caption{Steady-state throughput and wait-time heatmaps for Kiva (stress regime).}
+  \caption{Steady-state throughput heatmap for Kiva (stress regime).}
   \label{fig:ss_kiva_heatmaps_stress}
 \end{figure}
+
+%\begin{figure}[htbp]
+%  \centering
+%  \begin{subfigure}[t]{0.48\textwidth}
+%    \centering
+%    \includegraphics[width=\textwidth]{figures/gridworld_kiva/20260426_195056/ss_results/compact_views/compact_heatmap_wait_time.png}
+%    \caption{Kiva: wait time}
+%  \end{subfigure}
+%  \caption{Steady-state wait-time heatmap for Kiva (stress regime).}
+%  \label{fig:ss_kiva_wait_time_stress}
+%\end{figure}
 
 \begin{figure}[htbp]
   \centering
@@ -419,15 +425,20 @@ reason, demonstrating algorithm behavior approaching system saturation limits.
     \includegraphics[width=\textwidth]{figures/gridworld_kiva/20260426_195056/ss_results/compact_views/compact_capacity_curve.png}
     \caption{Kiva: capacity frontier}
   \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/gridworld_kiva/20260426_195056/ss_results/compact_views/compact_completion_progress_timestep_ceiling.png}
-    \caption{Kiva: timestep-ceiling completion progress}
-  \end{subfigure}
-  \caption{Kiva stress-regime steady-state summary: capacity frontier and completion progress conditioned on timestep-ceiling stops.}
+  \caption{Kiva stress-regime steady-state summary: capacity frontier.}
   \label{fig:ss_kiva_capacity_progress_stress}
 \end{figure}
+
+%\begin{figure}[htbp]
+%  \centering
+%  \begin{subfigure}[t]{0.48\textwidth}
+%    \centering
+%    \includegraphics[width=\textwidth]{figures/gridworld_kiva/20260426_195056/ss_results/compact_views/compact_completion_progress_timestep_ceiling.png}
+%    \caption{Kiva: timestep-ceiling completion progress}
+%  \end{subfigure}
+%  \caption{Kiva stress-regime steady-state completion progress conditioned on timestep-ceiling stops.}
+%  \label{fig:ss_kiva_completion_progress_stress}
+%\end{figure}
 
 \paragraph{Kiva-Large Results.}
 Kiva-Large (100×100 grid, up to 200 agents) combines extreme scale with heavy congestion.
@@ -441,15 +452,20 @@ degrade as system load increases beyond practical thresholds.
     \includegraphics[width=\textwidth]{figures/gridworld_kiva_large/20260427_050329/ss_results/compact_views/compact_heatmap_throughput.png}
     \caption{Kiva-Large: throughput}
   \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/gridworld_kiva_large/20260427_050329/ss_results/compact_views/compact_heatmap_wait_time.png}
-    \caption{Kiva-Large: wait time}
-  \end{subfigure}
-  \caption{Steady-state throughput and wait-time heatmaps for Kiva-Large (stress regime).}
+  \caption{Steady-state throughput heatmap for Kiva-Large (stress regime).}
   \label{fig:ss_kiva_large_heatmaps_stress}
 \end{figure}
+
+%\begin{figure}[htbp]
+%  \centering
+%  \begin{subfigure}[t]{0.48\textwidth}
+%    \centering
+%    \includegraphics[width=\textwidth]{figures/gridworld_kiva_large/20260427_050329/ss_results/compact_views/compact_heatmap_wait_time.png}
+%    \caption{Kiva-Large: wait time}
+%  \end{subfigure}
+%  \caption{Steady-state wait-time heatmap for Kiva-Large (stress regime).}
+%  \label{fig:ss_kiva_large_wait_time_stress}
+%\end{figure}
 
 \begin{figure}[htbp]
   \centering
@@ -481,15 +497,20 @@ testing communication and path-planning robustness in geometrically adversarial 
     \includegraphics[width=\textwidth]{figures/gridworld_shelf_aisle/20260427_105146/ss_results/compact_views/compact_heatmap_throughput.png}
     \caption{Shelf-Aisle: throughput}
   \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/gridworld_shelf_aisle/20260427_105146/ss_results/compact_views/compact_heatmap_wait_time.png}
-    \caption{Shelf-Aisle: wait time}
-  \end{subfigure}
-  \caption{Steady-state throughput and wait-time heatmaps for Shelf-Aisle (stress regime).}
+  \caption{Steady-state throughput heatmap for Shelf-Aisle (stress regime).}
   \label{fig:ss_shelf_aisle_heatmaps_stress}
 \end{figure}
+
+%\begin{figure}[htbp]
+%  \centering
+%  \begin{subfigure}[t]{0.48\textwidth}
+%    \centering
+%    \includegraphics[width=\textwidth]{figures/gridworld_shelf_aisle/20260427_105146/ss_results/compact_views/compact_heatmap_wait_time.png}
+%    \caption{Shelf-Aisle: wait time}
+%  \end{subfigure}
+%  \caption{Steady-state wait-time heatmap for Shelf-Aisle (stress regime).}
+%  \label{fig:ss_shelf_aisle_wait_time_stress}
+%\end{figure}
 
 \begin{figure}[htbp]
   \centering
@@ -602,8 +623,9 @@ connected graphs.
 On connected graphs ($\comm \geq 25$), LCBA achieves a makespan ratio of
 approximately $1.23\times$ relative to SGA, within the theoretical $2\times$
 bound inherited from GCBBA.
-The completion-versus-wall-time trade-off across maps is shown in
-Figure~\ref{fig:batch_tradeoff_main_maps}.
+The corresponding wall-time behavior is summarized numerically in
+Section~\ref{sec:exp_timing}, which reports the allocation-time ranges
+directly without relying on a dense scatter plot.
 
 
 % ── 4.3 ─────────────────────────────────────────────────────────
@@ -733,7 +755,7 @@ agents cannot bid on tasks visible only to other components.
 Steady-state throughput behavior is presented through the compact-view
 heatmaps and capacity curves across all evaluated maps
 (Figures~\ref{fig:ss_throughput_wait_heatmaps_current_maps}
-through~\ref{fig:ss_completion_progress_timestep_ceiling_current_maps}).
+through~\ref{fig:ss_capacity_current_maps}).
 The key findings are as follows.
 At near-capacity arrival rates ($\lambda = 0.0087$~tasks/ts/station),
 LCBA sustains a throughput of $\approx 0.069$~tasks/ts on

@@ -34,6 +34,38 @@ The canonical $ri = 50$ used throughout the thesis sits near the
 flat region of this sensitivity curve.
 
 
+\section{Stress-Regime Timeout Diagnostics}
+\label{app:stress_timeout_diagnostics}
+
+The stress-regime timeout diagnostics are moved out of the main chapter
+because they primarily confirm the failure boundary already described in
+Chapter~\ref{sec:exp_throughput}. The underlying image files remain in their
+current locations on disk; only the LaTeX inclusion location changes.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/gridworld_kiva/20260426_195056/ss_results/compact_views/compact_heatmap_timeout_rate.png}
+		\caption{Kiva}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/gridworld_kiva_large/20260427_050329/ss_results/compact_views/compact_heatmap_timeout_rate.png}
+		\caption{Kiva-Large}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/gridworld_shelf_aisle/20260427_105146/ss_results/compact_views/compact_heatmap_timeout_rate.png}
+		\caption{Shelf-Aisle}
+	\end{subfigure}
+	\caption{Stress-regime timeout-rate heatmaps moved from the main chapter. The panels document the failure boundary but add limited information beyond the accompanying throughput and capacity-frontier plots.}
+	\label{fig:appendix_stress_timeout_heatmaps}
+\end{figure}
+
+
 \section{Per-Seed Breakdown}
 \label{app:per_seed}
 
