@@ -281,8 +281,8 @@ The SS thesis presentation uses the same compact-view structure across maps:
 throughput, wait-time, capacity frontier, and completion progress split by stop
 reason. For \texttt{gridworld\_warehouse\_large}, \texttt{gridworld\_kiva\_large},
 and \texttt{gridworld\_shelf\_aisle}, the runs support the main throughput, wait-time,
-capacity, tradeoff, and degradation figures, but none produce completed-runs
-progress panels in this revision.
+capacity, tradeoff, and degradation figures, and produce completion-progress
+panels where available.
 
 The newest steady-state runs are more representative than the earlier warm-started
 versions: warehouse-small now completes more cleanly with much lower wait time,
@@ -380,7 +380,7 @@ early termination.
     \includegraphics[width=\textwidth]{figures/gridworld_crossdock/20260426_141042/ss_results/compact_views/compact_completion_progress_all_tasks_completed.png}
     \caption{Crossdock}
   \end{subfigure}
-  \caption{Steady-state completion progress for runs that finished all tasks. Warehouse-large does not currently provide a completed-runs progress panel in this revision.}
+  \caption{Steady-state completion progress for runs that finished all tasks.}
   \label{fig:ss_completion_progress_completed_current_maps}
 \end{figure}
 
@@ -397,7 +397,7 @@ early termination.
     \includegraphics[width=\textwidth]{figures/gridworld_crossdock/20260426_141042/ss_results/compact_views/compact_completion_progress_timestep_ceiling.png}
     \caption{Crossdock}
   \end{subfigure}
-  \caption{Steady-state completion progress for runs that reached the timestep ceiling. Warehouse-large currently does not emit a ceiling-progress panel.}
+  \caption{Steady-state completion progress for runs that reached the timestep ceiling.}
   \label{fig:ss_completion_progress_timestep_ceiling_current_maps}
 \end{figure}
 

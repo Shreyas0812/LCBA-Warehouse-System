@@ -19,7 +19,7 @@ import sys
 COLUMNS = [
     "run_id", "config_name", "allocation_method", "path_planner", "experiment_type",
     "seed", "num_agents", "task_arrival_rate", "initial_tasks", "comm_range",
-    "rerun_interval", "total_steps", "hit_timestep_ceiling", "hit_wall_clock_ceiling",
+    "rerun_interval", "total_steps", "hit_timestep_ceiling", "hit_wall_clock_ceiling", "hit_saturation_ceiling", "stop_reason",
     "throughput", "throughput_per_agent", "avg_task_wait_time", "max_task_wait_time",
     "steady_state_tasks_completed", "total_tasks_injected", "tasks_dropped_by_queue_cap",
     "avg_queue_depth", "makespan", "all_tasks_completed", "num_tasks_completed",
