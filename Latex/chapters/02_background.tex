@@ -37,13 +37,13 @@ Practical systems therefore rely either on polynomial-time approximation
 algorithms with bounded sub-optimality, or on heuristic methods that sacrifice
 formal guarantees for scalability.
 The choice between centralized and decentralized architectures
-(Sections~\ref{subsec:bg_centralised} and~\ref{subsec:bg_decentralised})
+      (Sections~\ref{subsec:bg_centralized} and~\ref{subsec:bg_decentralized})
 is the primary design tension.
 
 
 %% ── 2.1.1 ──────────────────────────────────────────────────────
 \subsection{Centralized Approaches}
-\label{subsec:bg_centralised}
+      \label{subsec:bg_centralized}
 
 Centralized MRTA methods aggregate all information at a single planner that
 computes assignments for all the agents.
@@ -78,7 +78,7 @@ These limitations motivate the decentralized alternatives described next.
 
 %% ── 2.1.2 ──────────────────────────────────────────────────────
 \subsection{Decentralized Auction-Based Approaches}
-\label{subsec:bg_decentralised}
+      \label{subsec:bg_decentralized}
 
 Auction-based methods distribute the allocation decision by having agents bid
 on tasks and resolve conflicts through a shared consensus protocol.
@@ -126,7 +126,7 @@ graphs and dynamic task arrivals is the extension that LCBA provides.
 
 %% ── 2.1.3 ──────────────────────────────────────────────────────
 \subsection{Other Decentralized Methods}
-\label{subsec:bg_other_decentralised}
+      \label{subsec:bg_other_decentralized}
 
 Beyond auction-based methods, several other decentralized approaches have been
 proposed for MRTA.
@@ -241,10 +241,10 @@ in this thesis.
 
 
 %% ── 2.2.3 ──────────────────────────────────────────────────────
-\subsection{Prioritised Planning and Reservation Tables}
-\label{subsec:bg_prioritised}
+      \subsection{Prioritized Planning and Reservation Tables}
+      \label{subsec:bg_prioritized}
 
-Prioritised planning~\cite{silver2005cooperative} decomposes the joint MAPF
+      Prioritized planning~\cite{silver2005cooperative} decomposes the joint MAPF
 problem into a sequence of single-agent problems.
 Agents are assigned a priority order; the highest-priority agent plans its
 optimal path first, and each subsequent agent plans a collision-free path
@@ -255,7 +255,7 @@ stores the space-time positions committed by already-planned agents.
 When planning agent $i$'s path, the planner searches the space-time graph
 with the reservation table treated as a set of obstacles.
 
-Prioritised planning is not complete in general: a fixed priority ordering can
+      Prioritized planning is not complete in general: a fixed priority ordering can
 create situations where the lowest-priority agent cannot reach its goal because
 all routes are permanently blocked by higher-priority agents.
 However, \citet{silver2005cooperative} show that on grid graphs without
@@ -265,7 +265,7 @@ The stuck-detection mechanism in LCBA (Section~\ref{subsec:method_stuck})
 provides a practical recovery path for the rare cases where deadlocks do occur.
 
 \emph{Priority Inheritance with Backtracking} (PIBT)~\cite{okumura2019pibt}
-is a reactive variant of prioritised planning that makes greedy decisions
+      is a reactive variant of prioritized planning that makes greedy decisions
 one timestep at a time rather than planning full paths.
 Its scalability to large agent counts ($n > 100$) makes it an attractive option
 when computational resources are limited, at the cost of providing no

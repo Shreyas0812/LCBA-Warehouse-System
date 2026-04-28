@@ -197,7 +197,7 @@ $900$ to over $10{,}000$ cells, enabling evaluation across a wide range of
 congestion levels and communication graph densities.
 \texttt{warehouse\_small} is used as the primary development and ablation
 environment; results across all six environments are reported in the
-scalability experiments (Section~\ref{sec:exp_planners}).
+  scalability experiments (Section~\ref{sec:exp_setup}).
 
 \begin{figure}[htbp]
   \centering
@@ -698,8 +698,8 @@ A key architectural advantage of the system is that the path planner is a
 configurable parameter of the \texttt{IntegrationOrchestrator}: any allocation
 method (LCBA, CBBA, SGA, or DMCHBA) can be paired with any of the three
 planners without modification.
-For the allocation comparison experiments (Sections~\ref{sec:exp_batch} and
-\ref{sec:exp_steady_state}), CA* is held fixed across all methods as an
+  For the allocation comparison experiments (Section~\ref{chap:experiments}),
+  CA* is held fixed across all methods as an
 experimental control to isolate the effect of the allocation algorithm.
 Section~\ref{sec:exp_compact_views} presents the batch compact-view summaries
 used to compare planner behavior across maps.
