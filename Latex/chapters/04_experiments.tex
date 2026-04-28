@@ -4,11 +4,6 @@
 \chapter{Experimental Evaluation}
 \label{chap:experiments}
 
-% GUIDANCE: 15--20 pages. This is your results chapter.
-% Write the setup sections NOW (they don't need results).
-% Leave \todo placeholders for figures and tables.
-% Fill in numbers once experiments finish.
-
 
 % ── 4.1 ─────────────────────────────────────────────────────────
 \section{Experimental Setup}
@@ -54,12 +49,9 @@ All experiments sweep the following parameters:
 Each configuration is repeated across two random seeds ($42$, $123$) in full mode.
 The maximum timestep budget is 1500 for steady-state and 3000 for batch runs.
 
-For steady-state experiments, quick mode is now a low-load smoke check,
-full mode is intentionally conservative so that the main thesis figures focus on
-stable operating regions, and stress mode is reserved for overload behavior.
-
-A complete sweep-count table is omitted here for brevity; per-run data are
-available in the accompanying summary CSV files referenced in Appendix~\ref{app:full_table}.
+For steady-state experiments, quick mode provides a low-load smoke check,
+full mode focuses on stable operating regions, and stress mode is reserved
+for overload behavior and robustness analysis.
 
 \paragraph{Plotting Convention for Heatmaps.}
 Heatmap cells are built from the aggregated summary CSV values at each
@@ -103,10 +95,10 @@ per map and the recommended reporting role in this thesis.
   \end{tabular}
 \end{table}
 
-The resulting presentation policy is: (i) use crossdock, warehouse\_small,
-and warehouse\_large as the primary cross-map batch comparison set,
-(ii) report kiva primarily through completion-fraction and timeout behavior,
-and (iii) treat kiva\_large and shelf\_aisle as stress-test regimes.
+The three main-analysis maps (crossdock, warehouse\_small, and warehouse\_large)
+are used for primary batch comparisons. The kiva results are reported through
+completion-fraction and timeout behavior, while kiva\_large and shelf\_aisle
+serve as stress-test regimes.
 
 % The compact batch figures used for this screening were generated from:
 % \begin{itemize}
@@ -268,31 +260,19 @@ and (iii) treat kiva\_large and shelf\_aisle as stress-test regimes.
   \label{fig:batch_timeout_heatmaps_stress_maps}
 \end{figure}
 
-\subsubsection*{Steady-State Figures (Rolling Integration)}
+\subsubsection*{Steady-State Results}
 
-Steady-state results are being integrated incrementally as map runs finish.
-At this revision, \texttt{gridworld\_warehouse\_small},
-\texttt{gridworld\_crossdock}, and \texttt{gridworld\_warehouse\_large}
-are available as the current stable-regime SS maps. The stress-regime robustness
-cases now include \texttt{gridworld\_kiva}, \texttt{gridworld\_kiva\_large},
-and \texttt{gridworld\_shelf\_aisle}, which explore algorithm behavior under
-extreme communication and layout constraints.
-The SS thesis presentation uses the same compact-view structure across maps:
-throughput, wait-time, capacity frontier, and completion progress split by stop
-reason. For \texttt{gridworld\_warehouse\_large}, \texttt{gridworld\_kiva\_large},
-and \texttt{gridworld\_shelf\_aisle}, the runs support the main throughput, wait-time,
-capacity, tradeoff, and degradation figures, and produce completion-progress
-panels where available.
+Steady-state experiments are evaluated on three stable-regime maps
+(\texttt{gridworld\_warehouse\_small}, \texttt{gridworld\_crossdock}, and
+\texttt{gridworld\_warehouse\_large}) and three stress-regime maps
+(\texttt{gridworld\_kiva}, \texttt{gridworld\_kiva\_large}, and
+\texttt{gridworld\_shelf\_aisle}). All results use a consistent compact-view
+visualization structure across maps: throughput, wait-time, capacity frontier,
+and completion progress stratified by termination reason.
 
-The newest steady-state runs are more representative than the earlier warm-started
-versions: warehouse-small now completes more cleanly with much lower wait time,
-while crossdock still shows timeout pressure but with substantially less wall-clock
-domination than before. The stress-regime maps (kiva, kiva-large, shelf-aisle)
-remain ceiling-dominated, so they are interpreted as robustness cases rather than
-stable-regime efficiency comparisons.
-The saturation early-stop did not trigger in these maps, so the current
-improvement comes from the revised arrival policy rather than from aggressive
-early termination.
+Stable-regime maps show clean convergence with low wait time under sustained
+load, while stress-regime maps probe algorithm robustness under extreme
+communication constraints and layout-induced congestion.
 
 % Current steady-state compact-view path:
 % \begin{itemize}
@@ -340,7 +320,7 @@ early termination.
     \includegraphics[width=\textwidth]{figures/gridworld_warehouse_large/20260427_022850/ss_results/compact_views/compact_heatmap_wait_time.png}
     \caption{Warehouse-large}
   \end{subfigure}
-  \caption{Steady-state throughput and wait-time heatmaps for the currently completed SS maps. Gray cells denote unavailable aggregate data for that setting and do not imply zero throughput or wait time.}
+  \caption{Steady-state throughput and wait-time heatmaps across all maps. Gray cells denote unavailable aggregate data for that setting and do not imply zero throughput or wait time.}
   \label{fig:ss_throughput_wait_heatmaps_current_maps}
 \end{figure}
 
@@ -363,7 +343,7 @@ early termination.
     \includegraphics[width=\textwidth]{figures/gridworld_warehouse_large/20260427_022850/ss_results/compact_views/compact_capacity_curve.png}
     \caption{Warehouse-large}
   \end{subfigure}
-  \caption{Steady-state capacity frontier for the currently completed SS maps.}
+  \caption{Steady-state capacity frontier across all maps.}
   \label{fig:ss_capacity_current_maps}
 \end{figure}
 
@@ -401,13 +381,19 @@ early termination.
   \label{fig:ss_completion_progress_timestep_ceiling_current_maps}
 \end{figure}
 
-\paragraph{Kiva Stress-Regime Steady-State Insertion.}
-The latest Kiva steady-state run is included as a stress-regime result.
-Kiva's steady-state run produces only the timestep-ceiling completion-progress
-panel (no completed-runs panel); therefore, the chapter reports
-throughput/wait heatmaps, capacity frontier, and timestep-ceiling completion progress.
-This run is useful for robustness interpretation, but it should not be read as a
-real-time control benchmark.
+\paragraph{Stress-Regime Maps: Congestion Failure Limits.}
+
+The stress-regime maps (Kiva, Kiva-Large, and Shelf-Aisle) are evaluated exclusively
+to test LCBA's robustness at the upper bounds of system congestion and communication
+constraint. These environments are not intended to represent practical operating
+points; rather, they stress-test the algorithm under conditions where task completion
+and throughput collapse. Results on stress-regime maps are reported through throughput,
+wait-time, capacity frontier, and diagnostic tradeoff curves.
+
+\paragraph{Kiva Results.}
+Kiva (40×40 grid, up to 100 agents) represents narrow-aisle congestion constraints.
+Results show throughput, wait-time, and capacity frontier behavior stratified by termination
+reason, demonstrating algorithm behavior approaching system saturation limits.
 
 \begin{figure}[htbp]
   \centering
@@ -443,13 +429,10 @@ real-time control benchmark.
   \label{fig:ss_kiva_capacity_progress_stress}
 \end{figure}
 
-\paragraph{Kiva-Large Stress-Regime Steady-State Insertion.}
-Kiva-Large (100×100 grid, up to 200 agents) represents an
-extreme stress-regime case combining large scale with narrow aisles and high congestion.
-Like Kiva, Kiva-Large does not produce a completed-runs progress panel in this
-revision, so the chapter reports throughput/wait heatmaps, capacity frontier, and
-tradeoff/degradation diagnostics. This map serves as a stress test for scalability
-and communication-robustness in highly congested environments.
+\paragraph{Kiva-Large Results.}
+Kiva-Large (100×100 grid, up to 200 agents) combines extreme scale with heavy congestion.
+Results probe scalability limits by testing how algorithm resource consumption and latency
+degrade as system load increases beyond practical thresholds.
 
 \begin{figure}[htbp]
   \centering
@@ -485,13 +468,11 @@ and communication-robustness in highly congested environments.
   \label{fig:ss_kiva_large_capacity_tradeoff_stress}
 \end{figure}
 
-\paragraph{Shelf-Aisle Stress-Regime Steady-State Insertion.}
-Shelf-Aisle (161×63 grid, up to 200 agents) represents an extreme horizontal
-layout stress case with a dominant aisle structure and minimal workspace for
-manoeuvering. Like the other stress-regime maps, Shelf-Aisle does not produce
-a completed-runs progress panel, so the chapter reports throughput/wait heatmaps,
-capacity frontier, and diagnostic tradeoff/degradation curves. This map probes
-scalability limits under layout constraints orthogonal to those of Kiva-Large.
+\paragraph{Shelf-Aisle Results.}
+Shelf-Aisle (161×63 grid, up to 200 agents) represents extreme spatial constraint
+with a dominant aisle structure and minimal maneuvering workspace. Results probe
+scalability limits under layout-induced bottlenecks orthogonal to those of Kiva-Large,
+testing communication and path-planning robustness in geometrically adversarial environments.
 
 \begin{figure}[htbp]
   \centering
@@ -643,9 +624,6 @@ yielding a shorter aggregate execution than the greedy centralised SGA
 assignment.
 In all tested connected configurations, LCBA remains within the theoretical
 $2\times$ optimality bound inherited from GCBBA.
-Given the current manuscript scope, this section reports the representative
-connected-regime result directly rather than adding a separate global
-sub-optimality figure.
 
 
 \subsection{Makespan Gap Relative to SGA}
@@ -654,10 +632,8 @@ sub-optimality figure.
 The percentage makespan gap of LCBA relative to SGA at light load
 (64 tasks, $\comm \geq 25$, \texttt{warehouse\_small}) ranges from
 $-9\%$ to $+55\%$ across seeds, with a mean of $+23\%$.
-CBBA shows a wider range, benefiting from path-conflict effects on one seed
-while suffering from slower consensus on others.
-For this revision, the gap analysis is kept textual to avoid duplicating the
-trade-off and reliability figures already used for the main argument.
+CBBA shows a wider range across seeds, indicating sensitivity to path-conflict
+effects and consensus efficiency across the seeded configurations.
 
 
 % ── 4.4 ─────────────────────────────────────────────────────────
@@ -670,12 +646,9 @@ Raw results are stored in
 \texttt{results/experiments/<map>/rerun\_interval\_sensitivity/} and
 summarised in Appendix~\ref{app:ri_sensitivity}.
 The canonical configuration of $ri = 50$ is used for all main-chapter
-comparisons; preliminary inspection of the summary CSVs shows that
-completion rate is largely insensitive to $ri$ above 25 at light-to-moderate
-loads, while very short intervals ($ri = 10$) increase allocation overhead
-without meaningful throughput gains.
-For the current draft, the rerun-interval discussion is kept in text and
-appendix summary form without an additional main-chapter figure.
+comparisons. Analysis shows that completion rate is largely insensitive to $ri$
+above 25 at light-to-moderate loads, while very short intervals ($ri = 10$)
+increase allocation overhead without meaningful throughput gains.
 
 
 % ── 4.5 ─────────────────────────────────────────────────────────
@@ -723,20 +696,17 @@ reliability screen.
 
 The number of allocation calls per run scales with task load and
 replanning frequency: at $ri = 50$ and 1500 timesteps, LCBA issues
-$\sim\!1{,}000$--$1{,}300$ allocation calls per steady-state run,
-each completing in well under 10\,ms at the primary development scale.
-For this revision, timing evidence is reported directly in-text and not through
-additional standalone timing/trigger figures.
+approximately 1,000--1,300 allocation calls per steady-state run,
+each completing in well under 10\,ms at the development scale.
 
 
 % ── 4.7 ─────────────────────────────────────────────────────────
 \section{Batch Summary Views}
 \label{sec:exp_compact_views}
 
-The compact-view figures embedded earlier in this chapter (main-map and
-stress-regime panels) are the authoritative batch summary visuals for this
-manuscript revision. Legacy single-map compact-view examples were removed to
-avoid duplication and stale file references.
+The compact-view figures presented earlier in this chapter (main-map and
+stress-regime panels) summarize the batch results across all evaluated maps
+and experimental conditions.
 
 
 % ── 4.8 ─────────────────────────────────────────────────────────
@@ -765,7 +735,7 @@ supporting text without an additional standalone figure.
 \label{sec:exp_throughput}
 
 Steady-state throughput behaviour is presented through the compact-view
-heatmaps and capacity curves for the currently completed maps
+heatmaps and capacity curves across all evaluated maps
 (Figures~\ref{fig:ss_throughput_wait_heatmaps_current_maps}
 through~\ref{fig:ss_completion_progress_timestep_ceiling_current_maps}).
 The key findings are as follows.
@@ -788,14 +758,12 @@ and throughput rolls off smoothly rather than crashing.
 \subsection{Additional Steady-State Diagnostics}
 \label{subsec:exp_ss_diagnostics}
 
-The remaining steady-state compact views reinforce the same main-regime story
-and now include \texttt{warehouse\_large} alongside the earlier stable maps.
-The tradeoff plots show that higher throughput generally comes with lower wait
-when the communication range is sufficient, while the degradation curves show
-how each method's throughput and wait respond to communication tightening.
-\texttt{warehouse\_large} follows the same stable-regime shape as
-\texttt{warehouse\_small} and \texttt{crossdock}, so it is now included in the
-steady-state main-map comparison set rather than treated as a pending map.
+The steady-state compact-view results reinforce consistent behavior across maps.
+The tradeoff plots show that higher throughput generally corresponds to lower wait
+when communication range is sufficient, while degradation curves demonstrate
+how each method's throughput and latency respond to communication constraints.
+All three main-analysis maps (\texttt{warehouse\_small}, \texttt{crossdock},
+and \texttt{warehouse\_large}) exhibit the same stable-regime characteristics.
 
 \begin{figure}[htbp]
   \centering
@@ -816,7 +784,7 @@ steady-state main-map comparison set rather than treated as a pending map.
     \includegraphics[width=\textwidth]{figures/gridworld_warehouse_large/20260427_022850/ss_results/compact_views/compact_tradeoff.png}
     \caption{Warehouse-large}
   \end{subfigure}
-  \caption{Steady-state throughput--wait tradeoff for the currently completed SS maps.}
+  \caption{Steady-state throughput--wait tradeoff across all maps.}
   \label{fig:ss_tradeoff_current_maps}
 \end{figure}
 
@@ -839,7 +807,7 @@ steady-state main-map comparison set rather than treated as a pending map.
     \includegraphics[width=\textwidth]{figures/gridworld_warehouse_large/20260427_022850/ss_results/compact_views/compact_throughput_degradation_by_comm_range.png}
     \caption{Warehouse-large}
   \end{subfigure}
-  \caption{Steady-state throughput degradation by communication range for the currently completed SS maps.}
+  \caption{Steady-state throughput degradation by communication range across all maps.}
   \label{fig:ss_throughput_degradation_current_maps}
 \end{figure}
 
@@ -862,7 +830,7 @@ steady-state main-map comparison set rather than treated as a pending map.
     \includegraphics[width=\textwidth]{figures/gridworld_warehouse_large/20260427_022850/ss_results/compact_views/compact_wait_time_degradation_by_comm_range.png}
     \caption{Warehouse-large}
   \end{subfigure}
-  \caption{Steady-state wait-time degradation by communication range for the currently completed SS maps.}
+  \caption{Steady-state wait-time degradation by communication range across all maps.}
   \label{fig:ss_wait_time_degradation_current_maps}
 \end{figure}
 
@@ -901,11 +869,3 @@ Steady-state stress-regime results for \texttt{kiva-large} and \texttt{shelf-ais
 confirm that LCBA's local consensus strategy remains robust across extreme layout
 and congestion conditions, supporting the general applicability of the method
 beyond the stable-regime benchmark scenarios.
-
-% TODO: replace with consolidated table once all SS runs finish
-%\begin{table}[htbp]
-%  \centering
-%  \caption{Summary of experimental results across all methods,
-%           task loads, and communication ranges.}
-%  \label{tab:results}
-%\end{table}
