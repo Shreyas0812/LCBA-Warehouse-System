@@ -21,13 +21,13 @@
 
   % Arrows: gcbba <-> io (x-shifted to avoid overlap)
   \draw[arrow] ([xshift=3mm]io.north) -- ([xshift=3mm]gcbba.south)
-      node[midway, right=1mm, font=\scriptsize] {invokes / simulates};
+      node[midway, right=1mm, font=\scriptsize] {invokes / state};
   \draw[arrow] ([xshift=-3mm]gcbba.south) -- ([xshift=-3mm]io.north)
-      node[midway, left=1mm, font=\scriptsize] {assignments / bids};
+      node[midway, left=1mm, font=\scriptsize] {assignments / metrics};
 
   % agentstate -> planner: route above gcbba to avoid crossing io
   \draw[arrow] (agentstate.north) -- ++(0,30mm) -| (planner.north)
-      node[pos=0.25, above, font=\scriptsize] {needs\_new\_path};
+      node[pos=0.25, above, font=\scriptsize] {requests path};
 
   % planner -> io
   \draw[arrow] (planner.west) -- (io.east)
