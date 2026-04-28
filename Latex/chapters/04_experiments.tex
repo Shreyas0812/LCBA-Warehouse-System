@@ -520,7 +520,7 @@ testing communication and path-planning robustness in geometrically adversarial 
 % \end{itemize}
 %
 % All steady-state results (warehouse-small, crossdock, warehouse-large, kiva,
-% kiva-large, shelf-aisle) are now integrated into Chapter 4 and visualised
+% kiva-large, shelf-aisle) are now integrated into Chapter 4 and visualized
 % through compact-view plots.
 
 
@@ -596,7 +596,7 @@ On completed batch runs at light load (64 tasks, \texttt{warehouse\_small}),
 LCBA's makespan ranges from approximately 685 timesteps at $\comm = 4$
 (fully disconnected) to 640 timesteps at $\comm \geq 25$ (connected).
 SGA achieves 663 timesteps at $\comm = 4$ and 519 timesteps at $\comm \geq 25$,
-confirming that the centralised baseline benefits more from connectivity.
+confirming that the centralized baseline benefits more from connectivity.
 CBBA ranges from 860 timesteps at $\comm = 4$ down to 640 timesteps on
 connected graphs.
 On connected graphs ($\comm \geq 25$), LCBA achieves a makespan ratio of
@@ -618,9 +618,9 @@ Figure~\ref{fig:batch_tradeoff_main_maps}.
 On connected graphs ($\comm \geq 25$, 64 tasks, \texttt{warehouse\_small}),
 the LCBA-to-SGA makespan ratio is $0.91$ for seed~123 and $1.55$ for seed~42,
 giving a mean of $\approx 1.23\times$.
-The ratio below 1.0 on seed~123 occurs because LCBA's decentralised consensus
+The ratio below 1.0 on seed~123 occurs because LCBA's decentralized consensus
 incorporates path-conflict information during bid computation, occasionally
-yielding a shorter aggregate execution than the greedy centralised SGA
+yielding a shorter aggregate execution than the greedy centralized SGA
 assignment.
 In all tested connected configurations, LCBA remains within the theoretical
 $2\times$ optimality bound inherited from GCBBA.
@@ -644,7 +644,7 @@ Dedicated rerun-interval sensitivity experiments were conducted across all
 six maps for $ri \in \{10, 25, 50, 100, 200\}$ timesteps.
 Raw results are stored in
 \texttt{results/experiments/<map>/rerun\_interval\_sensitivity/} and
-summarised in Appendix~\ref{app:ri_sensitivity}.
+summarized in Appendix~\ref{app:ri_sensitivity}.
 The canonical configuration of $ri = 50$ is used for all main-chapter
 comparisons. Analysis shows that completion rate is largely insensitive to $ri$
 above 25 at light-to-moderate loads, while very short intervals ($ri = 10$)
@@ -691,7 +691,7 @@ graph diameter.
 SGA remains below $1$\,ms throughout since it requires no communication
 rounds.
 CBBA shows the largest variance at high load and low communication range
-($14$--$500+$\,ms), consistent with the timeout behaviour observed in the
+($14$--$500+$\,ms), consistent with the timeout behavior observed in the
 reliability screen.
 
 The number of allocation calls per run scales with task load and
@@ -710,10 +710,10 @@ and experimental conditions.
 
 
 % ── 4.8 ─────────────────────────────────────────────────────────
-\section{Agent Utilisation and Load Balance}
+\section{Agent Utilization and Load Balance}
 \label{sec:exp_utilisation}
 
-Agent utilisation and load-balance statistics are drawn from the
+Agent utilization and load-balance statistics are drawn from the
 \texttt{avg\_idle\_ratio} and \texttt{task\_balance\_std} fields in the
 batch summary CSVs.
 At light load (64 tasks, \texttt{warehouse\_small}), the average idle fraction
@@ -726,7 +726,7 @@ task counts---is consistently below $2.0$ for LCBA at $\comm \geq 15$,
 reflecting balanced assignment.
 At fully disconnected settings ($\comm = 4$), balance degrades as isolated
 agents cannot bid on tasks visible only to other components.
-Given the current chapter scope, this utilisation analysis is retained as
+Given the current chapter scope, this utilization analysis is retained as
 supporting text without an additional standalone figure.
 
 
@@ -734,7 +734,7 @@ supporting text without an additional standalone figure.
 \section{Throughput Analysis}
 \label{sec:exp_throughput}
 
-Steady-state throughput behaviour is presented through the compact-view
+Steady-state throughput behavior is presented through the compact-view
 heatmaps and capacity curves across all evaluated maps
 (Figures~\ref{fig:ss_throughput_wait_heatmaps_current_maps}
 through~\ref{fig:ss_completion_progress_timestep_ceiling_current_maps}).
@@ -858,7 +858,7 @@ On fully connected graphs, LCBA achieves a mean makespan ratio of
 $\approx 1.23\times$ relative to SGA (range $0.91$--$1.55$ across seeds),
 well within the theoretical $2\times$ bound.
 One seed produces a ratio below $1.0$, confirming that LCBA's path-aware
-bid computation can occasionally outperform the greedy centralised baseline.
+bid computation can occasionally outperform the greedy centralized baseline.
 
 \textbf{RQ3 (Path planner trade-offs).}
 All three planners (CA*, PBS, RHCR) maintain hard collision safety.

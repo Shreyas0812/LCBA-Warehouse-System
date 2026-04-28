@@ -9,10 +9,10 @@
 \section{Motivation}
 \label{sec:intro_motivation}
 
-Modern warehouses operate at a scale that exceeds the reach of any centralised
+Modern warehouses operate at a scale that exceeds the reach of any centralized
 controller.
-Amazon's fulfilment centres deploy tens of thousands of drive units; Ocado's
-customer fulfilment centres run more than a thousand robots on a single grid
+Amazon's fulfillment centres deploy tens of thousands of drive units; Ocado's
+customer fulfillment centres run more than a thousand robots on a single grid
 floor.
 At peak throughput, each robot receives a new task within seconds of completing
 the last one, and a fleet of hundreds must navigate shared aisles without
@@ -22,7 +22,7 @@ which robot should pick up which item, in what order, along which path, and
 when should the decision be revised?
 
 Two broad strategies have emerged for tackling this problem.
-\emph{Centralised} approaches gather all task and robot state at a single
+\emph{Centralized} approaches gather all task and robot state at a single
 planner, compute a globally optimal assignment, and broadcast instructions to
 the fleet.
 These methods enjoy strong theoretical guarantees. The Sequential Greedy
@@ -35,7 +35,7 @@ size is non-trivial, and the assumption of reliable broadcast communication
 is rarely met in real warehouses, where range-limited radios, metal shelving,
 and high robot density produce an intermittently connected network of links.
 
-\emph{Decentralised} approaches distribute the coordination decision across
+\emph{Decentralized} approaches distribute the coordination decision across
 the fleet.
 Each robot runs a local planning algorithm using only the information available
 within its communication neighbourhood, achieving resilience to node failures
@@ -47,8 +47,8 @@ assignment value on any \emph{connected} communication graph.
 
 The critical qualification of \emph{connected} is where both methods fall
 short of real-world requirements.
-In a warehouse with a physical communication range of 5--10 metres,
-robots spread across a 30-metre floor will frequently be in communication with
+In a warehouse with a physical communication range of 5--10 meters,
+robots spread across a 30-meter floor will frequently be in communication with
 only a subset of the fleet.
 When the communication graph fragments, CBBA and GCBBA may converge to
 conflicting assignments (multiple robots claiming the same task) or leave
@@ -88,11 +88,11 @@ Underwater robotic surveys operate without GPS and with highly attenuated
 acoustic communication, producing exactly the intermittent connectivity
 structure that LCBA is designed to handle.
 Disaster-response scenarios where physical infrastructure is damaged and
-communication links are unreliable require decentralised coordination
+communication links are unreliable require decentralized coordination
 methods that continue to function even when large portions of the team are
 out of contact.
 Space-based robotic systems face communication delays and blackout periods
-that similarly preclude any centralised coordinator.
+that similarly preclude any centralized coordinator.
 While this thesis focuses on the warehouse setting (which provides a reliable
 set of measurable metrics and a reproducible simulation environment), the
 algorithm is designed with these broader application domains in mind.
@@ -107,7 +107,7 @@ warehouse environment populated by $\Na = 6$ mobile agents,
 $|\mathcal{S}^{\text{in}}| = 8$ induct stations, and
 $|\mathcal{S}^{\text{ej}}| = 38$ eject stations.
 
-\textbf{Sub-problem 1: Decentralised multi-robot task allocation under dynamic,
+\textbf{Sub-problem 1: Decentralized multi-robot task allocation under dynamic,
 intermittently disconnected communication graphs.}
 Tasks arrive continuously at induct stations over time, not as a fixed batch at
 $t = 0$.
@@ -228,7 +228,7 @@ This thesis makes the following contributions:
 \section{Thesis Outline}
 \label{sec:intro_outline}
 
-The remainder of this thesis is organised as follows.
+The remainder of this thesis is organized as follows.
 \Cref{chap:background} reviews related work in multi-robot task allocation,
 multi-agent path finding, communication-constrained coordination, and warehouse
 automation, and identifies the specific gap this thesis fills.
@@ -238,6 +238,6 @@ replanning mechanism, and the baseline methods.
 \Cref{chap:experiments} presents the experimental setup (including the dual
 batch/steady-state design), defines all metrics, and reports quantitative
 results across the full parameter sweep.
-\Cref{chap:conclusion} summarises the findings, revisits the contributions
+\Cref{chap:conclusion} summarizes the findings, revisits the contributions
 in light of the experimental evidence, discusses limitations, and outlines
 directions for future work.

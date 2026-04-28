@@ -29,7 +29,7 @@ $\mathcal{W} \subset \mathbb{Z}^2$ containing a set of static obstacles
 $\mathcal{O} \subset \mathcal{W}$.
 At each discrete timestep $t \in \{0, 1, 2, \ldots\}$, each agent occupies a
 unique cell $x_i(t) \in \mathcal{W} \setminus \mathcal{O}$ and may choose to move to any
-of its four cardinal neighbours or remain stationary (Hold Position).
+of its four cardinal neighbors or remain stationary (Hold Position).
 
 \textbf{Tasks.}
 Tasks arrive online over time.
@@ -59,10 +59,10 @@ move.
 \textbf{Objective.}
 The system operates in two experimental modes.
 In \emph{batch mode}, a fixed set of $\Nt$ tasks is released at $t = 0$ and
-the objective is to minimise makespan: the timestep at which the last task is
+the objective is to minimize makespan: the timestep at which the last task is
 completed.
 In \emph{steady-state mode}, tasks arrive continuously at each induct station at
-rate $\lambda$ tasks per timestep, and the objective is to maximise throughput:
+rate $\lambda$ tasks per timestep, and the objective is to maximize throughput:
 the number of tasks completed per timestep after a warm-up period.
 
 \textbf{Constraints.}
@@ -82,7 +82,7 @@ within its communication neighbourhood $\mathcal{N}_i(t) = \{k : (i,k) \in E(t)\
 
 The coordination pipeline is structured around two principal components, shown
 schematically in Figure~\ref{fig:system_architecture}: a \emph{task allocator}
-and a \emph{path planner}, integrated through a centralised
+and a \emph{path planner}, integrated through a centralized
 \texttt{IntegrationOrchestrator}.
 
 \begin{figure}[htbp]
@@ -94,7 +94,7 @@ and a \emph{path planner}, integrated through a centralised
   }
   \caption{System architecture overview. The \texttt{IntegrationOrchestrator}
            coordinates the LCBA task allocator with one of three interchangeable
-           path planners. Allocation is logically decentralised (agents run
+           path planners. Allocation is logically decentralized (agents run
            the GCBBA protocol using only local communication), while path
            planning uses a shared reservation table maintained by the
            orchestrator.}
@@ -102,21 +102,21 @@ and a \emph{path planner}, integrated through a centralised
 \end{figure}
 
 The task allocator runs the GCBBA/LCBA algorithm (Section~\ref{sec:method_gcbba}).
-It is \emph{logically decentralised}: each agent maintains its own bid and
+It is \emph{logically decentralized}: each agent maintains its own bid and
 assignment vectors and communicates only with its current communication
-neighbours.
+neighbors.
 The orchestrator simulates this communication by invoking the GCBBA update
 rules for each agent using only the neighbourhood defined by $G(t)$.
 
 The path planner (Section~\ref{sec:method_collision}) is \emph{physically
-centralised} in the simulation: the orchestrator has global visibility of
+centralized} in the simulation: the orchestrator has global visibility of
 all agent positions and plans collision-free paths for all agents using
 a shared space-time reservation table.
-% This design choice --- decentralised allocation, centralised collision
+% This design choice --- decentralized allocation, centralized collision
 % avoidance --- is justified on two grounds.
 % First, task allocation decisions are inherently private: agents in disconnected
 % components have different information and may reach different allocation
-% decisions, which is exactly the behaviour we wish to study.
+% decisions, which is exactly the behavior we wish to study.
 % Second, collision-free path planning in a bounded warehouse environment does not
 % require private information; centralising it eliminates the complexity of
 % distributed reservation table consensus while keeping the allocation protocol
@@ -165,11 +165,11 @@ charge transitions occur, or collisions require local repair.
 \label{sec:method_environment}
 
 Experiments are conducted across six warehouse environments of increasing scale,
-summarised in Table~\ref{tab:environments}.
+summarized in Table~\ref{tab:environments}.
 Each environment is a 2D gridworld with induct stations (task pickup points),
 eject stations (delivery destinations), internal obstacles representing shelving
 aisles, and charging stations.
-All agents are initialised at their home positions at $t = 0$.
+All agents are initialized at their home positions at $t = 0$.
 
 \begin{table}[htbp]
   \centering
@@ -283,7 +283,7 @@ When a new task is subsequently allocated to the waiting agent, it
 immediately preempts its parking navigation and replans toward the task's
 induct station, incurring no additional latency.
 
-This behaviour mirrors industrial deployments such as Amazon Robotics and
+This behavior mirrors industrial deployments such as Amazon Robotics and
 Ocado, where idle drive units park at designated staging areas to keep main
 picking aisles clear for active robots.
 
@@ -305,7 +305,7 @@ The Global Consensus-Based Bundle Algorithm
 (GCBBA)~\cite{kha2025enhancing} extends the Consensus-Based Bundle
 Algorithm (CBBA)~\cite{choi2009consensus} in three key directions: a stronger
 utility metric, a global (rather than local) consensus protocol, and a
-decentralised convergence detection mechanism.
+decentralized convergence detection mechanism.
 This section describes each component and then explains the additional
 adaptations made to handle the warehouse setting and dynamic task arrivals,
 which together constitute the Local Consensus-Based Bundle Algorithm (LCBA).
@@ -338,7 +338,7 @@ $s_j^{\text{ej}}$.
 
 Intuitively, RPT penalises both the number of tasks and their cumulative
 completion time, naturally aligning the utility function with makespan
-minimisation.
+minimization.
 The marginal gain of adding task $j^*$ to an existing path $p_i$ is
 \begin{equation}
   \Delta_i(j^* \mid p_i) = S_i^{\text{RPT}}(p_i \oplus j^*) - S_i^{\text{RPT}}(p_i),
@@ -402,7 +402,7 @@ more in densely shelved environments.
 \label{subsec:method_consensus}
 
 After bundle building, agents exchange their current bid and winner vectors with
-their communication neighbours.
+their communication neighbors.
 The \emph{conflict resolution rules} from~\cite{choi2009consensus,kha2025enhancing}
 determine, for each task $j$ and each pair of agents $i$ and $k$, whether
 agent $i$ should \textsc{Update} (accept $k$'s information), \textsc{Reset}
@@ -411,7 +411,7 @@ information).
 The key distinction between CBBA and GCBBA lies in how many communication
 rounds are performed per iteration.
 
-CBBA performs a single round of neighbour-to-neighbour information exchange.
+CBBA performs a single round of neighbor-to-neighbor information exchange.
 On a graph of diameter $D$, this means that information originating at one end
 of the network may take $D$ rounds to reach the other end, during which
 intermediate agents may have already committed to conflicting assignments.
@@ -437,12 +437,12 @@ at this point.
 
 
 %% ── 3.4.4 ──────────────────────────────────────────────────────
-\subsection{Decentralised Convergence Detection}
+\subsection{Decentralized Convergence Detection}
 \label{subsec:method_convergence}
 
 Running $2D$ consensus rounds per iteration is necessary for correctness but
 computationally expensive when the graph is large or deep.
-GCBBA includes a decentralised convergence detection mechanism to allow early
+GCBBA includes a decentralized convergence detection mechanism to allow early
 termination~\cite{kha2025enhancing}.
 
 Each agent $i$ maintains a per-agent binary vector
@@ -553,7 +553,7 @@ All planners in this pipeline operate on a space-time graph
 $\mathcal{G}^{\text{ST}} = (\mathcal{V}^{\text{ST}}, \mathcal{E}^{\text{ST}})$
 where each node $(x, y, t)$ represents cell $(x, y)$ at timestep $t$.
 An edge connects $(x, y, t)$ to $(x', y', t+1)$ if $(x', y')$ is either the
-same cell (wait action) or a cardinal neighbour of $(x, y)$ in the
+same cell (wait action) or a cardinal neighbor of $(x, y)$ in the
 obstacle-free grid.
 The \emph{reservation table} $\mathcal{R}$ is a set of
 $(x, y, t)$ triples indicating space-time positions reserved by agents whose
@@ -585,7 +585,7 @@ Paths are planned in two phases per replanning call.
 In Phase~1, agents navigating to a charging station plan first and reserve their
 paths in $\mathcal{R}$, so that task agents automatically route around them in
 Phase~2.
-Within each phase, the planning order is randomised to avoid systematic priority
+Within each phase, the planning order is randomized to avoid systematic priority
 bias: no agent consistently receives the easiest routing problem by virtue of a
 fixed priority assignment.
 Idle agents (no current goal) are handled outside the main planning loop by
@@ -671,7 +671,7 @@ agents cannot anticipate conflicts that arise just beyond $t + w$.
 \subsection{Planner Comparison}
 \label{subsec:method_planner_comparison}
 
-Table~\ref{tab:planner_comparison} summarises the three planners along four
+Table~\ref{tab:planner_comparison} summarizes the three planners along four
 dimensions: completeness, optimality criterion, asymptotic time complexity per
 planning call, and scalability.
 
@@ -702,7 +702,7 @@ For the allocation comparison experiments (Sections~\ref{sec:exp_batch} and
 \ref{sec:exp_steady_state}), CA* is held fixed across all methods as an
 experimental control to isolate the effect of the allocation algorithm.
 Section~\ref{sec:exp_compact_views} presents the batch compact-view summaries
-used to compare planner behaviour across maps; a dedicated planner comparison
+used to compare planner behavior across maps; a dedicated planner comparison
 section is in preparation.
 
 
@@ -786,7 +786,7 @@ The LCBA allocation is invoked under five conditions, listed in priority order:
         reallocation.
   \item \textbf{New tasks and idle agents.} If new tasks have been injected
         into $\mathcal{T}_{\text{pending}}$ and at least one agent is idle,
-        allocation is triggered immediately to minimise task wait time.
+        allocation is triggered immediately to minimize task wait time.
   \item \textbf{Batch completion threshold.} If at least
         $\max(2, \lfloor \Na/3 \rfloor)$ tasks have been completed since
         the last allocation, and a cooldown of
@@ -866,7 +866,7 @@ infrastructure, so that any performance differences are attributable solely to
 the allocation strategy.
 
 \textbf{Sequential Greedy Algorithm (SGA).}
-SGA is the centralised optimality reference.
+SGA is the centralized optimality reference.
 At each allocation call, SGA iterates over all (agent, task) pairs in
 descending order of marginal gain and greedily assigns each task to the best
 available agent, updating each agent's projected position before the next
@@ -875,7 +875,7 @@ SGA achieves the 50\%-optimality guarantee under DMG
 utilities~\cite{fisher1978analysis} --- that is, SGA's assignment value is
 guaranteed to be at least 50\% of the optimal assignment value.
 On disconnected graphs, SGA runs independently within each connected component,
-which is a generous assumption --- a centralised algorithm would, in practice,
+which is a generous assumption --- a centralized algorithm would, in practice,
 have no knowledge of the existence or content of isolated components.
 This makes SGA a conservative upper bound on achievable performance.
 SGA does not replan between allocation calls; it is re-invoked at the same
@@ -894,12 +894,12 @@ prevents it from correctly resolving conflicts that span disconnected components
 making dynamic reallocation less meaningful.
 
 \textbf{Distributed Matching by Clone Hungarian-Based Algorithm (DMCHBA).}
-DMCHBA~\cite{samiei2024dmchba} is a state-of-the-art decentralised task
+DMCHBA~\cite{samiei2024dmchba} is a state-of-the-art decentralized task
 allocation method based on distributed Hungarian matching.
 It is included as the primary competing baseline from recent literature.
 DMCHBA provides strong performance guarantees on connected graphs but, like
 CBBA, has not been designed for the dynamic, disconnected communication
-settings that characterise the LCBA evaluation.
+settings that characterize the LCBA evaluation.
 
 
 %% ── 3.8 ─────────────────────────────────────────────────────────
@@ -910,13 +910,13 @@ This section explicitly names the key design choices and the rationale behind
 each, to aid reproducibility and to anticipate questions about the scope of
 the experimental evaluation.
 
-\textbf{Hybrid decentralised allocation / centralised path planning.}
+\textbf{Hybrid decentralized allocation / centralized path planning.}
 As argued in Section~\ref{sec:method_overview}, task allocation is kept
-decentralised to faithfully model communication constraints, while path planning
-is centralised to avoid the added complexity of distributed reservation table
-synchronisation.
+decentralized to faithfully model communication constraints, while path planning
+is centralized to avoid the added complexity of distributed reservation table
+synchronization.
 This is a deliberate choice to isolate the allocation variable in experiments.
-A fully decentralised path planner (such as distributed PIBT) would be an
+A fully decentralized path planner (such as distributed PIBT) would be an
 interesting extension but is out of scope for this thesis.
 
 \textbf{Batch-threshold replanning triggers over fixed-interval.}

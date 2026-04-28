@@ -77,13 +77,13 @@ operating point for warehouse coordination under communication constraints.
 While the results demonstrate that LCBA is robust and practical in
 stability-first operating regimes, several limitations should be acknowledged.
 
-\textbf{Centralised path planning.}
-Although task allocation is logically decentralised, the collision-avoidance
+\textbf{Centralized path planning.}
+Although task allocation is logically decentralized, the collision-avoidance
 layer uses a shared space-time reservation table maintained by a central
 orchestrator.
 This constitutes a single point of failure and a communication bottleneck:
 if the orchestrator is unavailable, path planning halts.
-A fully decentralised deployment would require distributed reservation tables
+A fully decentralized deployment would require distributed reservation tables
 or a per-component CBS-style planner, neither of which is implemented here.
 
 \textbf{Simulation-only evaluation.}
@@ -125,11 +125,11 @@ and caution is warranted when interpreting those data points.
 
 Several directions would naturally extend this work.
 
-\textbf{Fully decentralised collision avoidance.}
+\textbf{Fully decentralized collision avoidance.}
 Replacing the central reservation table with a distributed planning scheme ---
 such as per-component CBS or a distributed RHCR variant --- would remove the
 single point of failure in the path planning layer and make the system fully
-decentralised end-to-end.
+decentralized end-to-end.
 
 \textbf{Time-windowed and deadline-constrained tasks.}
 Real warehouse tasks often carry soft deadlines (orders must be processed

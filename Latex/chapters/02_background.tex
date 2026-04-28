@@ -20,7 +20,7 @@ fills.
 \label{sec:bg_mrta}
 
 Multi-robot task allocation (MRTA) is the problem of deciding which robot
-performs which task, and in what order, so as to optimise a system-level
+performs which task, and in what order, so as to optimize a system-level
 objective such as makespan, total distance, or throughput.
 The canonical taxonomy of \citet{gerkey2004formal} classifies MRTA problems
 along three axes: \emph{single-task} (ST) versus \emph{multi-task} (MT) robots,
@@ -36,18 +36,18 @@ robots~\cite{gerkey2004formal}.
 Practical systems therefore rely either on polynomial-time approximation
 algorithms with bounded sub-optimality, or on heuristic methods that sacrifice
 formal guarantees for scalability.
-The choice between centralised and decentralised architectures
+The choice between centralized and decentralized architectures
 (Sections~\ref{subsec:bg_centralised} and~\ref{subsec:bg_decentralised})
 is the primary design tension.
 
 
 %% ── 2.1.1 ──────────────────────────────────────────────────────
-\subsection{Centralised Approaches}
+\subsection{Centralized Approaches}
 \label{subsec:bg_centralised}
 
-Centralised MRTA methods aggregate all information at a single planner that
+Centralized MRTA methods aggregate all information at a single planner that
 computes assignments for all the agents.
-The classical assignment problem (minimise total cost for a one-to-one
+The classical assignment problem (minimize total cost for a one-to-one
 agent-task matching) can be solved optimally in $O(n^3)$ time by the Hungarian
 algorithm~\cite{kuhn1955hungarian}.
 When tasks can be assigned in any order and multiple tasks may be assigned to
@@ -65,7 +65,7 @@ optimal assignment value.
 This guarantee is tight: there exist instances where SGA achieves exactly
 50\% of the optimum.
 
-Centralised methods share two practical weaknesses.
+Centralized methods share two practical weaknesses.
 First, they assume that all task and agent information is available at a single
 point, which requires either a reliable broadcast channel or a dedicated
 coordinator robot.
@@ -73,11 +73,11 @@ Both assumptions are fragile in the field: communication failures can prevent
 the coordinator from learning about new tasks or updated agent states.
 Second, single-point-of-failure: if the coordinator fails, the entire system
 halts.
-These limitations motivate the decentralised alternatives described next.
+These limitations motivate the decentralized alternatives described next.
 
 
 %% ── 2.1.2 ──────────────────────────────────────────────────────
-\subsection{Decentralised Auction-Based Approaches}
+\subsection{Decentralized Auction-Based Approaches}
 \label{subsec:bg_decentralised}
 
 Auction-based methods distribute the allocation decision by having agents bid
@@ -102,7 +102,7 @@ connected graph, and that the assignment achieves at least
 50\%-optimality under DMG utilities.
 
 CBBA's key limitation is its \emph{local} consensus protocol: each agent
-communicates only with its immediate neighbours, and a single round of exchange
+communicates only with its immediate neighbors, and a single round of exchange
 is performed per iteration.
 On a graph of diameter $D > 1$, information originating at one node takes $D$
 rounds to reach all other nodes.
@@ -114,30 +114,30 @@ The \emph{Global Consensus-Based Bundle Algorithm}
 (GCBBA)~\cite{kha2025enhancing} corrects this deficiency by performing $2D$
 consensus rounds per iteration, where $D$ is the communication graph diameter.
 GCBBA also introduces the \emph{Repeated Path Times} (RPT) utility function,
-which is provably DMG and better aligned with makespan minimisation than the
+which is provably DMG and better aligned with makespan minimization than the
 simple travel-time utility used in CBBA.
 Together, these changes allow GCBBA to provably converge to the SGA solution
 on any connected graph and with any DMG utility function, while retaining the
-decentralised character of CBBA.
+decentralized character of CBBA.
 
 GCBBA remains the starting point for this thesis; its handling of disconnected
 graphs and dynamic task arrivals is the extension that LCBA provides.
 
 
 %% ── 2.1.3 ──────────────────────────────────────────────────────
-\subsection{Other Decentralised Methods}
+\subsection{Other Decentralized Methods}
 \label{subsec:bg_other_decentralised}
 
-Beyond auction-based methods, several other decentralised approaches have been
+Beyond auction-based methods, several other decentralized approaches have been
 proposed for MRTA.
-\emph{Distributed Constraint Optimisation Problems} (DCOPs) formulate task
-allocation as a distributed optimisation over coupled agent variables;
+\emph{Distributed Constraint Optimization Problems} (DCOPs) formulate task
+allocation as a distributed optimization over coupled agent variables;
 algorithms such as Max-Sum and DPOP achieve variable quality-runtime trade-offs
 but do not scale well to large numbers of tasks~\cite{chakraa2023optimization}.
 \emph{Market-based methods}~\cite{quinton2023mrta} use explicit price dynamics
 to drive convergence, offering flexibility at the cost of unpredictable
 convergence time.
-\emph{Behaviour-based methods}~\cite{parker1998alliance} allocate tasks
+\emph{Behavior-based methods}~\cite{parker1998alliance} allocate tasks
 through emergent competition and reinforcement, with robustness to failures
 but without assignment quality guarantees.
 
@@ -150,7 +150,7 @@ baseline for this thesis.
 Like CBBA and GCBBA, DMCHBA assumes graph connectivity during each allocation
 call.
 
-The common thread across all existing decentralised methods is the assumption
+The common thread across all existing decentralized methods is the assumption
 of a \emph{connected} communication graph, at least at the time of allocation.
 None of the methods reviewed explicitly handle the case where the graph is
 persistently or intermittently disconnected across multiple replanning events.
@@ -287,7 +287,7 @@ for the time costs imposed by conflict avoidance.
 
 Tightly integrated approaches, specifically those that solve allocation and path planning
 jointly, exist but are computationally demanding.
-A small number of works address this integration in the decentralised setting.
+A small number of works address this integration in the decentralized setting.
 \citet{otte2020auctions} study auction-based coordination in communication-limited
 environments, but focus on assignment convergence rather than the path planning
 layer.
@@ -310,13 +310,13 @@ with three interchangeable path planners in a single integrated pipeline.
 \section{Communication-Constrained Coordination}
 \label{sec:bg_communication}
 
-Communication constraints are a recognised challenge in multi-robot systems.
-\citet{parker1998alliance} showed that fault-tolerant behaviour can emerge from
+Communication constraints are a recognized challenge in multi-robot systems.
+\citet{parker1998alliance} showed that fault-tolerant behavior can emerge from
 reactive architectures even without reliable inter-robot communication.
 More recently, the MRTA community has studied coordination when communication
 is range-limited or intermittent.
 
-\citet{otte2020auctions} analyse auction-based allocation under bandwidth and
+\citet{otte2020auctions} analyze auction-based allocation under bandwidth and
 range constraints, demonstrating that local auctions can converge to near-global
 optima when the communication graph changes slowly.
 CBBA was specifically designed for range-limited radios~\cite{choi2009consensus}:
@@ -359,7 +359,7 @@ The coordination challenge in such systems is substantial: at peak throughput,
 robots must navigate dense environments without collision while continuously
 receiving new delivery targets.
 
-Modern warehouse systems are characterised by the \emph{induct--eject}
+Modern warehouse systems are characterized by the \emph{induct--eject}
 architecture studied in this thesis: items arrive at a set of induct stations
 (conveyor endpoints, receiving docks), are assigned to agents, transported
 across the warehouse, and deposited at eject stations (shipping chutes, packing
@@ -407,7 +407,7 @@ setting demands:
   \item \textbf{Persistently disconnected communication.}
         The proximity-based communication model produces graphs that may be
         disconnected for sustained periods as robots spread across the warehouse.
-        Existing decentralised methods (CBBA, GCBBA, DMCHBA) break down or
+        Existing decentralized methods (CBBA, GCBBA, DMCHBA) break down or
         stall when components are isolated.
   \item \textbf{Multiple, interchangeable path planners.}
         Different deployment scenarios (small fleets vs.\ large fleets,
