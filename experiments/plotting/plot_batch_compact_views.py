@@ -27,6 +27,7 @@ import argparse
 import os
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 
 ALG_ORDER = ["gcbba", "cbba", "dmchba", "sga"]
@@ -131,6 +132,14 @@ def plot_heatmaps(df: pd.DataFrame, metric: str, metric_label: str, out_dir: str
         print(f"No data for heatmap metric: {metric}")
         return
 
+    # Keep a fixed axis grid across all algorithm subplots in this figure,
+    # even when some cells are missing after seed filtering.
+    task_axis = sorted(df["initial_tasks"].dropna().unique())
+    comm_axis = sorted(df["comm_range"].dropna().unique())
+    if not task_axis or not comm_axis:
+        print(f"No axis values available for heatmap metric: {metric}")
+        return
+
     # Use one color scale across all methods for fair visual comparison.
     if metric in ("completion_rate", "timeout_rate"):
         global_vmin, global_vmax = 0.0, 1.0
@@ -147,7 +156,13 @@ def plot_heatmaps(df: pd.DataFrame, metric: str, metric_label: str, out_dir: str
             global_vmax += pad
 
     fig, axes = plt.subplots(2, 2, figsize=(12, 9), squeeze=False)
-    fig.suptitle(f"{metric_label} Heatmaps - {map_name}", fontsize=13)
+    fig.suptitle(
+        f"{metric_label} Heatmaps - {map_name}\n(gray cells: missing data)",
+        fontsize=13,
+    )
+
+    cmap = plt.get_cmap("viridis").copy()
+    cmap.set_bad(color="#e6e6e6")
 
     for idx in range(4):
         ax = axes[idx // 2][idx % 2]
@@ -157,7 +172,12 @@ def plot_heatmaps(df: pd.DataFrame, metric: str, metric_label: str, out_dir: str
 
         alg = algs[idx]
         sub = agg[agg["allocation_method"] == alg]
-        piv = sub.pivot(index="initial_tasks", columns="comm_range", values=metric).sort_index().sort_index(axis=1)
+        piv = (
+            sub.pivot(index="initial_tasks", columns="comm_range", values=metric)
+            .reindex(index=task_axis, columns=comm_axis)
+            .sort_index()
+            .sort_index(axis=1)
+        )
         if piv.empty:
             ax.text(0.5, 0.5, "No data", ha="center", va="center", transform=ax.transAxes)
             ax.set_title(ALG_LABELS.get(alg, alg))
@@ -165,11 +185,12 @@ def plot_heatmaps(df: pd.DataFrame, metric: str, metric_label: str, out_dir: str
             continue
 
         im = ax.imshow(
-            piv.values,
+            np.ma.masked_invalid(piv.values),
             aspect="auto",
             origin="lower",
             vmin=global_vmin,
             vmax=global_vmax,
+            cmap=cmap,
         )
 
         # Annotate each heatmap cell with the metric value.

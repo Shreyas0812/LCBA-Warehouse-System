@@ -58,8 +58,18 @@ For steady-state experiments, quick mode is now a low-load smoke check,
 full mode is intentionally conservative so that the main thesis figures focus on
 stable operating regions, and stress mode is reserved for overload behavior.
 
-A complete sweep-count table is omitted here for brevity and will be added in
-the final manuscript revision after steady-state result integration.
+A complete sweep-count table is omitted here for brevity; per-run data are
+available in the accompanying summary CSV files referenced in Appendix~\ref{app:full_table}.
+
+\paragraph{Plotting Convention for Heatmaps.}
+Heatmap cells are built from the aggregated summary CSV values at each
+(load, communication-range) setting after applying the same figure-generation
+filters (including minimum-seed support for a reported mean). All valid
+aggregated cells are plotted. The axis grid is fixed across methods within a
+figure so visual comparisons stay aligned even when some settings are missing.
+Gray cells indicate that no valid aggregate is available for that setting in
+the plotted run set (for example, missing run output or insufficient valid
+samples after filtering); gray cells should not be interpreted as zero.
 
 
 \subsection{Batch Reliability Screening Across Maps}
@@ -137,7 +147,7 @@ and (iii) treat kiva\_large and shelf\_aisle as stress-test regimes.
     \includegraphics[width=\textwidth]{figures/gridworld_warehouse_large/20260425_044219/batch_results/compact_views/compact_heatmap_completion_rate.png}
     \caption{Warehouse-large}
   \end{subfigure}
-  \caption{Completion-rate heatmaps for the three main-analysis maps used in the batch reliability screen.}
+  \caption{Completion-rate heatmaps for the three main-analysis maps used in the batch reliability screen. Gray cells denote unavailable aggregate data, not zero completion.}
   \label{fig:batch_completion_heatmaps_main_maps}
 \end{figure}
 
@@ -160,7 +170,7 @@ and (iii) treat kiva\_large and shelf\_aisle as stress-test regimes.
     \includegraphics[width=\textwidth]{figures/gridworld_warehouse_large/20260425_044219/batch_results/compact_views/compact_heatmap_timeout_rate.png}
     \caption{Warehouse-large}
   \end{subfigure}
-  \caption{Timeout-rate heatmaps for main-analysis maps. Low-to-mid loads are stable, while top loads show map-dependent degradation.}
+  \caption{Timeout-rate heatmaps for main-analysis maps. Gray cells denote unavailable aggregate data, not zero timeout. Low-to-mid loads are stable, while top loads show map-dependent degradation.}
   \label{fig:batch_timeout_heatmaps_main_maps}
 \end{figure}
 
@@ -330,7 +340,7 @@ early termination.
     \includegraphics[width=\textwidth]{figures/gridworld_warehouse_large/20260427_022850/ss_results/compact_views/compact_heatmap_wait_time.png}
     \caption{Warehouse-large}
   \end{subfigure}
-  \caption{Steady-state throughput and wait-time heatmaps for the currently completed SS maps.}
+  \caption{Steady-state throughput and wait-time heatmaps for the currently completed SS maps. Gray cells denote unavailable aggregate data for that setting and do not imply zero throughput or wait time.}
   \label{fig:ss_throughput_wait_heatmaps_current_maps}
 \end{figure}
 
@@ -528,14 +538,9 @@ scalability limits under layout constraints orthogonal to those of Kiva-Large.
 %   \item \texttt{compact\_completion\_progress\_timestep\_ceiling.png}
 % \end{itemize}
 %
-% Pending steady-state map folders (currently running):
-% \begin{itemize}
-%   \item \texttt{results/experiments/gridworld\_kiva\_large/<ss\_timestamp>/ss\_results/compact\_views/}
-%   \item \texttt{results/experiments/gridworld\_shelf\_aisle/<ss\_timestamp>/ss\_results/compact\_views/}
-% \end{itemize}
-%
-% \texttt{gridworld\_warehouse\_large} has now been promoted from pending to
-% included in the main steady-state comparison set.
+% All steady-state results (warehouse-small, crossdock, warehouse-large, kiva,
+% kiva-large, shelf-aisle) are now integrated into Chapter 4 and visualised
+% through compact-view plots.
 
 
 \subsection{Metrics}
