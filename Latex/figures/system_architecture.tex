@@ -11,7 +11,7 @@
 
   % Nodes
   \node[comp] (io) {IntegrationOrchestrator};
-  \node[module, above=10mm of io] (gcbba) {GCBBA / LCBA \\ (GCBBA\_Orchestrator)};
+  \node[module, above=10mm of io] (gcbba) {LCBA \\ (GCBBA\_Orchestrator)};
   \node[module, right=35mm of io] (planner) {Path Planner \\ (CA*/PBS/RHCR)};
   \node[data, left=22mm of io] (agentstate) {AgentState \\ (positions, energy, role)};
   \node[draw, rounded corners, below=10mm of io, minimum width=70mm, minimum height=14mm, align=center, fill=yellow!6] (agents) {Agents / Local Comm. \\ (per-agent bid vectors, local neighbourhood G(t))};
