@@ -1,0 +1,12 @@
+Steady-State Compact Plot Run Manifest
+========================================
+command: python c:/Users/shrey/OneDrive/Documents/Upenn/Thesis/GCBBA_Warehouse_System/experiments/plotting/plot_ss_compact_views.py --csv c:/Users/shrey/OneDrive/Documents/Upenn/Thesis/GCBBA_Warehouse_System/results/experiments/gridworld_warehouse_large/20260427_022850/summary.csv --all --save
+allocation_method: None
+csv: c:/Users/shrey/OneDrive/Documents/Upenn/Thesis/GCBBA_Warehouse_System/results/experiments/gridworld_warehouse_large/20260427_022850/summary.csv
+include_wall_clock_timeouts: False
+map_name: gridworld_warehouse_large
+min_seeds: 2
+mode: compact
+save: True
+throughput_threshold: 0.9
+timestamp: 20260427_022850
