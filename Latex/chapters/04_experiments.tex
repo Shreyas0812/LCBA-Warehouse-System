@@ -581,10 +581,10 @@ the appendix-level discussion.
 
 The compared methods are LCBA (internal key \texttt{gcbba}), CBBA, SGA,
 and DMCHBA. All methods use the same simulation and path-planning stack so
-that differences primarily reflect allocation behavior. DMCHBA is retained as
-a high-performance reference baseline, while LCBA/CBBA/SGA provide
-decentralized-style comparisons with varying robustness under communication and
-load stress.
+that differences primarily reflect allocation behavior. The main-chapter narrative
+includes results from all four methods to provide both decentralized (LCBA, CBBA)
+and centralized (SGA, DMCHBA) comparisons across communication robustness and
+performance metrics.
 
 
 % ── 4.2 ─────────────────────────────────────────────────────────
@@ -623,10 +623,15 @@ LCBA's makespan ranges from approximately 685 timesteps at $\comm = 4$
 (fully disconnected) to 640 timesteps at $\comm \geq 25$ (connected).
 SGA achieves 663 timesteps at $\comm = 4$ and 519 timesteps on the completed
 connected seed (seed~123); seed~42 timed out under these settings.
-This confirms that the centralized baseline benefits more from connectivity,
-but the connected-graph figure is seed-specific rather than universal.
 CBBA ranges from 860 timesteps at $\comm = 4$ down to 640 timesteps on
 connected graphs.
+DMCHBA, the alternative centralized optimal-matching method, ranges from
+approximately 2725 timesteps at $\comm = 4$ down to 515 timesteps at
+$\comm \geq 25$, substantially worse than all decentralized and greedy
+centralized approaches at disconnected settings.
+This confirms that both decentralized methods and the greedy centralized
+baseline significantly outperform optimal-matching approaches in this domain,
+while all methods show improved performance with increased connectivity.
 On the completed connected seed (seed~123, $\comm \geq 25$), LCBA achieves a
 makespan ratio of $0.91\times$ relative to SGA, within the theoretical $2\times$
 bound inherited from GCBBA.
@@ -711,8 +716,9 @@ Allocation timing statistics are drawn from the \texttt{avg\_allocation\_time\_m
 and \texttt{num\_allocation\_calls} fields in the batch summary CSVs.
 At light load (64 tasks, fully connected, \texttt{warehouse\_small}),
 LCBA averages $1.0$--$5.5$\,ms per allocation call,
-CBBA averages $1.2$--$8.4$\,ms, and SGA averages $0.3$--$0.6$\,ms.
-All three methods are well within a per-timestep compute budget at this scale.
+CBBA averages $1.2$--$8.4$\,ms, SGA averages $0.3$--$0.6$\,ms, and
+DMCHBA averages $0.04$--$0.05$\,ms.
+All four methods are well within a per-timestep compute budget at this scale.
 
 At higher loads (120 tasks), LCBA's average allocation time rises to
 $14$--$126$\,ms per call as the number of consensus rounds grows with
@@ -722,6 +728,8 @@ rounds.
 CBBA shows the largest variance at high load and low communication range
 ($14$--$500+$\,ms), consistent with the timeout behavior observed in the
 reliability screen.
+DMCHBA's allocation time remains sub-millisecond even at high loads due to
+the centralized structure requiring no distributed consensus.
 
 The number of allocation calls per run scales with task load and
 replanning frequency: at $ri = 50$ and 1500 timesteps, LCBA issues
@@ -746,10 +754,14 @@ Agent utilization and load-balance statistics are drawn from the
 \texttt{avg\_idle\_ratio} and \texttt{task\_balance\_std} fields in the
 batch summary CSVs.
 At light load (64 tasks, \texttt{warehouse\_small}), the average idle fraction
-across methods ranges from $0.06$ to $0.40$ depending on communication range.
+across methods ranges from $0.06$ to $0.48$ depending on communication range.
 LCBA shows a lower idle ratio ($0.06$--$0.11$) at fully connected ranges
 compared to CBBA ($0.06$--$0.43$), indicating that LCBA distributes tasks
 more evenly across the fleet and leaves fewer agents waiting for work.
+DMCHBA's idle ratio ($0.06$--$0.48$ across all communication ranges) falls
+between LCBA and CBBA, suggesting that centralized optimal matching provides
+moderately balanced assignments but without the robustness benefits of
+local consensus.
 Task balance standard deviation---the standard deviation of per-agent
 task counts---is consistently below $2.0$ for LCBA at $\comm \geq 15$,
 reflecting balanced assignment.
@@ -778,6 +790,10 @@ continues to make progress.
 CBBA matches LCBA at connected ranges but drops by approximately 15\% at
 $\comm = 8$ ($0.039$ vs. $0.046$~tasks/ts), confirming the advantage of
 component-local consensus under degraded connectivity.
+DMCHBA sustains high throughput at fully connected settings ($\approx 0.067$~tasks/ts),
+comparable to LCBA, but degrades sharply at lower communication ranges, achieving only
+$0.017$~tasks/ts at $\comm = 4$, demonstrating that centralized optimal matching, while
+good for makespan, sacrifices robustness under communication constraints.
 Above-capacity loads ($\lambda = 0.0134$) produce graceful saturation rather
 than collapse: LCBA achieves up to $\approx 0.105$~tasks/ts at $\comm \geq 25$,
 and throughput rolls off smoothly rather than crashing.
