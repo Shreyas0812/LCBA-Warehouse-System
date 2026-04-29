@@ -80,6 +80,60 @@ Variance is higher at $\comm = 4$--$8$ and high load, consistent with
 the greater sensitivity to initial allocation in disconnected regimes.
 
 
+\section{Steady-State Degradation Curves}
+\label{app:ss_degradation_curves}
+
+The following figures present steady-state throughput and wait-time degradation
+curves across communication ranges for all main-analysis maps. These curves provide
+fine-grained visibility into performance sensitivity to connectivity constraints.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_throughput_degradation_by_comm_range.png}
+    \caption{Warehouse-small}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gridworld_crossdock/20260426_141042/ss_results/compact_views/compact_throughput_degradation_by_comm_range.png}
+    \caption{Crossdock}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gridworld_warehouse_large/20260427_022850/ss_results/compact_views/compact_throughput_degradation_by_comm_range.png}
+    \caption{Warehouse-large}
+  \end{subfigure}
+  \caption{Steady-state throughput degradation by communication range across all maps.}
+  \label{fig:ss_throughput_degradation_current_maps}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_wait_time_degradation_by_comm_range.png}
+    \caption{Warehouse-small}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gridworld_crossdock/20260426_141042/ss_results/compact_views/compact_wait_time_degradation_by_comm_range.png}
+    \caption{Crossdock}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gridworld_warehouse_large/20260427_022850/ss_results/compact_views/compact_wait_time_degradation_by_comm_range.png}
+    \caption{Warehouse-large}
+  \end{subfigure}
+  \caption{Steady-state wait-time degradation by communication range across all maps.}
+  \label{fig:ss_wait_time_degradation_current_maps}
+\end{figure}
+
+
 \section{Graph Connectivity Analysis}
 \label{app:graph_connectivity}
 

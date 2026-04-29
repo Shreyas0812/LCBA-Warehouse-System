@@ -802,11 +802,14 @@ and throughput rolls off smoothly rather than crashing.
 \label{subsec:exp_ss_diagnostics}
 
 The steady-state compact-view results reinforce consistent behavior across maps.
-The tradeoff plots show that higher throughput generally corresponds to lower wait
-when communication range is sufficient, while degradation curves demonstrate
-how each method's throughput and latency respond to communication constraints.
+The tradeoff plots (Figure~\ref{fig:ss_tradeoff_current_maps}) show that higher throughput generally corresponds to lower wait
+when communication range is sufficient.
 All three main-analysis maps (\texttt{warehouse\_small}, \texttt{crossdock},
 and \texttt{warehouse\_large}) exhibit the same stable-regime characteristics.
+
+Detailed degradation curves showing how each method's throughput and latency respond
+to communication constraints across all three maps are provided in
+Appendix~\ref{app:ss_degradation_curves}.
 
 \begin{figure}[htbp]
   \centering
@@ -829,52 +832,6 @@ and \texttt{warehouse\_large}) exhibit the same stable-regime characteristics.
   \end{subfigure}
   \caption{Steady-state throughput--wait tradeoff across all maps.}
   \label{fig:ss_tradeoff_current_maps}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \begin{subfigure}[t]{0.32\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_throughput_degradation_by_comm_range.png}
-    \caption{Warehouse-small}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.32\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/gridworld_crossdock/20260426_141042/ss_results/compact_views/compact_throughput_degradation_by_comm_range.png}
-    \caption{Crossdock}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.32\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/gridworld_warehouse_large/20260427_022850/ss_results/compact_views/compact_throughput_degradation_by_comm_range.png}
-    \caption{Warehouse-large}
-  \end{subfigure}
-  \caption{Steady-state throughput degradation by communication range across all maps.}
-  \label{fig:ss_throughput_degradation_current_maps}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \begin{subfigure}[t]{0.32\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_wait_time_degradation_by_comm_range.png}
-    \caption{Warehouse-small}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.32\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/gridworld_crossdock/20260426_141042/ss_results/compact_views/compact_wait_time_degradation_by_comm_range.png}
-    \caption{Crossdock}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.32\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/gridworld_warehouse_large/20260427_022850/ss_results/compact_views/compact_wait_time_degradation_by_comm_range.png}
-    \caption{Warehouse-large}
-  \end{subfigure}
-  \caption{Steady-state wait-time degradation by communication range across all maps.}
-  \label{fig:ss_wait_time_degradation_current_maps}
 \end{figure}
 
 
