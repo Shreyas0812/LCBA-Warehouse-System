@@ -648,10 +648,9 @@ On connected graphs ($\comm \geq 25$, 64 tasks, \texttt{warehouse\_small}),
 the LCBA-to-SGA makespan ratio is $0.91$ for seed~123, the only seed on which
 SGA completed; seed~42's SGA timed out at these settings, so no within-seed
 ratio is available for that seed.
-The ratio below 1.0 on seed~123 occurs because LCBA's decentralized consensus
-incorporates path-conflict information during bid computation, occasionally
-yielding a shorter aggregate execution than the greedy centralized SGA
-assignment.
+The ratio below 1.0 on seed~123 occurs because LCBA's decentralized consensus,
+using insertion-based completion-time bids, can sometimes yield shorter
+aggregate execution than the greedy centralized SGA assignment.
 LCBA remains within the theoretical $2\times$ optimality bound on the evaluated
 seed.
 
@@ -886,8 +885,8 @@ On fully connected graphs, LCBA achieves a makespan ratio of $0.91\times$
 relative to SGA on the completed seed (seed~123), well within the theoretical
 $2\times$ bound.
 SGA timed out on seed~42 at these settings, so only one within-seed ratio
-is available; seed~123 confirms that LCBA's path-aware bid computation
-can outperform the greedy centralized baseline.
+is available; seed~123 confirms that LCBA's insertion-based completion-time
+bid computation can outperform the greedy centralized baseline.
 
 \textbf{RQ3 (Path planner trade-offs).}
 All three planners (CA*, PBS, RHCR) maintain hard collision safety.
