@@ -76,11 +76,7 @@ per map and the recommended reporting role in this thesis.
 
 \begin{table}[htbp]
   \centering
-  \small
-  \caption{Batch reliability screen from full-mode runs. A map is marked
-       as main-analysis-ready when it provides usable low-to-mid load
-       comparisons without timeout-dominated behavior.}
-  \label{tab:batch_reliability_screen}
+  \resizebox{\linewidth}{!}{
   \begin{tabular}{lccc}
     \hline
     Map & Max reliable task count & Completed-only makespan usable & Recommended use \\
@@ -93,6 +89,11 @@ per map and the recommended reporting role in this thesis.
     gridworld\_shelf\_aisle      & N/A & No & Stress / appendix \\
     \hline
   \end{tabular}
+  }
+  \caption{Batch reliability screen from full-mode runs. A map is marked
+       as main-analysis-ready when it provides usable low-to-mid load
+       comparisons without timeout-dominated behavior.}
+  \label{tab:batch_reliability_screen}
 \end{table}
 
 The three main-analysis maps (crossdock, warehouse\_small, and warehouse\_large)
