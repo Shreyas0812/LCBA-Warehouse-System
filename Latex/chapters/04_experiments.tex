@@ -85,14 +85,16 @@ per map and the recommended reporting role in this thesis.
     gridworld\_warehouse\_small & 120 & Partial (best at lower loads) & Main analysis \\
     gridworld\_warehouse\_large & 144 & Partial (exclude top load in main) & Main analysis \\
     gridworld\_kiva            & 75  & No (timestep-ceiling dominated) & Secondary / partial-completion \\
-    gridworld\_kiva\_large      & N/A & No & Stress / appendix \\
-    gridworld\_shelf\_aisle      & N/A & No & Stress / appendix \\
+    gridworld\_kiva\_large      & N/A & No & Stress / appendix (LCBA vs DMCHBA only) \\
+    gridworld\_shelf\_aisle      & N/A & No & Stress / appendix (LCBA vs DMCHBA only) \\
     \hline
   \end{tabular}
   }
   \caption{Batch reliability screen from full-mode runs. A map is marked
        as main-analysis-ready when it provides usable low-to-mid load
-       comparisons without timeout-dominated behavior.}
+      comparisons without timeout-dominated behavior. Kiva-Large and
+      Shelf-Aisle are included as stress/appendix maps because CBBA and SGA
+      were not run for those maps in the final batch coverage.}
   \label{tab:batch_reliability_screen}
 \end{table}
 
@@ -391,9 +393,10 @@ points; rather, they stress-test the algorithm under conditions where task compl
 and throughput collapse. Results on stress-regime maps are reported primarily through
 throughput and capacity-frontier visuals, while the timeout diagnostics are deferred
 to Appendix~\ref{app:stress_timeout_diagnostics}.
+% Source: stress-regime compact-view runs; kiva_large and shelf_aisle batch coverage is partial.
 
 \paragraph{Kiva Results.}
-Kiva (40×40 grid, up to 100 agents) represents narrow-aisle congestion constraints.
+Kiva (36×36 grid, 20 agents) represents narrow-aisle congestion constraints.
 Results show throughput and capacity-frontier behavior, demonstrating algorithm
 behavior approaching system saturation limits.
 
@@ -442,9 +445,10 @@ behavior approaching system saturation limits.
 %\end{figure}
 
 \paragraph{Kiva-Large Results.}
-Kiva-Large (100×100 grid, up to 200 agents) combines extreme scale with heavy congestion.
+Kiva-Large (72×72 grid, 80 agents) combines extreme scale with heavy congestion.
 Results probe scalability limits by testing how algorithm resource consumption and latency
 degrade as system load increases beyond practical thresholds.
+% Source: config/gridworld_kiva_large.yaml; batch results only include gcbba and dmchba.
 
 \begin{figure}[htbp]
   \centering
@@ -617,12 +621,14 @@ Figure~\ref{fig:batch_completion_heatmaps_main_maps}.
 On completed batch runs at light load (64 tasks, \texttt{warehouse\_small}),
 LCBA's makespan ranges from approximately 685 timesteps at $\comm = 4$
 (fully disconnected) to 640 timesteps at $\comm \geq 25$ (connected).
-SGA achieves 663 timesteps at $\comm = 4$ and 519 timesteps at $\comm \geq 25$,
-confirming that the centralized baseline benefits more from connectivity.
+SGA achieves 663 timesteps at $\comm = 4$ and 519 timesteps on the completed
+connected seed (seed~123); seed~42 timed out under these settings.
+This confirms that the centralized baseline benefits more from connectivity,
+but the connected-graph figure is seed-specific rather than universal.
 CBBA ranges from 860 timesteps at $\comm = 4$ down to 640 timesteps on
 connected graphs.
-On connected graphs ($\comm \geq 25$), LCBA achieves a makespan ratio of
-approximately $1.23\times$ relative to SGA, within the theoretical $2\times$
+On the completed connected seed (seed~123, $\comm \geq 25$), LCBA achieves a
+makespan ratio of $0.91\times$ relative to SGA, within the theoretical $2\times$
 bound inherited from GCBBA.
 The corresponding wall-time behavior is summarized numerically in
 Section~\ref{sec:exp_timing}, which reports the allocation-time ranges
@@ -639,24 +645,25 @@ directly without relying on a dense scatter plot.
 \label{subsec:exp_suboptimality}
 
 On connected graphs ($\comm \geq 25$, 64 tasks, \texttt{warehouse\_small}),
-the LCBA-to-SGA makespan ratio is $0.91$ for seed~123 and $1.55$ for seed~42,
-giving a mean of $\approx 1.23\times$.
+the LCBA-to-SGA makespan ratio is $0.91$ for seed~123, the only seed on which
+SGA completed; seed~42's SGA timed out at these settings, so no within-seed
+ratio is available for that seed.
 The ratio below 1.0 on seed~123 occurs because LCBA's decentralized consensus
 incorporates path-conflict information during bid computation, occasionally
 yielding a shorter aggregate execution than the greedy centralized SGA
 assignment.
-In all tested connected configurations, LCBA remains within the theoretical
-$2\times$ optimality bound inherited from GCBBA.
+LCBA remains within the theoretical $2\times$ optimality bound on the evaluated
+seed.
 
 
 \subsection{Makespan Gap Relative to SGA}
 \label{subsec:exp_makespan_gap}
 
 The percentage makespan gap of LCBA relative to SGA at light load
-(64 tasks, $\comm \geq 25$, \texttt{warehouse\_small}) ranges from
-$-9\%$ to $+55\%$ across seeds, with a mean of $+23\%$.
-CBBA shows a wider range across seeds, indicating sensitivity to path-conflict
-effects and consensus efficiency across the seeded configurations.
+(64 tasks, $\comm \geq 25$, \texttt{warehouse\_small}) is $-9\%$ on the
+completed seed (seed~123), indicating LCBA finished 9\% faster than SGA on
+that seed.
+No valid gap is available for seed~42 since SGA timed out under those settings.
 
 
 % ── 4.4 ─────────────────────────────────────────────────────────
@@ -670,6 +677,8 @@ The canonical configuration of $ri = 50$ is used for all main-chapter
 comparisons. Analysis shows that completion rate is largely insensitive to $ri$
 above 25 at light-to-moderate loads, while very short intervals ($ri = 10$)
 increase allocation overhead without meaningful throughput gains.
+Sensitivity runs additionally used seed~456 for variance estimation in the
+rerun-interval sub-study.
 
 
 % ── 4.5 ─────────────────────────────────────────────────────────
@@ -677,8 +686,8 @@ increase allocation overhead without meaningful throughput gains.
 \label{sec:exp_safety}
 
 Post-hoc safety audits of all batch runs on \texttt{warehouse\_small}
-found \textbf{zero vertex conflicts} across all completed runs, confirming
-that the CA* space-time reservation table enforces hard collision safety.
+found \textbf{zero vertex conflicts} across all completed runs in automated
+post-run checks.
 No two agents occupied the same grid cell at the same timestep in any run.
 
 Deadlock events---detected when an agent fails to make forward progress
@@ -717,8 +726,8 @@ reliability screen.
 
 The number of allocation calls per run scales with task load and
 replanning frequency: at $ri = 50$ and 1500 timesteps, LCBA issues
-approximately 1,000--1,300 allocation calls per steady-state run,
-each completing in well under 10\,ms at the development scale.
+roughly 700--1,300 allocation calls per steady-state run, each completing in
+well under 10\,ms at the development scale.
 
 
 % ── 4.7 ─────────────────────────────────────────────────────────
@@ -767,11 +776,11 @@ Throughput degrades at $\comm = 8$ (borderline disconnected, $0.046$~tasks/ts)
 and $\comm = 4$ (fully isolated, $\approx 0.059$~tasks/ts); the isolated
 case is still non-zero because event-driven replanning within each component
 continues to make progress.
-CBBA matches LCBA at connected ranges but drops by approximately 18\% at
-$\comm = 8$ ($0.039$ vs.\ $0.046$~tasks/ts), confirming the advantage of
+CBBA matches LCBA at connected ranges but drops by approximately 15\% at
+$\comm = 8$ ($0.039$ vs. $0.046$~tasks/ts), confirming the advantage of
 component-local consensus under degraded connectivity.
 Above-capacity loads ($\lambda = 0.0134$) produce graceful saturation rather
-than collapse: LCBA achieves $\approx 0.105$~tasks/ts at connected settings,
+than collapse: LCBA achieves up to $\approx 0.105$~tasks/ts at $\comm \geq 25$,
 and throughput rolls off smoothly rather than crashing.
 
 \subsection{Additional Steady-State Diagnostics}
@@ -873,11 +882,12 @@ all communication ranges above the connectivity threshold, with graceful
 degradation (not collapse) at fully disconnected settings.
 
 \textbf{RQ2 (Optimality).}
-On fully connected graphs, LCBA achieves a mean makespan ratio of
-$\approx 1.23\times$ relative to SGA (range $0.91$--$1.55$ across seeds),
-well within the theoretical $2\times$ bound.
-One seed produces a ratio below $1.0$, confirming that LCBA's path-aware
-bid computation can occasionally outperform the greedy centralized baseline.
+On fully connected graphs, LCBA achieves a makespan ratio of $0.91\times$
+relative to SGA on the completed seed (seed~123), well within the theoretical
+$2\times$ bound.
+SGA timed out on seed~42 at these settings, so only one within-seed ratio
+is available; seed~123 confirms that LCBA's path-aware bid computation
+can outperform the greedy centralized baseline.
 
 \textbf{RQ3 (Path planner trade-offs).}
 All three planners (CA*, PBS, RHCR) maintain hard collision safety.

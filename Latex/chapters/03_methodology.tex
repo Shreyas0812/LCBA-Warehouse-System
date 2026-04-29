@@ -62,7 +62,8 @@ the objective is to minimize makespan: the timestep at which the last task is
 completed.
 In \emph{steady-state mode}, tasks arrive continuously at each induct station at
 rate $\lambda$ tasks per timestep, and the objective is to maximize throughput:
-the number of tasks completed per timestep after a warm-up period.
+the number of tasks completed per timestep over the full 1500-timestep window
+(the reported runs use $\text{warmup\_timesteps} = 0$).
 
 \textbf{Constraints.}
 In both modes, every agent must follow a collision-free path:
