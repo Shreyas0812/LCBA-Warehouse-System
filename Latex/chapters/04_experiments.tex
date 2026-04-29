@@ -712,8 +712,7 @@ within the environments evaluated.
 \section{Computational Overhead}
 \label{sec:exp_timing}
 
-Allocation timing statistics are drawn from the \texttt{avg\_allocation\_time\_ms}
-and \texttt{num\_allocation\_calls} fields in the batch summary CSVs.
+Allocation timing statistics are drawn from the \texttt{avg\_allocation\_time\_ms} and \\ \texttt{num\_allocation\_calls} fields in the batch summary CSVs.
 At light load (64 tasks, fully connected, \texttt{warehouse\_small}),
 LCBA averages $1.0$--$5.5$\,ms per allocation call,
 CBBA averages $1.2$--$8.4$\,ms, SGA averages $0.3$--$0.6$\,ms, and
@@ -762,8 +761,8 @@ DMCHBA's idle ratio ($0.06$--$0.48$ across all communication ranges) falls
 between LCBA and CBBA, suggesting that centralized optimal matching provides
 moderately balanced assignments but without the robustness benefits of
 local consensus.
-Task balance standard deviation---the standard deviation of per-agent
-task counts---is consistently below $2.0$ for LCBA at $\comm \geq 15$,
+The standard deviation of per-agent
+task counts is consistently below $2.0$ for LCBA at $\comm \geq 15$,
 reflecting balanced assignment.
 At fully disconnected settings ($\comm = 4$), balance degrades as isolated
 agents cannot bid on tasks visible only to other components.
