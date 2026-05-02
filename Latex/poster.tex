@@ -63,7 +63,7 @@
         {\textbf{Figure:} System Architecture integrating LCBA with role-based planners.}
     \end{center}
     \vspace{0.1cm}
-    \textbf{Design:} Logically decentralized allocation (LCBA) integrates with role-based path planners (CA*, PBS, RHCR) to ensure collision-free execution.
+    \textbf{Design:} LCBA is logically decentralized, integrating with role-based path planners --- RHCR for task execution, CA* for charging --- to ensure collision-free execution.
 }
 
 \block{4. Experimental Scale}{
@@ -116,7 +116,7 @@
     \end{center}
     \vspace{0.1cm}
     \begin{itemize}
-        \item \textbf{Robustness:} LCBA maintains $\geq$0.91 completion across all comm ranges and task loads; CBBA is similarly robust --- both handle network fragmentation gracefully.
+        \item \textbf{Robustness:} LCBA maintains $\geq$0.90 completion across all comm ranges and task loads; CBBA is similarly robust --- both handle network fragmentation gracefully.
         \item \textbf{SOTA Failure:} DMCHBA (SOTA) drops to 32--43\% completion at minimum range --- its per-component Hungarian solves multiply in cost as the network fragments.
         \item \textbf{Clean signal:} No missing data (no wall-clock timeouts) --- every cell reflects a completed run, making the contrast unambiguous.
     \end{itemize}
