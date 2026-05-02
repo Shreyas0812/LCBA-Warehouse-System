@@ -77,26 +77,30 @@
 
 \block{Simulation Environments}{
     \begin{center}
-        \begin{minipage}[t]{0.31\linewidth}
+        \begin{minipage}[t]{0.48\linewidth}
             \centering
-            % Swap with your first map (e.g., warehouse_small)
-            \includegraphics[width=\linewidth, height=12cm, keepaspectratio]{example-image-a}
-            \vspace{0.2cm} \\
+            \includegraphics[width=\linewidth, height=9cm, keepaspectratio]{example-image-a}
+            \vspace{0.1cm} \\
             {\textbf{1.} \texttt{warehouse\_small}}
         \end{minipage}\hfill
-        \begin{minipage}[t]{0.31\linewidth}
+        \begin{minipage}[t]{0.48\linewidth}
             \centering
-            % Swap with your second map (e.g., crossdock)
-            \includegraphics[width=\linewidth, height=12cm, keepaspectratio]{example-image-b}
-            \vspace{0.2cm} \\
+            \includegraphics[width=\linewidth, height=9cm, keepaspectratio]{example-image-b}
+            \vspace{0.1cm} \\
             {\textbf{2.} \texttt{crossdock}}
-        \end{minipage}\hfill
-        \begin{minipage}[t]{0.31\linewidth}
+        \end{minipage}
+        \vspace{0.3cm}
+        \begin{minipage}[t]{0.48\linewidth}
             \centering
-            % Swap with your third map (e.g., warehouse_large)
-            \includegraphics[width=\linewidth, height=12cm, keepaspectratio]{example-image-c}
-            \vspace{0.2cm} \\
+            \includegraphics[width=\linewidth, height=9cm, keepaspectratio]{example-image-c}
+            \vspace{0.1cm} \\
             {\textbf{3.} \texttt{warehouse\_large}}
+        \end{minipage}\hfill
+        \begin{minipage}[t]{0.48\linewidth}
+            \centering
+            \includegraphics[width=\linewidth, height=9cm, keepaspectratio]{example-image-a}
+            \vspace{0.1cm} \\
+            {\textbf{4.} \texttt{kiva}}
         \end{minipage}
     \end{center}
 }
@@ -120,15 +124,17 @@
     \end{itemize}
 }
 
-\block{6. Steady-State Regime: Allocation Efficiency}{
+\block{6. Steady-State Regime: Throughput Under Fragmentation}{
     \begin{center}
-        \includegraphics[width=0.9\linewidth, height=22cm, keepaspectratio]{example-image-c}
+        \includegraphics[width=0.9\linewidth, height=22cm, keepaspectratio]{figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_heatmap_throughput.png}
         \vspace{0.1cm}
-        {\textbf{Figure:} TBD --- steady-state result.}
+        {\textbf{Figure:} Steady-state throughput heatmap across algorithms (Warehouse Small, 30$\times$30, 6 agents).}
     \end{center}
     \vspace{0.1cm}
     \begin{itemize}
-        \item TBD
+        \item \textbf{Robustness:} LCBA maintains viable throughput across all arrival rates and comm ranges --- no stalls, no missing cells, even at minimum range (4 grid units).
+        \item \textbf{SOTA outperformed:} At minimum comm range, LCBA achieves $+18\%$ higher throughput than CBBA and $+66\%$ higher than DMCHBA (SOTA).
+        \item \textbf{Convergence:} At full connectivity, all methods reach the same throughput ceiling --- LCBA imposes no overhead when communication is unrestricted.
     \end{itemize}
 }
 
