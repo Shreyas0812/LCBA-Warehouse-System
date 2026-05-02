@@ -108,31 +108,27 @@
 
 \block{5. Batch Regime: Communication Robustness}{
     \begin{center}
-        % Increased height to 22cm to fill the recovered space
-        \includegraphics[width=0.9\linewidth, height=22cm, keepaspectratio]{example-image-b}
+        \includegraphics[width=0.9\linewidth, height=22cm, keepaspectratio]{figures/gridworld_kiva/20260425_030403/batch_results/compact_views/compact_heatmap_completion_rate.png}
         \vspace{0.1cm}
-        {\textbf{Figure:} Batch regime completion rate heatmap (warehouse large).}
+        {\textbf{Figure:} Batch completion rate heatmap across algorithms (Kiva, 36$\times$36, 20 agents).}
     \end{center}
     \vspace{0.1cm}
     \begin{itemize}
-        \item \textbf{Survival:} LCBA achieves non-zero task completion at \textit{all} tested communication ranges, including fully disconnected states ($\le$ 4 grid units).
-        \item \textbf{Baseline Failure:} Under identical conditions, baselines (CBBA, SGA) experience 100\% timeout failure.
-        \item \textbf{Optimality:} Maintains a $0.91\times$ makespan ratio relative to greedy centralized assignment on connected graphs.
+        \item \textbf{Robustness:} LCBA maintains $\geq$0.91 completion across all comm ranges and task loads; CBBA is similarly robust --- both handle network fragmentation gracefully.
+        \item \textbf{SOTA Failure:} DMCHBA (SOTA) drops to 32--43\% completion at minimum range --- its per-component Hungarian solves multiply in cost as the network fragments.
+        \item \textbf{Clean signal:} No missing data (no wall-clock timeouts) --- every cell reflects a completed run, making the contrast unambiguous.
     \end{itemize}
 }
 
-\block{6. Steady-State Regime: Sustaining Throughput}{
+\block{6. Steady-State Regime: Allocation Efficiency}{
     \begin{center}
-        % Increased height to 22cm to fill the recovered space
         \includegraphics[width=0.9\linewidth, height=22cm, keepaspectratio]{example-image-c}
         \vspace{0.1cm}
-        {\textbf{Figure:} Steady-state capacity frontier across all maps.}
+        {\textbf{Figure:} TBD --- steady-state result.}
     \end{center}
     \vspace{0.1cm}
     \begin{itemize}
-        \item \textbf{Flat Profile:} LCBA maintains a flat, near-peak throughput profile across the entire connectivity spectrum.
-        \item \textbf{Saturation Behavior:} Baseline throughput collapses by over 15\% when connectivity drops. LCBA exhibits graceful degradation during overloads.
-        \item \textbf{Adversarial Geometries:} Proved algorithm resilience in highly adversarial, geometrically constrained layouts.
+        \item TBD
     \end{itemize}
 }
 
