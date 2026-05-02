@@ -129,8 +129,8 @@
     \end{center}
     \vspace{0.1cm}
     \begin{itemize}
-        \item \textbf{Robustness:} LCBA maintains $\geq$0.90 completion across all comm ranges and task loads. CBBA is similarly robust, handling network fragmentation gracefully.
-        \item \textbf{SOTA Failure:} DMCHBA (SOTA) drops to 32--43\% completion at minimum range. Its per-component Hungarian solves multiply in cost as the network fragments.
+        \item \textbf{Robustness:} LCBA maintains high completion across all tested comm ranges and task loads. CBBA is similarly robust, handling network fragmentation gracefully.
+        \item \textbf{SOTA Failure:} DMCHBA (SOTA) drops sharply at minimum range. Its per-component Hungarian solves multiply in cost as the network fragments.
         \item \textbf{Clean signal:} No missing data (no wall-clock timeouts): every cell reflects a completed run, making the contrast unambiguous.
     \end{itemize}
 }
@@ -144,12 +144,12 @@
     \vspace{0.1cm}
     \begin{itemize}
         \item \textbf{Robustness:} LCBA maintains viable throughput across all arrival rates and comm ranges: no stalls, no missing cells, even at minimum range (4 grid units).
-        \item \textbf{SOTA outperformed:} At minimum comm range, LCBA achieves $+18\%$ higher throughput than CBBA and $+66\%$ higher than DMCHBA (SOTA).
-        \item \textbf{Convergence:} At full connectivity, all methods reach the same throughput ceiling. LCBA imposes no overhead when communication is unrestricted.
+        \item \textbf{SOTA outperformed:} At minimum comm range, LCBA outperforms CBBA and DMCHBA (SOTA) in throughput.
+        \item \textbf{Convergence:} At full connectivity, all methods reach the same throughput ceiling. LCBA imposes no clear overhead when communication is unrestricted.
     \end{itemize}
 }
 
-\block{7. Allocation Efficiency: Why LCBA Outperforms CBBA}{
+\block{7. Allocation Efficiency — Empirical Evidence}{
     \begin{center}
         \includegraphics[width=0.95\linewidth, height=15cm, keepaspectratio]{figures/poster_alloc_time_wh_large.png}
         \vspace{0.1cm}
@@ -157,9 +157,9 @@
     \end{center}
     \vspace{0.1cm}
     \begin{itemize}
-        \item \textbf{LCBA vs.\ CBBA:} At minimum comm range, LCBA is $\mathbf{8\times}$ faster than CBBA. Local consensus terminates early within each component, while CBBA runs all $N_{\min}\times D$ rounds regardless.
-        \item \textbf{LCBA vs.\ DMCHBA:} LCBA is $\mathbf{5\times}$ faster than DMCHBA. DMCHBA clones the full task list and runs Hungarian independently per component, multiplying overhead.
-        \item \textbf{Scales with fleet size:} The gap widens with agent count. At 18 agents, CBBA's extra consensus rounds compound while LCBA's early termination scales favorably.
+        \item \textbf{LCBA vs.\ CBBA:} At minimum comm range, LCBA is substantially faster than CBBA. LCBA terminates early within each component, while CBBA runs all $N_{\min}\times D$ rounds regardless.
+        \item \textbf{LCBA vs.\ DMCHBA:} LCBA is substantially faster than DMCHBA. DMCHBA clones the full task list and runs Hungarian independently per component, multiplying overhead.
+        \item \textbf{Scales with fleet size:} LCBA outperforms CBBA at minimum comm range across all tested fleet sizes. At 18 agents, CBBA runs twice as many consensus rounds (31.6 vs.\ 15.8), producing $3\times$ higher allocation time (47\,ms vs.\ 15\,ms).
     \end{itemize}
 }
 
