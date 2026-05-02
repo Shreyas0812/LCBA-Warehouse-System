@@ -1,12 +1,13 @@
-\documentclass[25pt, portrait, margin=2cm, colspace=2cm, blockverticalspace=1.5cm]{tikzposter}
+\documentclass[20pt, portrait, margin=1.5cm, colspace=1.5cm, blockverticalspace=0.8cm]{tikzposter}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{qrcode}
 \usepackage{hyperref}
+\usepackage[paperwidth=30in, paperheight=40in, margin=1.5cm]{geometry}
 
 % --- Custom UPenn Academic Color Scheme ---
-\usetheme{Default} 
+\usetheme{Default}
 \definecolor{PennBlue}{RGB}{1, 31, 91}
 \definecolor{PennRed}{RGB}{153, 0, 0}
 
@@ -20,15 +21,25 @@
 \colorlet{blockbodyfgcolor}{black}
 
 % Remove the default TikZposter watermark at the bottom right
-\tikzposterlatexaffectionproofoff 
+\tikzposterlatexaffectionproofoff
 
-% --- Title Block ---
-% Added negative vspace to shrink the wasted blue padding at the top and bottom
-\title{\vspace{-1cm}\parbox{\linewidth}{\centering {\Huge \textbf{Scalable Multi-Robot Coordination:}} \\
-{\LARGE Integrating LCBA Task Allocation with Decentralized Path Planning}}}
-\author{Shreyas Raorane}
-\institute{{\Large Master of Science in Engineering in Robotics, University of Pennsylvania}\\[4pt]
-{\Large Advisors: Dr. Linh Thi Xuan Phan, Dr. Rahul Mangharam, Dr. Ani Hsieh}\vspace{-1cm}}
+% --- Custom Title Block Override ---
+\settitle{
+    \centering
+    \color{titlefgcolor}
+    \vspace*{1cm} % RESTORED thick top padding inside the blue box
+    {\Huge \textbf{Scalable Multi-Robot Coordination:} \\ \LARGE Integrating LCBA Task Allocation with Decentralized Path Planning \par}
+    \vspace*{0.8cm}
+    {\LARGE Shreyas Raorane \par}
+    \vspace*{0.4cm}
+    {\Large Master of Science in Engineering in Robotics, University of Pennsylvania \\
+    Advisors: Dr. Linh Thi Xuan Phan, Dr. Rahul Mangharam, Dr. Ani Hsieh \par}
+    \vspace*{1cm} % RESTORED thick bottom padding inside the blue box
+}
+
+% --- THE FIX: Yank the entire full-sized title box up into the top margin ---
+\setlength{\titletotopverticalspace}{-2cm} 
+\setlength{\titletoblockvspace}{0.8cm}
 
 \begin{document}
 
@@ -58,7 +69,7 @@
 
 \block{3. System Architecture}{
     \begin{center}
-        \includegraphics[width=0.9\linewidth, height=26cm, keepaspectratio]{figures/system_architecture.png}
+        \includegraphics[width=0.9\linewidth, height=24cm, keepaspectratio]{figures/system_architecture.png}
         \vspace{0.1cm}
         {\textbf{\\Figure:} System Architecture integrating LCBA with role-based planners.}
     \end{center}
@@ -66,41 +77,43 @@
     \textbf{Design:} LCBA is logically decentralized, integrating with role-based path planners --- RHCR for task execution, CA* for charging --- to ensure collision-free execution.
 }
 
-\block{4. Experimental Scale}{
+\block{4. Experimental Setup}{
     Developed a discrete-time gridworld simulator to evaluate algorithmic limits.
     \begin{itemize}
-        \item \textbf{Scale:} 432 experimental runs across 6 maps.
-        \item \textbf{Agents:} Up to 200 agents.
+        \item \textbf{Scale:} 432 experimental runs across 6 maps, up to 200 agents.
         \item \textbf{Evaluation:} Batch (makespan) and steady-state (throughput) regimes.
     \end{itemize}
-}
-
-\block{Simulation Environments}{
+    \vspace{0.4cm}
     \begin{center}
         \begin{minipage}[c]{0.48\linewidth}
             \centering
-            \includegraphics[width=\linewidth, height=9cm, keepaspectratio]{figures/gridworld_warehouse_small/gridworld_warehouse_small.png} \\[4pt]
+            \includegraphics[width=\linewidth, height=12cm, keepaspectratio]{figures/gridworld_warehouse_small/gridworld_warehouse_small.png} \\[4pt]
             \textbf{Warehouse Small} \\ {\small 30$\times$30, 6 agents}
         \end{minipage}\hfill
         \begin{minipage}[c]{0.48\linewidth}
             \centering
-            \includegraphics[width=\linewidth, height=9cm, keepaspectratio]{figures/gridworld_crossdock/gridworld_crossdock.png} \\[4pt]
+            \includegraphics[width=\linewidth, height=12cm, keepaspectratio]{figures/gridworld_crossdock/gridworld_crossdock.png} \\[4pt]
             \textbf{Crossdock} \\ {\small 44$\times$28, 12 agents}
         \end{minipage}
 
-        \vspace{0.6cm}
+        \vspace{0.4cm}
 
         \begin{minipage}[c]{0.48\linewidth}
             \centering
-            \includegraphics[width=\linewidth, height=9cm, keepaspectratio]{figures/gridworld_warehouse_large/gridworld_warehouse_large.png} \\[4pt]
+            \includegraphics[width=\linewidth, height=12cm, keepaspectratio]{figures/gridworld_warehouse_large/gridworld_warehouse_large.png} \\[4pt]
             \textbf{Warehouse Large} \\ {\small 60$\times$60, 18 agents}
         \end{minipage}\hfill
         \begin{minipage}[c]{0.48\linewidth}
             \centering
-            \includegraphics[width=\linewidth, height=9cm, keepaspectratio]{figures/gridworld_kiva/gridworld_kiva.png} \\[4pt]
+            \includegraphics[width=\linewidth, height=12cm, keepaspectratio]{figures/gridworld_kiva/gridworld_kiva.png} \\[4pt]
             \textbf{Kiva} \\ {\small 36$\times$36, 20 agents}
         \end{minipage}
     \end{center}
+}
+
+\block{8. Conclusion \& Future Work}{
+    \textbf{Conclusion:} LCBA successfully bridges the gap between mathematically rigorous task allocation and the messy reality of physical robot deployments. By localizing consensus, fleets can operate continuously despite extreme network fragmentation. \\[4pt]
+    \textbf{Future Work:} Integrating fully decentralized collision avoidance and deploying the framework onto physical warehouse robots.
 }
 
 % ==========================================
@@ -110,7 +123,7 @@
 
 \block{5. Batch Regime: Communication Robustness}{
     \begin{center}
-        \includegraphics[width=0.9\linewidth, height=22cm, keepaspectratio]{figures/gridworld_kiva/20260425_030403/batch_results/compact_views/compact_heatmap_completion_rate.png}
+        \includegraphics[width=0.9\linewidth, height=15cm, keepaspectratio]{figures/gridworld_kiva/20260425_030403/batch_results/compact_views/compact_heatmap_completion_rate.png}
         \vspace{0.1cm}
         {\textbf{\\Figure:} Batch completion rate heatmap across algorithms \\(Kiva, 36$\times$36, 20 agents).}
     \end{center}
@@ -124,7 +137,7 @@
 
 \block{6. Steady-State Regime: Throughput Under Fragmentation}{
     \begin{center}
-        \includegraphics[width=0.9\linewidth, height=22cm, keepaspectratio]{figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_heatmap_throughput.png}
+        \includegraphics[width=0.9\linewidth, height=15cm, keepaspectratio]{figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_heatmap_throughput.png}
         \vspace{0.1cm}
         {\textbf{\\Figure:} Steady-state throughput heatmap across algorithms \\(Warehouse Small, 30$\times$30, 6 agents).}
     \end{center}
@@ -136,9 +149,18 @@
     \end{itemize}
 }
 
-\block{7. Conclusion \& Future Work}{
-    \textbf{Conclusion:} LCBA successfully bridges the gap between mathematically rigorous task allocation and the messy reality of physical robot deployments. By localizing consensus, fleets can operate continuously despite extreme network fragmentation. \\[4pt]
-    \textbf{Future Work:} Integrating fully decentralized collision avoidance and deploying the framework onto physical warehouse robots.
+\block{7. Allocation Efficiency: Why LCBA Outperforms CBBA}{
+    \begin{center}
+        \includegraphics[width=0.95\linewidth, height=15cm, keepaspectratio]{figures/poster_alloc_time_wh_large.png}
+        \vspace{0.1cm}
+        {\textbf{\\Figure:} Mean allocation time vs.\ communication range (Warehouse Large, 60$\times$60, 18 agents).}
+    \end{center}
+    \vspace{0.1cm}
+    \begin{itemize}
+        \item \textbf{LCBA vs.\ CBBA:} At minimum comm range, LCBA is $\mathbf{8\times}$ faster than CBBA --- local consensus terminates early within each component; CBBA wastes all $N_{\min}\times D$ rounds regardless.
+        \item \textbf{LCBA vs.\ DMCHBA:} LCBA is $\mathbf{5\times}$ faster than DMCHBA --- DMCHBA clones the full task list and runs Hungarian independently per component, multiplying overhead.
+        \item \textbf{Scales with fleet size:} The gap widens as agents increase --- at 18 agents, CBBA's wasted consensus rounds compound, while LCBA's early termination scales favorably.
+    \end{itemize}
 }
 
 \end{columns}
