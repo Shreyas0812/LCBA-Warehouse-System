@@ -550,10 +550,10 @@
   \end{columns}
 \end{frame}
 
-%% ── Slide 7: Bundle Construction & Local Consensus ───────────
-\begin{frame}{LCBA Algorithm: Bundle Construction \& Local Consensus}
+%% ── Slide 7a: Bundle Construction ───────────────────────────
+\begin{frame}{LCBA Algorithm: Bundle Construction}
   \begin{columns}[T]
-    \begin{column}{0.52\textwidth}\raggedright
+    \begin{column}{0.60\textwidth}\raggedright
       \subheader{Phase 1: Bundle Construction}\par\vspace{6pt}
       {\rmfamily\small
       \begin{tightitemize}
@@ -570,7 +570,25 @@
         \item Repeat until no beneficial insertion or
               $|b_i| = L_{\max}$.
       \end{tightitemize}}
+    \end{column}
+
+    \begin{column}{0.38\textwidth}
+      \begin{plaincard}{Practical note}
+        \smallcap{Bundle construction is lightweight and bounded by the bundle length $L_{\max}$.}
+      \end{plaincard}
       \vspace{8pt}
+      \begin{infobox}
+        \textbf{Tip.} Early termination in insertion reduces compute by
+        avoiding full-scan marginal gains when no beneficial insertions remain.
+      \end{infobox}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ── Slide 7b: Local Consensus ──────────────────────────────
+\begin{frame}{LCBA Algorithm: Local Consensus}
+  \begin{columns}[T]
+    \begin{column}{0.58\textwidth}\raggedright
       \subheader{Phase 2: Local Consensus}\par\vspace{6pt}
       {\rmfamily\small
       \begin{tightitemize}
@@ -581,9 +599,15 @@
         \item Conflicts resolved by \textbf{highest bid};
               ties broken by agent ID.
       \end{tightitemize}}
+      \vfill
+      \begin{infobox}
+        \textbf{Efficiency gain.} At 18 agents, minimum $\comm$:
+        CBBA runs 31.6 rounds (47\,ms); LCBA runs 15.8 rounds
+        (15\,ms) — a \textbf{3$\times$ speedup} per allocation call.
+      \end{infobox}
     \end{column}
 
-    \begin{column}{0.45\textwidth}
+    \begin{column}{0.40\textwidth}
       \begin{plaincard}{Why component-local consensus is sufficient}
         \begin{tightitemize}
           \item Agents in different components cannot coordinate
@@ -594,12 +618,7 @@
                 to GCBBA — no overhead.
         \end{tightitemize}
       \end{plaincard}
-      \vspace{8pt}
-      \begin{infobox}
-        \textbf{Efficiency gain.} At 18 agents, minimum $\comm$:
-        CBBA runs 31.6 rounds (47\,ms); LCBA runs 15.8 rounds
-        (15\,ms) — a \textbf{3$\times$ speedup} per allocation call.
-      \end{infobox}
+      
     \end{column}
   \end{columns}
 \end{frame}
