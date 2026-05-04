@@ -505,34 +505,47 @@
 \begin{frame}{LCBA: Three Key Relaxations over GCBBA}
   \begin{columns}[T]
     \begin{column}{0.54\textwidth}
-      \begin{numcard}[before upper=\vspace{1.0em}, top=2pt, bottom=2pt]{1}
-        \subheader{Component-Local Consensus}\par\vspace{2pt}
-        \smallcap{Bidding and $2d_k$ rounds operate within each connected component $k$ (diameter $d_k$). No global connectivity required; always terminates.}
-      \end{numcard}
       \vspace{4pt}
-      \begin{numcard}[before upper=\vspace{1.0em}, top=2pt, bottom=2pt]{2}
-        \subheader{Timestamped Conflict Resolution}\par\vspace{2pt}
-        \smallcap{On component merge, agents exchange timestamped bid tables. Stale claims overwritten; displaced agents re-enter bundle building.}
-      \end{numcard}
-      \vspace{4pt}
-      \begin{numcard}[before upper=\vspace{1.0em}, top=2pt, bottom=2pt]{3}
-        \subheader{Event-Driven Replanning}\par\vspace{2pt}
-        \smallcap{Tasks arrive continuously. Five event triggers fire LCBA without waiting for a fixed schedule.}
-      \end{numcard}
+      
+      \subheader{\textcolor{TextMuted}{01}\hspace{6pt}Component-Local Consensus}\par\vspace{2pt}
+      \smallcap{Bidding and $2d_k$ rounds operate within each connected component $k$ (diameter $d_k$). No global connectivity required; always terminates.}
+
+      \vspace{14pt}
+
+      \subheader{\textcolor{TextMuted}{02}\hspace{6pt}Timestamped Conflict Resolution}\par\vspace{2pt}
+      \smallcap{On component merge, agents exchange timestamped bid tables. Stale claims overwritten; displaced agents re-enter bundle building.}
+
+      \vspace{14pt}
+
+      \subheader{\textcolor{TextMuted}{03}\hspace{6pt}Event-Driven Replanning}\par\vspace{2pt}
+      \smallcap{Tasks arrive continuously. Five event triggers fire LCBA without waiting for a fixed schedule.}
     \end{column}
 
     \begin{column}{0.44\textwidth}
+      \vspace{-12pt}
       \begin{infobox}[top=4pt, bottom=4pt]
         \textbf{Theoretical guarantee.} On connected components, LCBA inherits GCBBA's convergence — producing the SGA solution, staying within the \textbf{2$\times$ optimality bound}.
       \end{infobox}
-      \vspace{8pt}
-      \subheader{Research Questions}\par\vspace{4pt}
-      {\rmfamily\small
-      \begin{tightitemize}
-        \item \rqlabel{RQ1}\, Does LCBA maintain throughput/completion where CBBA and SGA fail under disconnection?
-        \item \rqlabel{RQ2}\, How close to SGA is LCBA on connected graphs?
-        \item \rqlabel{RQ3}\, Which path planner best balances throughput, wait time, and compute?
-      \end{tightitemize}}
+      
+      % Research questions moved to their own slide to improve readability.
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ── Slide X: Research Questions (separate slide for clarity) ──
+\begin{frame}{Research Questions}
+  \vspace{-6pt}
+  \begin{columns}[T]
+    \begin{column}{0.02\textwidth}\end{column}
+    \begin{column}{0.96\textwidth}
+      \begin{plaincard}{}
+        {\rmfamily\small
+        \begin{tightitemize}
+          \item \rqlabel{RQ1}\, Can LCBA maintain task throughput under communication conditions where static allocation fails?
+          \item \rqlabel{RQ2}\, How close to optimal (DMCHBA/SGA) does LCBA perform as communication connectivity varies?
+          \item \rqlabel{RQ3}\, Does LCBA's robustness generalize across diverse warehouse environments and scales?
+        \end{tightitemize}}
+      \end{plaincard}
     \end{column}
   \end{columns}
 \end{frame}
