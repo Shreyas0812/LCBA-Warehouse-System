@@ -1,0 +1,1540 @@
+%% ============================================================
+%%  Thesis Defense Presentation
+%%  LCBA — Scalable Multi-Robot Coordination
+%%  Shreyas Raorane, University of Pennsylvania, May 2026
+%%
+%%  Compile: pdflatex presentation.tex  (run twice for slide refs)
+%%
+%%  Design: minimalist editorial aesthetic — serif typography,
+%%  cream background, numbered cards, pastel info/warn/danger
+%%  callouts, no heavy chrome.
+%% ============================================================
+\documentclass[aspectratio=169, 11pt]{beamer}
+
+%% ── Encoding & Fonts ─────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{XCharter}                              % text serif
+\usepackage{amsmath, amssymb}
+\usepackage[charter, scaled=1.04]{newtxmath}       % matching math
+% Fallback if newtxmath/XCharter unavailable:
+%   replace the two lines above with:
+%     \usepackage[charter]{mathdesign}
+
+%% ── Layout & Graphics ────────────────────────────────────────
+\usepackage{tikz}
+\usetikzlibrary{calc, positioning, shapes.geometric, shadows.blur}
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{skins, breakable}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{microtype}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+%% ── Color Palette (matched to reference design) ──────────────
+\definecolor{PageBg}{HTML}{F5F2EA}            % cream / parchment
+\definecolor{TextPrimary}{HTML}{1F1F1F}        % near-black body
+\definecolor{TextSecondary}{HTML}{555555}      % subdued
+\definecolor{TextMuted}{HTML}{8C8C8C}          % captions, numerals
+
+\definecolor{AccentNavy}{HTML}{3D5174}         % hero navy
+\definecolor{AccentNavyDeep}{HTML}{2C3A5E}     % darker for emphasis
+
+\definecolor{CardBg}{HTML}{FCFAF5}             % off-white card body
+\definecolor{CardBorder}{HTML}{D8D2C4}         % card edge
+\definecolor{CardHeader}{HTML}{ECE7DA}         % numbered card top band
+
+\definecolor{InfoBlueBg}{HTML}{D6E0F0}         % info box (light blue)
+\definecolor{InfoBlueRule}{HTML}{4A6BAA}
+\definecolor{InfoBlueText}{HTML}{1F3672}
+
+\definecolor{WarnYellowBg}{HTML}{F8E8A1}       % warn box (soft yellow)
+\definecolor{WarnYellowRule}{HTML}{B89827}
+\definecolor{WarnYellowText}{HTML}{6B5418}
+
+\definecolor{DangerRedBg}{HTML}{F5C7CA}        % danger box (soft red)
+\definecolor{DangerRedRule}{HTML}{B33640}
+\definecolor{DangerRedText}{HTML}{8C2027}
+
+% Now that colors exist, set up hyperref styling
+\hypersetup{colorlinks=true, urlcolor=AccentNavyDeep, linkcolor=AccentNavyDeep}
+
+%% ── Beamer Chrome: strip & customize ─────────────────────────
+\setbeamertemplate{navigation symbols}{}
+\setbeamercolor{background canvas}{bg=PageBg}
+\setbeamercolor{normal text}{fg=TextPrimary, bg=PageBg}
+\setbeamercolor{frametitle}{fg=TextPrimary, bg=PageBg}
+\setbeamercolor{itemize item}{fg=TextSecondary}
+\setbeamercolor{itemize subitem}{fg=TextSecondary}
+\setbeamercolor{itemize subsubitem}{fg=TextSecondary}
+\setbeamercolor{enumerate item}{fg=TextSecondary}
+\setbeamertemplate{itemize item}{\textbullet}
+\setbeamertemplate{itemize subitem}{\textendash}
+
+\setbeamerfont{frametitle}{family=\rmfamily, size=\Large, series=\bfseries}
+\setbeamerfont{normal text}{family=\rmfamily}
+
+% Title block: large, serif, dark, with hairline rule beneath
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip%
+  \vspace{8pt}%
+  \hspace*{0.6cm}%
+  \begin{minipage}{\dimexpr\paperwidth-1.5cm\relax}%
+    {\rmfamily\bfseries\Large\color{TextPrimary}\insertframetitle\par}%
+    \vspace{4pt}%
+    {\color{CardBorder}\rule{\linewidth}{0.4pt}}%
+  \end{minipage}%
+  \vspace{4pt}%
+}
+
+% Subtle bottom-right slide indicator (kept on purpose for defense Q&A)
+\setbeamertemplate{footline}{%
+  \hfill%
+  \raisebox{8pt}{%
+    \rmfamily\small\color{TextMuted}%
+    \insertframenumber\,/\,\inserttotalframenumber%
+  }%
+  \hspace*{0.7cm}%
+  \vspace*{4pt}%
+}
+
+% Default: top-aligned content
+\AtBeginDocument{\setbeamertemplate{itemize/enumerate body begin}{\rmfamily\small}}
+
+%% ── Custom Box Styles ────────────────────────────────────────
+
+% Numbered card — gray header band carrying a number, white body.
+% Usage:  \begin{numcard}{1}  ... \end{numcard}
+\newtcolorbox{numcard}[2][]{%
+  enhanced jigsaw,
+  colback=CardBg,
+  colframe=CardBorder,
+  boxrule=0.5pt,
+  arc=2pt,
+  fonttitle=\rmfamily\Large,
+  coltitle=TextSecondary,
+  colbacktitle=CardHeader,
+  attach boxed title to top,
+  boxed title style={
+    enhanced jigsaw,
+    colback=CardHeader,
+    colframe=CardBorder,
+    boxrule=0.5pt,
+    arc=2pt,
+    sharp corners=south,
+    halign=center,
+    height=2.2em,
+  },
+  title={#2},
+  before upper=\vspace{2.4em},
+  left=10pt, right=10pt, top=2pt, bottom=8pt,
+  fontupper=\rmfamily\small,
+  #1
+}
+
+% Plaincard — bordered box with bold title at top-left, white body.
+\newtcolorbox{plaincard}[2][]{%
+  enhanced,
+  colback=CardBg,
+  colframe=CardBorder,
+  boxrule=0.5pt,
+  arc=2pt,
+  fontupper=\rmfamily\small,
+  before upper={{\rmfamily\bfseries\normalsize\color{TextPrimary} #2}\par\vspace{4pt}},
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
+  #1
+}
+
+% Pastel info box (blue, left rule). Optional first arg = title.
+\newtcolorbox{infobox}[1][]{%
+  enhanced,
+  colback=InfoBlueBg,
+  colframe=InfoBlueBg,
+  coltext=TextPrimary,
+  boxrule=0pt, arc=3pt,
+  left=14pt, right=10pt, top=8pt, bottom=8pt,
+  fontupper=\rmfamily\small,
+  borderline west={2.5pt}{0pt}{InfoBlueRule},
+  #1
+}
+
+% Pastel warn box (yellow, left rule).
+\newtcolorbox{warnbox}[1][]{%
+  enhanced,
+  colback=WarnYellowBg,
+  colframe=WarnYellowBg,
+  coltext=TextPrimary,
+  boxrule=0pt, arc=3pt,
+  left=14pt, right=10pt, top=8pt, bottom=8pt,
+  fontupper=\rmfamily\small,
+  borderline west={2.5pt}{0pt}{WarnYellowRule},
+  #1
+}
+
+% Pastel danger box (red, left rule).
+\newtcolorbox{dangerbox}[1][]{%
+  enhanced,
+  colback=DangerRedBg,
+  colframe=DangerRedBg,
+  coltext=TextPrimary,
+  boxrule=0pt, arc=3pt,
+  left=14pt, right=10pt, top=8pt, bottom=8pt,
+  fontupper=\rmfamily\small,
+  borderline west={2.5pt}{0pt}{DangerRedRule},
+  #1
+}
+
+% Solid navy hero box (used for "Centralized" highlight, title-page bio)
+\newtcolorbox{heroboxnavy}[1][]{%
+  enhanced,
+  colback=AccentNavy,
+  colframe=AccentNavy,
+  coltext=white,
+  boxrule=0pt, arc=3pt,
+  left=14pt, right=12pt, top=10pt, bottom=10pt,
+  fontupper=\rmfamily\small,
+  #1
+}
+
+% Map / environment thumbnail card (image on top, caption beneath)
+\newtcolorbox{mapcard}[2][]{%
+  enhanced,
+  colback=CardBg,
+  colframe=CardBorder,
+  boxrule=0.5pt,
+  arc=2pt,
+  fontupper=\rmfamily\footnotesize,
+  before upper={{\rmfamily\bfseries\small\color{TextPrimary} #2}\par\vspace{2pt}},
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  #1
+}
+
+%% ── Typography Helpers ───────────────────────────────────────
+\newcommand{\sectiontag}[1]{{\rmfamily\small\color{TextMuted} #1}}
+\newcommand{\headerline}[1]{{\rmfamily\bfseries\large\color{TextPrimary} #1}}
+\newcommand{\subheader}[1]{{\rmfamily\bfseries\normalsize\color{TextPrimary} #1}}
+\newcommand{\smallcap}[1]{{\rmfamily\small\color{TextSecondary} #1}}
+\newcommand{\mutedtext}[1]{{\rmfamily\small\color{TextMuted} #1}}
+\newcommand{\rqlabel}[1]{\textcolor{AccentNavyDeep}{\rmfamily\bfseries #1}}
+\newcommand{\boldnavy}[1]{\textcolor{AccentNavyDeep}{\rmfamily\bfseries #1}}
+
+% Globally tighten Beamer's bullet/enum spacing for compactness.
+% Use \begin{itemize} / \begin{enumerate} normally — these settings apply.
+\setlist[itemize,1]{leftmargin=14pt, itemsep=2pt, topsep=2pt, parsep=0pt, label=\textbullet}
+\setlist[itemize,2]{leftmargin=12pt, itemsep=1pt, topsep=1pt, parsep=0pt, label=\textendash}
+\setlist[enumerate,1]{leftmargin=18pt, itemsep=2pt, topsep=2pt, parsep=0pt, label=\arabic*.}
+
+% Backward-compat aliases (in case old environments referenced them)
+\newenvironment{tightitemize}{\begin{itemize}}{\end{itemize}}
+\newenvironment{tightenum}{\begin{enumerate}}{\end{enumerate}}
+
+%% ── Math Notation ────────────────────────────────────────────
+\newcommand{\comm}{r_{\mathrm{comm}}}
+\newcommand{\Na}{N_a}
+
+%% ============================================================
+\begin{document}
+
+%% ── Slide 1: Title ───────────────────────────────────────────
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture, overlay]
+  % Title (top-left) - Moved up slightly to give the whole slide more breathing room
+  \node[anchor=north west, text width=10.0cm, align=left]
+    at ([xshift=0.8cm, yshift=-0.8cm]current page.north west) {%
+      {\rmfamily\bfseries\fontsize{26pt}{30pt}\selectfont\color{TextPrimary}%
+        Scalable Multi-Robot\\Coordination\par}%
+      \vspace{10pt}%
+      {\rmfamily\large\color{TextSecondary}%
+        Integrating LCBA Task Allocation with\\Decentralized Path Planning\par}%
+    };
+
+  % Navy hero box: author + program + date
+  % FIXED: Widened to 6.0cm to prevent hyphenation, moved up to -5.5cm to prevent bottom clipping
+  \node[anchor=north west]
+    at ([xshift=0.8cm, yshift=-5.5cm]current page.north west) {%
+      \begin{tcolorbox}[
+        enhanced, colback=AccentNavy, colframe=AccentNavy, coltext=white,
+        boxrule=0pt, arc=3pt,
+        width=6.0cm, left=10pt, right=10pt, top=8pt, bottom=8pt
+      ]
+      {\rmfamily\bfseries\Large Shreyas Raorane}\par
+      \vspace{4pt}
+      {\rmfamily\small MSE Robotics $\cdot$ University of\\
+       Pennsylvania $\cdot$ May 2026}
+      \end{tcolorbox}%
+    };
+
+  % Committee (Stacked, SHIFTED RIGHT to 7.2cm to accommodate wider blue box)
+  \node[anchor=north west, text width=4.5cm]
+    at ([xshift=7.2cm, yshift=-5.5cm]current page.north west) {%
+      {\rmfamily\bfseries\large\color{TextPrimary} Thesis Committee}\par
+      \vspace{4pt}
+      {\rmfamily\normalsize\color{TextSecondary}%
+        Dr.\ Linh Thi Xuan Phan\\
+        Dr.\ Rahul Mangharam\\
+        Dr.\ M.\ Ani Hsieh} 
+    };
+
+  % Right-side illustration (warehouse render)
+  \node[anchor=east]
+    at ([xshift=-1.0cm, yshift=1.5cm]current page.east) {%
+      \includegraphics[width=4.5cm, keepaspectratio]%
+        {figures/gridworld_warehouse_small/gridworld_warehouse_small.png}%
+    };
+\end{tikzpicture}
+\end{frame}
+
+%% ── Slide 2: Outline ─────────────────────────────────────────
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture, overlay]
+  % Title 
+  \node[anchor=north west]
+    at ([xshift=0.8cm, yshift=-0.4cm]current page.north west)
+    {\rmfamily\bfseries\Huge\color{TextPrimary} Presentation Outline};
+
+  % Six outline cells in a 2-col x 3-row grid
+  % Added align=left to prevent hyphenation, widened to 7.5cm
+  
+  % ================= ROW 1 (yshift=-1.5cm) =================
+  \node[anchor=north west, text width=7.5cm, align=left]
+    at ([xshift=0.6cm, yshift=-1.5cm]current page.north west) {%
+      \sectiontag{01}\par
+      \textcolor{CardBorder}{\rule{\linewidth}{0.4pt}}\par\vspace{2pt}
+      \headerline{Motivation}\par\vspace{2pt}
+      \smallcap{Warehouse coordination breaks at scale}};
+
+  \node[anchor=north west, text width=7.5cm, align=left]
+    at ([xshift=8.4cm, yshift=-1.5cm]current page.north west) {%
+      \sectiontag{02}\par
+      \textcolor{CardBorder}{\rule{\linewidth}{0.4pt}}\par\vspace{2pt}
+      \headerline{Background \& Problem}\par\vspace{2pt}
+      \smallcap{CBBA, GCBBA, and where they fail}};
+
+  % ================= ROW 2 (yshift=-4.1cm) =================
+  \node[anchor=north west, text width=7.5cm, align=left]
+    at ([xshift=0.6cm, yshift=-3.8cm]current page.north west) {%
+      \sectiontag{03}\par
+      \textcolor{CardBorder}{\rule{\linewidth}{0.4pt}}\par\vspace{2pt}
+      \headerline{LCBA Algorithm}\par\vspace{2pt}
+      \smallcap{Three key relaxations; convergence guarantees}};
+
+  \node[anchor=north west, text width=7.5cm, align=left]
+    at ([xshift=8.4cm, yshift=-3.8cm]current page.north west) {%
+      \sectiontag{04}\par
+      \textcolor{CardBorder}{\rule{\linewidth}{0.4pt}}\par\vspace{2pt}
+      \headerline{System Architecture}\par\vspace{2pt}
+      \smallcap{Modular pipeline; multiple path planners}};
+
+  % ================= ROW 3 (yshift=-6.7cm) =================
+  \node[anchor=north west, text width=7.5cm, align=left]
+    at ([xshift=0.6cm, yshift=-6.2cm]current page.north west) {%
+      \sectiontag{05}\par
+      \textcolor{CardBorder}{\rule{\linewidth}{0.4pt}}\par\vspace{2pt}
+      \headerline{Experimental Setup}\par\vspace{2pt}
+      \smallcap{432+ runs, 6 environments, dual evaluation modes}};
+
+  \node[anchor=north west, text width=7.5cm, align=left]
+    at ([xshift=8.4cm, yshift=-6.2cm]current page.north west) {%
+      \sectiontag{06}\par
+      \textcolor{CardBorder}{\rule{\linewidth}{0.4pt}}\par\vspace{2pt}
+      \headerline{Results \& Conclusions}\par\vspace{2pt}
+      \smallcap{Batch $\cdot$ Steady-state $\cdot$ Efficiency $\cdot$ Path planners}};
+      
+\end{tikzpicture}
+\end{frame}
+
+%% ============================================================
+\section{Motivation}
+%% ============================================================
+
+%% ── Slide 3: Modern Warehouses ───────────────────────────────
+\begin{frame}{Modern Warehouses: A Coordination Challenge}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \begin{plaincard}{The Scale Problem}
+        \begin{tightitemize}
+          \item \textbf{Amazon}: tens of thousands of drive units per facility;
+                \textbf{Ocado}: 1{,}000+ robots on a single grid floor.
+                Each robot receives a new task within seconds of completing the last.
+          \item \textbf{The coordination problem} couples three questions:
+                \emph{which} robot picks which item, in what order;
+                \emph{along which} collision-free path;
+                and \emph{when} should the decision be revised?
+        \end{tightitemize}
+      \end{plaincard}
+      \vspace{6pt}
+      \begin{warnbox}
+        \textbf{The hard constraint no benchmark captures:} range-limited radios
+        $+$ metal shelving $+$ robot density $\Rightarrow$
+        \textbf{intermittently disconnected} communication graphs.
+        \textbf{Existing algorithms silently break here.}
+      \end{warnbox}
+    \end{column}
+
+    \begin{column}{0.43\textwidth}
+      \begin{plaincard}{Representative Environments}
+        \smallcap{Two maps span the range from small-fleet precision to
+                  large-fleet coordination density.}
+      \end{plaincard}
+      \vspace{4pt}
+      \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+          \begin{mapcard}{Warehouse Small}
+            \includegraphics[width=\linewidth, height=2.2cm, keepaspectratio]%
+              {figures/gridworld_warehouse_small/gridworld_warehouse_small.png}\par
+            \vspace{2pt}\smallcap{30$\times$30 grid $\cdot$ 6 agents}
+          \end{mapcard}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+          \begin{mapcard}{Kiva}
+            \includegraphics[width=\linewidth, height=2.2cm, keepaspectratio]%
+              {figures/gridworld_kiva/gridworld_kiva.png}\par
+            \vspace{2pt}\smallcap{36$\times$36 grid $\cdot$ 20 agents}
+          \end{mapcard}
+        \end{column}
+      \end{columns}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ============================================================
+\section{Background}
+%% ============================================================
+
+%% ── Slide 4: MRTA Two Paradigms ──────────────────────────────
+\begin{frame}{Multi-Robot Task Allocation: Two Paradigms}
+  \vspace{4pt}
+  \begin{columns}[T]
+    \begin{column}{0.49\textwidth}
+      \begin{heroboxnavy}
+        {\rmfamily\bfseries\large Centralized}\par\vspace{6pt}
+        \begin{tightitemize}
+          \item All task and agent state gathered at a single planner.
+          \item \textbf{SGA} assigns highest-marginal-gain (agent, task)
+                pairs greedily; achieves $\geq$50\% of optimal under
+                Diminishing Marginal Gain utilities in polynomial time.
+          \item \textbf{Weaknesses:} single point of failure;
+                requires reliable broadcast; does not scale to large fleets.
+        \end{tightitemize}
+      \end{heroboxnavy}
+    \end{column}
+
+    \begin{column}{0.49\textwidth}
+      \subheader{Decentralized (Auction-Based)}\par\vspace{6pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item Each agent bids on tasks using local information; conflicts
+              are resolved via message-passing consensus.
+        \item \textbf{CBBA} \mutedtext{(Choi et al.\ 2009)}: pairwise
+              conflict resolution; converges to a 50\%-optimal assignment
+              on any \emph{connected} graph.
+        \item \textbf{GCBBA} \mutedtext{(Kha et al.\ 2025)}: $2D$ consensus
+              rounds (graph diameter $D$); provably converges to the SGA
+              solution on connected graphs.
+      \end{tightitemize}}
+    \end{column}
+  \end{columns}
+
+  \vspace{10pt}
+  \begin{dangerbox}
+    \textbf{Shared assumption — both CBBA and GCBBA require the
+    communication graph to be \textsc{connected}.} When it is not,
+    both algorithms produce conflicting assignments and leave isolated
+    agents idle.
+  \end{dangerbox}
+\end{frame}
+
+%% ── Slide 5: Where CBBA / GCBBA Break ────────────────────────
+\begin{frame}{Where CBBA and GCBBA Break}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.50\textwidth}
+      \subheader{How GCBBA Works --- What Breaks on Disconnection}
+      \par\vspace{4pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item Two components run \emph{independent} consensus
+              $\Rightarrow$ multiple agents claim the same task.
+        \item $D$ of a disconnected graph is $\infty$
+              $\Rightarrow$ GCBBA never terminates.
+        \item No reconnection conflict-resolution protocol;
+              fixed task set assumed (no online arrivals).
+      \end{tightitemize}}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{dangerbox}
+        \textbf{Performance cliff (experimental evidence).}
+        \begin{tightitemize}
+          \item \textbf{Light load} (64 tasks): CBBA fails on $\geq 1$
+                seed at $\comm=25$.
+          \item \textbf{Moderate load} (96 tasks): CBBA times out on
+                \emph{both} seeds at $\comm=4$ \textsc{and} $\comm=25$.
+          \item \textbf{DMCHBA} (SOTA): makespan $\approx$2725\,ts at
+                $\comm=4$ vs.\ 515\,ts when connected — \textbf{nearly $5\times$ slower}.
+        \end{tightitemize}
+      \end{dangerbox}
+      \vspace{6pt}
+      \begin{infobox}
+        \textbf{This thesis fills the gap:} handle arbitrary
+        disconnection, online task arrivals, reconnection
+        conflicts, and operational constraints — without assuming
+        global connectivity.
+      \end{infobox}
+    \end{column}
+  \end{columns}
+
+  \vspace{8pt}
+  \begin{columns}[T]
+    \begin{column}{0.32\textwidth}
+      \begin{numcard}{1}
+        \subheader{Bundle Construction}\par\vspace{2pt}
+        \smallcap{Each agent greedily inserts tasks by highest
+                  marginal RPT utility.}
+      \end{numcard}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{numcard}{2}
+        \subheader{Consensus}\par\vspace{2pt}
+        \smallcap{Agents broadcast winning bid tables; $2D$ rounds
+                  ensure full-fleet convergence.}
+      \end{numcard}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{numcard}{3}
+        \subheader{Convergence}\par\vspace{2pt}
+        \smallcap{Bundles stabilize $\Rightarrow$ guaranteed to match
+                  the SGA solution on connected graphs.}
+      \end{numcard}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ============================================================
+\section{LCBA: Algorithm}
+%% ============================================================
+
+%% ── Slide 6: LCBA Three Relaxations ──────────────────────────
+\begin{frame}{LCBA: Three Key Relaxations over GCBBA}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \begin{numcard}{1}
+        \subheader{Component-Local Consensus}\par\vspace{2pt}
+        \smallcap{Bidding and $2d_k$ consensus rounds operate
+                  within each currently connected component $k$ of
+                  diameter $d_k$. No global connectivity required;
+                  the algorithm always terminates.}
+      \end{numcard}
+      \vspace{4pt}
+      \begin{numcard}{2}
+        \subheader{Timestamped Conflict Resolution}\par\vspace{2pt}
+        \smallcap{When two components merge, agents exchange
+                  timestamped bid tables. Stale claims are
+                  overwritten; displaced agents re-enter bundle
+                  construction.}
+      \end{numcard}
+      \vspace{4pt}
+      \begin{numcard}{3}
+        \subheader{Event-Driven Replanning}\par\vspace{2pt}
+        \smallcap{Tasks arrive continuously at induct stations.
+                  Five trigger conditions fire LCBA without waiting
+                  for a fixed schedule.}
+      \end{numcard}
+    \end{column}
+
+    \begin{column}{0.42\textwidth}
+      \begin{infobox}
+        \textbf{Theoretical guarantee.} On each connected
+        component, LCBA inherits GCBBA's convergence — produces
+        the SGA solution for that component, staying within the
+        \textbf{2$\times$ optimality bound} (50\%-optimality).
+      \end{infobox}
+      \vspace{6pt}
+      \subheader{Research Questions}\par\vspace{4pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item \rqlabel{RQ1}\,
+              Does LCBA maintain throughput / completion where CBBA
+              and SGA fail under disconnection?
+        \item \rqlabel{RQ2}\,
+              How close to SGA is LCBA on connected graphs?
+        \item \rqlabel{RQ3}\,
+              Which path planner best balances throughput, wait
+              time, and compute?
+      \end{tightitemize}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ── Slide 7: Bundle Construction & Local Consensus ───────────
+\begin{frame}{LCBA Algorithm: Bundle Construction \& Local Consensus}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \subheader{Phase 1: Bundle Construction}\par\vspace{4pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item Each agent $i$ maintains a \textbf{bundle} $b_i$
+              (ordered task list) and \textbf{path} $p_i$.
+        \item Greedy insertion: scan all unassigned tasks; insert
+              the task $j^*$ that maximizes marginal \textbf{RPT utility}
+              \[
+                \Delta c_{ij} = c_i(b_i \cup \{j\}) - c_i(b_i).
+              \]
+        \item \textbf{Energy-budget filter:} skip task $j$ if the
+              agent cannot reach $j$ and then a charger before
+              battery depletes.
+        \item Repeat until no beneficial insertion or
+              $|b_i| = L_{\max}$.
+      \end{tightitemize}}
+      \vspace{6pt}
+      \subheader{Phase 2: Local Consensus}\par\vspace{4pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item Agents share winning bid tables with neighbors
+              \emph{within their connected component}.
+        \item Apply update / reset / leave rules; run $2d_k$ rounds
+              ($d_k$ = component diameter).
+        \item Conflicts resolved by \textbf{highest bid};
+              ties broken by agent ID.
+      \end{tightitemize}}
+    \end{column}
+
+    \begin{column}{0.45\textwidth}
+      \begin{plaincard}{Why component-local consensus is sufficient}
+        \begin{tightitemize}
+          \item Agents in different components cannot coordinate
+                anyway.
+          \item Running $2d_k$ rounds (not $2D$ over the full graph)
+                guarantees convergence \emph{within} each component.
+          \item At full connectivity ($d_k = D$), LCBA is identical
+                to GCBBA — no overhead.
+        \end{tightitemize}
+      \end{plaincard}
+      \vspace{6pt}
+      \begin{infobox}
+        \textbf{Efficiency gain.} At 18 agents, minimum $\comm$:
+        CBBA runs 31.6 rounds (47\,ms); LCBA runs 15.8 rounds
+        (15\,ms) — a \textbf{3$\times$ speedup} per allocation call.
+      \end{infobox}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ── Slide 8: Reconnection & Event-Driven Replanning ──────────
+\begin{frame}{LCBA Algorithm: Reconnection \& Event-Driven Replanning}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \subheader{Phase 3: Reconnection Handling}\par\vspace{4pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item The communication graph is reconstructed every
+              timestep as agents move.
+        \item When two components $k$ and $k'$ merge, agents
+              exchange full bid tables.
+        \item Conflict resolution: newer timestamp wins; same
+              timestamp $\Rightarrow$ higher bid wins.
+        \item Agents whose tasks are displaced by the merge re-enter
+              bundle construction \emph{for those tasks only}.
+        \item \textbf{Result:} no task is permanently lost during
+              topology changes.
+      \end{tightitemize}}
+      \vspace{6pt}
+      \subheader{Idle Agent Management}\par\vspace{4pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item Agents with no task navigate to designated
+              \textbf{wait stations} off main aisles.
+        \item Prevents idle agents from blocking active picking
+              corridors.
+      \end{tightitemize}}
+    \end{column}
+
+    \begin{column}{0.45\textwidth}
+      \begin{plaincard}{Event-Driven Replanning Triggers}
+        LCBA reruns when any of these fires:
+        \begin{tightenum}
+          \item $t = 0$ or system restart — always allocate.
+          \item Charging state change (agent starts or finishes
+                charging).
+          \item New tasks injected \textsc{and} idle agents present.
+          \item $\geq \lceil \Na/3 \rceil$ task completions since
+                last run \textsc{and} cooldown elapsed.
+          \item Pending unassigned tasks exist \textsc{and} idle
+                agents present \textsc{and} cooldown elapsed.
+        \end{tightenum}
+      \end{plaincard}
+      \vspace{6pt}
+      \begin{infobox}
+        \textbf{Why event-driven?} Fixed-interval replanning either
+        wastes compute at low load or misses surges at high load.
+        Triggers 3--5 adapt naturally to task arrival rate.
+      \end{infobox}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ============================================================
+\section{System Architecture}
+%% ============================================================
+
+%% ── Slide 9: System Architecture ─────────────────────────────
+\begin{frame}{System Architecture: Full Coordination Pipeline}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.46\textwidth}
+      \centering
+      \includegraphics[width=\linewidth, height=5.6cm, keepaspectratio]%
+        {figures/system_architecture.png}
+    \end{column}
+    \begin{column}{0.51\textwidth}
+      \subheader{Modular, Planner-Agnostic Design}\par\vspace{4pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item \textbf{LCBA} handles task allocation (logically
+              decentralized); produces per-agent assignments.
+        \item Three interchangeable path planners share a central
+              space-time reservation table:
+              \textbf{CA*} (cooperative, optimal, expensive),
+              \textbf{PBS} (prioritized sequential),
+              \textbf{RHCR} (rolling-horizon, most scalable).
+        \item Task, charging, and idle-parking agents each use
+              independently configured planners.
+      \end{tightitemize}}
+    \end{column}
+  \end{columns}
+
+  \vspace{10pt}
+  \begin{columns}[T]
+    \begin{column}{0.32\textwidth}
+      \begin{plaincard}{Proactive Charging}
+        \smallcap{Agents navigate to chargers before battery
+                  depletion — bid filter rejects tasks that
+                  exceed remaining range.}
+      \end{plaincard}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{plaincard}{Energy-Budget Filter}
+        \smallcap{LCBA skips bids on tasks an agent cannot reach
+                  before needing to charge.}
+      \end{plaincard}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{plaincard}{Wait Stations}
+        \smallcap{Idle agents park off main aisles to keep active
+                  picking corridors clear.}
+      \end{plaincard}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ============================================================
+\section{Experimental Setup}
+%% ============================================================
+
+%% ── Slide 10: Experimental Setup ─────────────────────────────
+\begin{frame}{Experimental Setup}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \subheader{Parameter Sweep}\par\vspace{4pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item \textbf{432+ runs} across all configurations.
+        \item \textbf{4 algorithms:} LCBA, CBBA, SGA, DMCHBA.
+        \item \textbf{6 communication ranges:} fully isolated
+              $\rightarrow$ fully connected
+              (diagonal fractions $\{0.1, 0.2, 0.35, 0.6, 1.2, \infty\}$).
+        \item \textbf{3 path planners:} CA*, PBS, RHCR.
+        \item \textbf{12 arrival rates} (steady-state):
+              $0.25\times$ – $1.4\times$ estimated capacity.
+        \item \textbf{2 random seeds:} 42 and 123.
+      \end{tightitemize}}
+      \vspace{6pt}
+      \subheader{Evaluation Modes}\par\vspace{4pt}
+      \begin{plaincard}{Batch}
+        \smallcap{Fixed task set; primary metric = completion rate;
+                  secondary = completed-only makespan.
+                  Ceiling: 3000 timesteps.}
+      \end{plaincard}
+      \vspace{4pt}
+      \begin{plaincard}{Steady-State}
+        \smallcap{Continuous arrivals; throughput over 1500 ts;
+                  first 300 (warmup) excluded.}
+      \end{plaincard}
+    \end{column}
+
+    \begin{column}{0.50\textwidth}
+      \subheader{Evaluation Environments}\par\vspace{4pt}
+      \begin{plaincard}[]{}
+        \vspace{-2pt}
+        {\rmfamily\small
+        \resizebox{\linewidth}{!}{%
+        \begin{tabular}{@{}l r r l@{}}
+          \toprule
+          \textbf{Environment} & \textbf{Grid} & \textbf{Agents}
+                               & \textbf{Role}\\
+          \midrule
+          Warehouse Small & 30$\times$30  & 6   & Main analysis\\
+          Crossdock       & 44$\times$28  & 12  & Main analysis\\
+          Warehouse Large & 60$\times$60  & 18  & Main analysis\\
+          Kiva            & 36$\times$36  & 20  & Secondary\\
+          Kiva Large      & 72$\times$72  & 80  & Stress regime\\
+          Shelf Aisle     & 161$\times$63 & 200 & Stress regime\\
+          \bottomrule
+        \end{tabular}}}
+      \end{plaincard}
+      \vspace{6pt}
+      \mutedtext{\textbf{Baselines.} CBBA — decentralized, pairwise
+        consensus. SGA — centralized greedy reference, run
+        per-component when disconnected. DMCHBA — state-of-the-art
+        decentralized; Hungarian matching per component.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ── Slide 11: Six Evaluation Environments ────────────────────
+\begin{frame}{Six Evaluation Environments}
+  \vspace{4pt}
+  \begin{columns}[T]
+    \begin{column}{0.245\textwidth}
+      \begin{mapcard}{Warehouse Small}
+        \includegraphics[width=\linewidth, height=2.3cm, keepaspectratio]%
+          {figures/gridworld_warehouse_small/gridworld_warehouse_small.png}\par
+        \vspace{2pt}\smallcap{30$\times$30 $\cdot$ 6 agents\\
+        \textcolor{AccentNavyDeep}{Main analysis}}
+      \end{mapcard}
+    \end{column}
+    \begin{column}{0.245\textwidth}
+      \begin{mapcard}{Crossdock}
+        \includegraphics[width=\linewidth, height=2.3cm, keepaspectratio]%
+          {figures/gridworld_crossdock/gridworld_crossdock.png}\par
+        \vspace{2pt}\smallcap{44$\times$28 $\cdot$ 12 agents\\
+        \textcolor{AccentNavyDeep}{Main analysis}}
+      \end{mapcard}
+    \end{column}
+    \begin{column}{0.245\textwidth}
+      \begin{mapcard}{Warehouse Large}
+        \includegraphics[width=\linewidth, height=2.3cm, keepaspectratio]%
+          {figures/gridworld_warehouse_large/gridworld_warehouse_large.png}\par
+        \vspace{2pt}\smallcap{60$\times$60 $\cdot$ 18 agents\\
+        \textcolor{AccentNavyDeep}{Main analysis}}
+      \end{mapcard}
+    \end{column}
+    \begin{column}{0.245\textwidth}
+      \begin{mapcard}{Kiva}
+        \includegraphics[width=\linewidth, height=2.3cm, keepaspectratio]%
+          {figures/gridworld_kiva/gridworld_kiva.png}\par
+        \vspace{2pt}\smallcap{36$\times$36 $\cdot$ 20 agents\\
+        \textcolor{TextMuted}{Secondary}}
+      \end{mapcard}
+    \end{column}
+  \end{columns}
+
+  \vspace{6pt}
+  \begin{columns}[T]
+    \begin{column}{0.49\textwidth}
+      \begin{mapcard}{Kiva Large}
+        \includegraphics[width=\linewidth, height=2.3cm, keepaspectratio]%
+          {figures/gridworld_kiva_large/gridworld_kiva_large.png}\par
+        \vspace{2pt}\smallcap{72$\times$72 $\cdot$ 80 agents\quad
+        \textcolor{DangerRedRule}{Stress regime}}
+      \end{mapcard}
+    \end{column}
+    \begin{column}{0.49\textwidth}
+      \begin{mapcard}{Shelf Aisle}
+        \includegraphics[width=\linewidth, height=2.3cm, keepaspectratio]%
+          {figures/gridworld_shelf_aisle/gridworld_shelf_aisle.png}\par
+        \vspace{2pt}\smallcap{161$\times$63 $\cdot$ 200 agents\quad
+        \textcolor{DangerRedRule}{Stress regime}}
+      \end{mapcard}
+    \end{column}
+  \end{columns}
+
+  \vspace{4pt}
+  \mutedtext{Main-analysis maps provide stable, timeout-free
+    comparisons. Stress maps probe robustness at the limits of
+    scale and congestion.}
+\end{frame}
+
+%% ============================================================
+\section{Results: Batch Mode}
+%% ============================================================
+
+%% ── Slide 12: Batch Completion Rate Heatmaps ─────────────────
+\begin{frame}{Batch Results: Completion Rate Heatmaps}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.32\textwidth}
+      \begin{mapcard}{Crossdock $\cdot$ 12 agents}
+        \includegraphics[width=\linewidth, height=4.3cm, keepaspectratio]%
+          {figures/gridworld_crossdock/20260425_022224/batch_results/compact_views/compact_heatmap_completion_rate.png}
+      \end{mapcard}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{mapcard}{Warehouse Small $\cdot$ 6 agents}
+        \includegraphics[width=\linewidth, height=4.3cm, keepaspectratio]%
+          {figures/gridworld_warehouse_small/20260425_012846/batch_results/compact_views/compact_heatmap_completion_rate.png}
+      \end{mapcard}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{mapcard}{Warehouse Large $\cdot$ 18 agents}
+        \includegraphics[width=\linewidth, height=4.3cm, keepaspectratio]%
+          {figures/gridworld_warehouse_large/20260425_044219/batch_results/compact_views/compact_heatmap_completion_rate.png}
+      \end{mapcard}
+    \end{column}
+  \end{columns}
+
+  \vspace{8pt}
+  \begin{columns}[T]
+    \begin{column}{0.32\textwidth}
+      \begin{infobox}
+        \textbf{LCBA.} 100\% completion at \emph{all} comm ranges
+        at light load; reliable from $\comm=8$ upward at moderate load.
+      \end{infobox}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{warnbox}
+        \textbf{CBBA.} Fails on both seeds at $\comm=4$ and
+        $\comm=25$ at 96 tasks; timeouts grow sharply with load.
+      \end{warnbox}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{dangerbox}
+        \textbf{SGA / DMCHBA.} SGA times out on seed~42 at higher
+        loads. DMCHBA: $\approx$2725\,ts at $\comm=4$ vs.\ 515\,ts
+        connected.
+      \end{dangerbox}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ── Slide 13: Batch Completion Degradation by Comm Range ─────
+\begin{frame}{Batch Results: Completion Degradation by Comm Range}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.32\textwidth}
+      \begin{mapcard}{Crossdock}
+        \includegraphics[width=\linewidth, height=4.5cm, keepaspectratio]%
+          {figures/gridworld_crossdock/20260425_022224/batch_results/compact_views/compact_completion_degradation_by_comm_range.png}
+      \end{mapcard}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{mapcard}{Warehouse Small}
+        \includegraphics[width=\linewidth, height=4.5cm, keepaspectratio]%
+          {figures/gridworld_warehouse_small/20260425_012846/batch_results/compact_views/compact_completion_degradation_by_comm_range.png}
+      \end{mapcard}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{mapcard}{Warehouse Large}
+        \includegraphics[width=\linewidth, height=4.5cm, keepaspectratio]%
+          {figures/gridworld_warehouse_large/20260425_044219/batch_results/compact_views/compact_completion_degradation_by_comm_range.png}
+      \end{mapcard}
+    \end{column}
+  \end{columns}
+
+  \vspace{8pt}
+  \begin{infobox}
+    \textbf{How to read.} Each line is a communication range. Flat
+    lines indicate graceful handling of load; steep drops indicate
+    a performance cliff. \textbf{LCBA lines are consistently flat;
+    CBBA and SGA show steep cliffs at low $\comm$.}
+  \end{infobox}
+\end{frame}
+
+%% ── Slide 14: Batch Makespan / Sub-Optimality (RQ2) ──────────
+\begin{frame}{Batch Results: Makespan and Sub-Optimality (RQ2)}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \subheader{Completed-only makespan at light load
+        (64 tasks, Warehouse Small)}\par\vspace{6pt}
+      \begin{plaincard}[]{}
+        \vspace{-2pt}
+        {\rmfamily\small
+        \resizebox{\linewidth}{!}{%
+        \begin{tabular}{@{}l c c@{}}
+          \toprule
+          \textbf{Method} & $\comm=4$ \emph{(isolated)}
+                          & $\comm \geq 25$ \emph{(connected)}\\
+          \midrule
+          \textbf{LCBA}    & 685\,ts & 640\,ts \\
+          SGA              & 663\,ts & 519\,ts \mutedtext{(seed 123)}\\
+          CBBA             & 860\,ts & 640\,ts \\
+          DMCHBA           & $\approx$2725\,ts & 515\,ts \\
+          \bottomrule
+        \end{tabular}}}
+      \end{plaincard}
+      \vspace{8pt}
+      \begin{infobox}
+        \rqlabel{RQ2 answer.} On connected graphs (seed 123),
+        LCBA makespan ratio vs.\ SGA is $640 / 519 \approx{}$\boldnavy{0.91} —
+        \textbf{LCBA is 9\% faster}. Ratio
+        $<1$ because LCBA's insertion-based RPT bid can
+        outperform the greedy SGA ordering. Well within the
+        theoretical $\leq 2\times$ bound.
+      \end{infobox}
+    \end{column}
+
+    \begin{column}{0.42\textwidth}
+      \subheader{Key observations}\par\vspace{4pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item LCBA degrades from 640 to 685\,ts as $\comm$ drops:
+              \textbf{only $+7\%$}.
+        \item CBBA degrades from 640 to 860\,ts: \textbf{+34\%}.
+        \item DMCHBA suffers most: \textbf{+430\%} at fully
+              disconnected; optimal matching breaks when the graph
+              fragments.
+        \item SGA timed out on seed~42 at connected settings;
+              per-component SGA is an imperfect reference on
+              disconnected graphs.
+      \end{tightitemize}}
+      \vspace{6pt}
+      \begin{warnbox}
+        \textbf{Takeaway.} LCBA achieves near-SGA quality on
+        connected graphs and degrades far more gracefully than
+        any baseline as connectivity drops.
+      \end{warnbox}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ============================================================
+\section{Results: Steady-State Mode}
+%% ============================================================
+
+%% ── Slide 15: Steady-State Throughput Heatmap ────────────────
+\begin{frame}{Steady-State: Throughput Heatmap (Warehouse Small)}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.50\textwidth}
+      \begin{mapcard}{Throughput (tasks/ts) vs.\ arrival rate \& comm range}
+        \includegraphics[width=\linewidth, height=5.4cm, keepaspectratio]%
+          {figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_heatmap_throughput.png}\par
+        \vspace{2pt}\smallcap{Warehouse Small (30$\times$30, 6 agents)}
+      \end{mapcard}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \subheader{How to read the heatmap}\par\vspace{2pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item Rows = arrival rate ($\lambda$); cols = comm range ($\comm$).
+        \item Bright = high throughput; dark/gray = low or missing.
+        \item Each method is a separate panel.
+      \end{tightitemize}}
+      \vspace{4pt}
+      \subheader{Key findings}\par\vspace{2pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item \textbf{LCBA:} near-uniform brightness across all comm
+              ranges at each arrival rate.
+        \item \textbf{DMCHBA:} drops sharply to 0.017\,tasks/ts at
+              $\comm=4$ (vs.\ 0.067 connected) — $\approx$75\% loss.
+        \item \textbf{CBBA:} moderate $\approx$15\% drop at
+              $\comm=8$ (0.039 vs.\ 0.046\,tasks/ts).
+        \item At full connectivity, all methods reach the same
+              throughput ceiling — \textbf{LCBA adds no overhead}.
+      \end{tightitemize}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ── Slide 16: Steady-State Throughput Degradation ────────────
+\begin{frame}{Steady-State: Throughput Degradation by Comm Range}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.50\textwidth}
+      \begin{mapcard}{Throughput vs.\ comm range across arrival rates}
+        \includegraphics[width=\linewidth, height=5.4cm, keepaspectratio]%
+          {figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_throughput_degradation_by_comm_range.png}\par
+        \vspace{2pt}\smallcap{Warehouse Small}
+      \end{mapcard}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \subheader{Reading the plot}\par\vspace{2pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item Each line = a different arrival rate $\lambda$.
+        \item X-axis: $\comm$ from fully isolated (left) to fully
+              connected (right).
+        \item Flat = communication-robust; steep = performance cliff.
+      \end{tightitemize}}
+      \vspace{4pt}
+      \subheader{Key findings}\par\vspace{2pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item \textbf{LCBA} lines are nearly flat across the full
+              spectrum; only a $\approx$14\% graceful drop at the
+              absolute minimum range.
+        \item All baselines show steep leftward drops — a clear
+              performance cliff at the connectivity threshold.
+        \item DMCHBA's cliff is steepest ($\approx$75\% drop).
+      \end{tightitemize}}
+      \vspace{4pt}
+      \begin{infobox}
+        \rqlabel{RQ1 answer.} \textbf{Yes.} LCBA maintains
+        throughput across the full comm spectrum; baselines do not.
+      \end{infobox}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ── Slide 17: Capacity Frontier & Tradeoff ───────────────────
+\begin{frame}{Steady-State: Capacity Frontier and Throughput--Wait Tradeoff}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.49\textwidth}
+      \begin{mapcard}{Capacity Frontier}
+        \includegraphics[width=\linewidth, height=5.0cm, keepaspectratio]%
+          {figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_capacity_curve.png}\par
+        \vspace{2pt}\smallcap{Highest $\lambda$ sustaining
+          near-peak throughput.}
+      \end{mapcard}
+    \end{column}
+    \begin{column}{0.49\textwidth}
+      \begin{mapcard}{Throughput--Wait Tradeoff}
+        \includegraphics[width=\linewidth, height=5.0cm, keepaspectratio]%
+          {figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_tradeoff.png}\par
+        \vspace{2pt}\smallcap{Efficiency vs.\ responsiveness.}
+      \end{mapcard}
+    \end{column}
+  \end{columns}
+
+  \vspace{8pt}
+  \begin{columns}[T]
+    \begin{column}{0.49\textwidth}
+      \begin{infobox}
+        \textbf{Capacity frontier.} LCBA sustains high throughput up
+        to $\approx$0.85$\times$ estimated capacity at all comm
+        ranges. Baselines' frontier collapses at low $\comm$.
+      \end{infobox}
+    \end{column}
+    \begin{column}{0.49\textwidth}
+      \begin{infobox}
+        \textbf{Tradeoff.} At the same throughput level, LCBA
+        achieves lower wait time at low $\comm$ — event-driven
+        replanning responds quickly to new arrivals, reducing queue
+        build-up.
+      \end{infobox}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ============================================================
+\section{Results: Allocation Efficiency}
+%% ============================================================
+
+%% ── Slide 18: Allocation Efficiency ──────────────────────────
+\begin{frame}{Allocation Efficiency: Speed Across the Spectrum}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.50\textwidth}
+      \begin{mapcard}{Mean allocation time vs.\ comm range}
+        \includegraphics[width=\linewidth, height=5.4cm, keepaspectratio]%
+          {figures/poster_alloc_time_wh_large.png}\par
+        \vspace{2pt}\smallcap{Warehouse Large (60$\times$60, 18 agents)}
+      \end{mapcard}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \subheader{Why LCBA is faster at low $\comm$}\par\vspace{4pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item CBBA runs $N_{\min} \times D$ rounds where $D$ is the
+              \emph{full graph diameter} — independent of fragmentation.
+        \item LCBA runs $2d_k$ rounds where $d_k$ is the
+              \emph{component diameter} — smaller when the graph
+              is broken.
+        \item At 18 agents: CBBA = 31.6 rounds (47\,ms) vs.\ LCBA =
+              15.8 rounds (15\,ms) $\Rightarrow$
+              \textbf{3$\times$ speedup}.
+      \end{tightitemize}}
+      \vspace{6pt}
+      \subheader{LCBA vs.\ DMCHBA}\par\vspace{4pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item DMCHBA clones the full task list and runs Hungarian
+              matching independently per component.
+        \item Overhead grows multiplicatively with component count;
+              LCBA avoids this.
+      \end{tightitemize}}
+      \vspace{4pt}
+      \mutedtext{LCBA and CBBA converge in allocation cost at full
+        connectivity (same consensus rounds). SGA and DMCHBA are
+        always fast due to their centralized structure.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ============================================================
+\section{Results: Path Planner Comparison}
+%% ============================================================
+
+%% ── Slide 19: Path Planner Comparison (RQ3) ──────────────────
+\begin{frame}{Path Planner Comparison (RQ3)}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \begin{infobox}
+        \textbf{All three planners maintain zero vertex conflicts}
+        across all tested runs on Warehouse Small (verified by
+        post-hoc safety audit).
+      \end{infobox}
+      \vspace{4pt}
+      \subheader{Performance Characteristics}\par\vspace{4pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item \textbf{CA*} (Cooperative A*) — plans all agents
+              jointly each call. Best path quality; highest compute.
+              Comparable to PBS at small scale ($\Na \leq 12$).
+        \item \textbf{PBS} (Priority-Based Search) — prioritized
+              sequential replanning. Similar quality and cost to
+              CA* at small-to-medium scale.
+        \item \textbf{RHCR} (Rolling Horizon Collision Resolution) —
+              fixed-horizon window; most bounded per-call cost.
+              Preferred under heavy load or large agent counts
+              ($\Na \geq 18$).
+      \end{tightitemize}}
+    \end{column}
+
+    \begin{column}{0.42\textwidth}
+      \begin{plaincard}{Allocation timing (Warehouse Small, light load, connected)}
+        \vspace{-2pt}
+        {\rmfamily\small
+        \resizebox{\linewidth}{!}{%
+        \begin{tabular}{@{}l c@{}}
+          \toprule
+          \textbf{Method} & \textbf{Avg.\ alloc time (ms)}\\
+          \midrule
+          \textbf{LCBA}   & 1.0--5.5 \\
+          CBBA            & 1.2--8.4 \\
+          SGA             & 0.3--0.6 \\
+          DMCHBA          & 0.04--0.05 \\
+          \bottomrule
+        \end{tabular}}}
+      \end{plaincard}
+      \vspace{6pt}
+      \begin{warnbox}
+        \textbf{No single planner dominates.} CA* is best for small
+        fleets; RHCR is preferred for large agent counts or high
+        conflict density. Modular design lets operators swap
+        planners without modifying allocation.
+      \end{warnbox}
+      \vspace{4pt}
+      \mutedtext{\textbf{Safety:} deadlocks at high load / low
+        $\comm$ (6--99 per run) were \emph{all} resolved automatically
+        by the stuck-detection replanning trigger — no manual
+        intervention required.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ============================================================
+\section{Conclusions}
+%% ============================================================
+
+%% ── Slide 20: Conclusions / Contributions ────────────────────
+\begin{frame}{Conclusions: Contributions}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.56\textwidth}
+      \subheader{Five Contributions}\par\vspace{4pt}
+      \begin{columns}[T]
+        \begin{column}{0.49\textwidth}
+          \begin{numcard}{1}
+            \subheader{LCBA Algorithm}\par\vspace{2pt}
+            \smallcap{Component-local consensus + timestamped
+                      reconnection + event-driven replanning;
+                      inherits the $\leq 2\times$ optimality bound.}
+          \end{numcard}
+          \vspace{4pt}
+          \begin{numcard}{2}
+            \subheader{Hybrid Pipeline}\par\vspace{2pt}
+            \smallcap{Modular allocation + 3 interchangeable path
+                      planners; layers independently configurable.}
+          \end{numcard}
+          \vspace{4pt}
+          \begin{numcard}{3}
+            \subheader{Dual-Mode Simulation}\par\vspace{2pt}
+            \smallcap{Batch (completion, makespan) and steady-state
+                      (throughput, wait, queue depth) in one
+                      environment.}
+          \end{numcard}
+        \end{column}
+        \begin{column}{0.49\textwidth}
+          \begin{numcard}{4}
+            \subheader{Empirical Evaluation}\par\vspace{2pt}
+            \smallcap{432+ runs, 6 environments, 6--200 agents,
+                      full factorial sweep.}
+          \end{numcard}
+          \vspace{4pt}
+          \begin{numcard}{5}
+            \subheader{Operational Realism}\par\vspace{2pt}
+            \smallcap{Proactive charging, energy-budget bid filter,
+                      wait stations for idle agents.}
+          \end{numcard}
+        \end{column}
+      \end{columns}
+    \end{column}
+
+    \begin{column}{0.41\textwidth}
+      \begin{infobox}
+        \rqlabel{RQ1.} 100\% completion at all comm ranges at light
+        load; maintains throughput where baselines fail.
+
+        \vspace{4pt}
+        \rqlabel{RQ2.} Makespan ratio $0.91\times$ vs.\ SGA on
+        connected graphs — 9\% faster, well within the
+        $2\times$ bound.
+
+        \vspace{4pt}
+        \rqlabel{RQ3.} CA* preferred for small fleets;
+        RHCR for large or high-load settings.
+      \end{infobox}
+      \vspace{6pt}
+      \begin{warnbox}
+        \textbf{Broader applicability.} Underwater surveys,
+        disaster response, space robotics — any domain where
+        communication reliability cannot be guaranteed.
+      \end{warnbox}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ── Slide 21: Limitations & Future Work ──────────────────────
+\begin{frame}{Limitations \& Future Work}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.49\textwidth}
+      \subheader{Acknowledged Limitations}\par\vspace{4pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item \textbf{Centralized path planning:} shared space-time
+              reservation table is a single point of failure.
+        \item \textbf{Simulation only:} discrete gridworld does not
+              capture sensor noise, actuation uncertainty, curved
+              aisles, or human pedestrians.
+        \item \textbf{Homogeneous fleet:} identical speeds, batteries,
+              capabilities; real fleets are heterogeneous.
+        \item \textbf{Per-component SGA reference} is conservative
+              on disconnected graphs — true global optimal is higher.
+        \item \textbf{Timestep ceiling:} worst-case data at extreme
+              load + min $\comm$ reflects timeouts, not converged
+              failure.
+      \end{tightitemize}}
+    \end{column}
+
+    \begin{column}{0.49\textwidth}
+      \subheader{Future Work}\par\vspace{4pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item \textbf{Fully decentralized collision avoidance:}
+              per-component CBS, distributed RHCR, or PIBT to remove
+              the central reservation table.
+        \item \textbf{Deadline-constrained tasks:} extend RPT utility
+              with soft-deadline penalties for SLA compliance.
+        \item \textbf{Heterogeneous fleets:} mixed speeds, payloads,
+              battery capacities.
+        \item \textbf{Scaling beyond 200 agents:} real warehouse
+              floor plans from operational data.
+        \item \textbf{Hardware-in-the-loop validation:} measure the
+              simulation-to-deployment gap.
+        \item \textbf{Learned topology prediction:} proactively
+              reallocate \emph{before} agents disconnect.
+      \end{tightitemize}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ── Slide 22: Thank You ──────────────────────────────────────
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture, overlay]
+  \node[anchor=center]
+    at ([yshift=1.2cm]current page.center) {%
+      \rmfamily\bfseries\fontsize{42pt}{46pt}\selectfont
+      \color{TextPrimary} Thank You
+    };
+  \node[anchor=center]
+    at ([yshift=0.0cm]current page.center) {%
+      \rmfamily\Large\color{TextSecondary} Questions?
+    };
+  \node[anchor=center, text width=12cm, align=center]
+    at ([yshift=-2.4cm]current page.center) {%
+      \rmfamily\normalsize\color{TextSecondary}
+      Scalable Multi-Robot Coordination:\\
+      Integrating LCBA Task Allocation with Decentralized Path Planning\par
+      \vspace{8pt}
+      \rmfamily\small\color{TextMuted}
+      Shreyas Raorane $\cdot$ MSE Robotics, University of Pennsylvania\par
+      \vspace{2pt}
+      Dr.\ Linh Thi Xuan Phan $\cdot$ Dr.\ Rahul Mangharam $\cdot$ Dr.\ Ani Hsieh
+    };
+\end{tikzpicture}
+\end{frame}
+
+%% ============================================================
+%% BACKUP SLIDES
+%% ============================================================
+\appendix
+
+%% ── Backup 1: SS Throughput, Crossdock & WH Large ────────────
+\begin{frame}{Backup: Steady-State Throughput — Crossdock \& Warehouse Large}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.49\textwidth}
+      \begin{mapcard}{Crossdock $\cdot$ 12 agents}
+        \includegraphics[width=\linewidth, height=5.0cm, keepaspectratio]%
+          {figures/gridworld_crossdock/20260426_141042/ss_results/compact_views/compact_heatmap_throughput.png}
+      \end{mapcard}
+    \end{column}
+    \begin{column}{0.49\textwidth}
+      \begin{mapcard}{Warehouse Large $\cdot$ 18 agents}
+        \includegraphics[width=\linewidth, height=5.0cm, keepaspectratio]%
+          {figures/gridworld_warehouse_large/20260427_022850/ss_results/compact_views/compact_heatmap_throughput.png}
+      \end{mapcard}
+    \end{column}
+  \end{columns}
+
+  \vspace{8pt}
+  \begin{infobox}
+    The same LCBA robustness pattern holds across all main-analysis
+    maps: flat throughput across the comm spectrum; baselines
+    degrade at low $\comm$.
+  \end{infobox}
+\end{frame}
+
+%% ── Backup 2: SS Wait-Time Heatmaps ──────────────────────────
+\begin{frame}{Backup: Steady-State Wait-Time Heatmaps}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.32\textwidth}
+      \begin{mapcard}{Warehouse Small}
+        \includegraphics[width=\linewidth, height=4.4cm, keepaspectratio]%
+          {figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_heatmap_wait_time.png}
+      \end{mapcard}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{mapcard}{Crossdock}
+        \includegraphics[width=\linewidth, height=4.4cm, keepaspectratio]%
+          {figures/gridworld_crossdock/20260426_141042/ss_results/compact_views/compact_heatmap_wait_time.png}
+      \end{mapcard}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{mapcard}{Warehouse Large}
+        \includegraphics[width=\linewidth, height=4.4cm, keepaspectratio]%
+          {figures/gridworld_warehouse_large/20260427_022850/ss_results/compact_views/compact_heatmap_wait_time.png}
+      \end{mapcard}
+    \end{column}
+  \end{columns}
+
+  \vspace{8pt}
+  \mutedtext{Wait time = timesteps from task injection to first
+    agent claim. Lower is better. LCBA maintains low wait time
+    across the full comm spectrum; baselines incur high wait time
+    under degraded connectivity due to delayed or failed
+    re-assignment.}
+\end{frame}
+
+%% ── Backup 3: Kiva Batch Heatmap ─────────────────────────────
+\begin{frame}{Backup: Kiva Batch Completion Heatmap (Secondary Map)}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.50\textwidth}
+      \begin{mapcard}{Kiva $\cdot$ 36$\times$36 $\cdot$ 20 agents}
+        \includegraphics[width=\linewidth, height=5.4cm, keepaspectratio]%
+          {figures/gridworld_kiva/20260425_030403/batch_results/compact_views/compact_heatmap_completion_rate.png}\par
+        \vspace{2pt}\smallcap{Secondary / partial-completion map}
+      \end{mapcard}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \subheader{Context}\par\vspace{4pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item Kiva is classified as \emph{secondary} because narrow
+              aisles cause timeout-dominated behavior at moderate-
+              to-high loads.
+        \item Gray cells = no valid aggregate (timeout, not zero
+              completion).
+        \item Kiva results illustrate robustness at the boundary of
+              reliable operation.
+        \item LCBA maintains non-zero completion across all ranges
+              even in this stress-adjacent regime.
+      \end{tightitemize}}
+      \vspace{6pt}
+      \begin{warnbox}
+        \textbf{Caution.} Completion numbers on this map reflect
+        partial runs in many cells. Use main-analysis maps
+        (Crossdock, WH Small, WH Large) for primary quantitative
+        comparisons.
+      \end{warnbox}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ── Backup 4: Steady-State Metrics Definitions ───────────────
+\begin{frame}{Backup: Steady-State Metric Definitions}
+  \vspace{2pt}
+  \begin{columns}[T]
+    \begin{column}{0.50\textwidth}
+      \subheader{Metric Definitions}\par\vspace{4pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item \textbf{Throughput} = steady-state tasks completed
+              $\div$ $(1500 - 300)$ timesteps.
+        \item \textbf{Warmup}: first 300 timesteps excluded
+              (system settling).
+        \item \textbf{Wait time}: timesteps from task injection to
+              first agent claim.
+        \item \textbf{Queue depth}: per-station pending task count;
+              capped at 5; excess arrivals counted as dropped.
+        \item \textbf{Capacity frontier}: highest $\lambda$
+              sustaining $\geq$95\% of peak throughput.
+      \end{tightitemize}}
+      \vspace{6pt}
+      \subheader{Task Arrival Model}\par\vspace{4pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item Deterministic: one task per induct station every
+              $\lceil 1/\lambda \rceil$ timesteps.
+        \item 8 induct stations; total system rate $= 8\lambda$.
+        \item Capacity estimate:
+              $6 \text{ agents} \times 1/20 \approx 0.3$ tasks/ts.
+      \end{tightitemize}}
+    \end{column}
+
+    \begin{column}{0.47\textwidth}
+      \begin{plaincard}{Arrival rate sweep (across modes)}
+        \vspace{-2pt}
+        {\rmfamily\small
+        \resizebox{\linewidth}{!}{%
+        \begin{tabular}{@{}l l@{}}
+          \toprule
+          \textbf{Mode} & \textbf{Fractions of capacity}\\
+          \midrule
+          Full   & $\{0.25, 0.4, 0.55, 0.7, 0.85\}$ \\
+          Quick  & $\{0.5, 0.8\}$ \\
+          Stress & $\{0.6, 0.8, 1.0, 1.2, 1.4\}$ \\
+          \bottomrule
+        \end{tabular}}}
+      \end{plaincard}
+      \vspace{6pt}
+      \subheader{Batch Parameters}\par\vspace{4pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item Batch tasks per induct (full): $\{8, 10, 12, 15\}$.
+        \item Batch tasks per induct (stress): $\{10, 20, 30, 40\}$.
+        \item Batch ceiling: 3000 timesteps.
+        \item LCBA rerun interval: $ri = 50$ canonical;
+              also swept $\{10, 25, 100, 200\}$.
+      \end{tightitemize}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\end{document}
