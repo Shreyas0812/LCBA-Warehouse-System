@@ -532,7 +532,7 @@
   \end{columns}
 \end{frame}
 
-%% ── Slide X: Research Questions (separate slide for clarity) ──
+%% ── Slide 7: Research Questions (separate slide for clarity) ──
 \begin{frame}{Research Questions}
   \vspace{-6pt}
   \begin{columns}[T]
@@ -550,7 +550,7 @@
   \end{columns}
 \end{frame}
 
-%% ── Slide 7a: Bundle Construction ───────────────────────────
+%% ── Slide 8a: Bundle Construction ───────────────────────────
 \begin{frame}{LCBA Algorithm: Bundle Construction}
   \begin{columns}[T]
     \begin{column}{0.60\textwidth}\raggedright
@@ -585,7 +585,7 @@
   \end{columns}
 \end{frame}
 
-%% ── Slide 7b: Local Consensus ──────────────────────────────
+%% ── Slide 8b: Local Consensus ──────────────────────────────
 \begin{frame}{LCBA Algorithm: Local Consensus}
   \begin{columns}[T]
     \begin{column}{0.58\textwidth}\raggedright
@@ -623,7 +623,7 @@
   \end{columns}
 \end{frame}
 
-%% ── Slide 8: Reconnection & Event-Driven Replanning ──────────
+%% ── Slide 9: Reconnection & Event-Driven Replanning ──────────
 \begin{frame}{LCBA Algorithm: Reconnection \& Event-Driven Replanning}
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}\raggedright
@@ -641,20 +641,20 @@
         \item \textbf{Result:} no task is permanently lost during
               topology changes.
       \end{tightitemize}}
-      \vspace{8pt}
-      \subheader{Idle Agent Management}\par\vspace{6pt}
-      {\rmfamily\small
-      \begin{tightitemize}
-        \item Agents with no task navigate to designated
-              \textbf{wait stations} off main aisles.
-        \item Prevents idle agents from blocking active picking
-              corridors.
-      \end{tightitemize}}
+      % \vspace{8pt}
+      % \subheader{Idle Agent Management}\par\vspace{6pt}
+      % {\rmfamily\small
+      % \begin{tightitemize}
+      %   \item Agents with no task navigate to designated
+      %         \textbf{wait stations} off main aisles.
+      %   \item Prevents idle agents from blocking active picking
+      %         corridors.
+      % \end{tightitemize}}
     \end{column}
 
     \begin{column}{0.45\textwidth}
-      \begin{plaincard}{Event-Driven Replanning Triggers}
-        LCBA reruns when any of these fires:
+    \vspace{-15pt}
+      \begin{plaincard}{LCBA Event-Driven Replanning Triggers:}
         \begin{tightenum}
           \item $t = 0$ or system restart — always allocate.
           \item Charging state change (agent starts or finishes
@@ -680,7 +680,7 @@
 \section{System Architecture}
 %% ============================================================
 
-%% ── Slide 9: System Architecture ─────────────────────────────
+%% ── Slide 10: System Architecture ─────────────────────────────
 \begin{frame}{System Architecture: Full Coordination Pipeline}
   \begin{columns}[T]
     \begin{column}{0.46\textwidth}
@@ -734,7 +734,7 @@
 \section{Experimental Setup}
 %% ============================================================
 
-%% ── Slide 10: Experimental Setup ─────────────────────────────
+%% ── Slide 11: Experimental Setup ─────────────────────────────
 \begin{frame}{Experimental Setup}
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}\raggedright
@@ -795,7 +795,7 @@
   \end{columns}
 \end{frame}
 
-%% ── Slide 11: Six Evaluation Environments ────────────────────
+%% ── Slide 12: Six Evaluation Environments ────────────────────
 \begin{frame}{Six Evaluation Environments}
   \begin{columns}[T]
     \begin{column}{0.245\textwidth}
@@ -862,7 +862,7 @@
 \section{Results: Batch Mode}
 %% ============================================================
 
-%% ── Slide 12: Batch Completion Rate Heatmaps ─────────────────
+%% ── Slide 13: Batch Completion Rate Heatmaps ─────────────────
 \begin{frame}{Batch Results: Completion Rate Heatmaps}
   \begin{columns}[T]
     \begin{column}{0.32\textwidth}
@@ -909,7 +909,7 @@
   \end{columns}
 \end{frame}
 
-%% ── Slide 13: Batch Completion Degradation by Comm Range ─────
+%% ── Slide 14: Batch Completion Degradation by Comm Range ─────
 \begin{frame}{Batch Results: Completion Degradation by Comm Range}
   \begin{columns}[T]
     \begin{column}{0.32\textwidth}
@@ -941,7 +941,7 @@
   \end{infobox}
 \end{frame}
 
-%% ── Slide 14: Batch Makespan / Sub-Optimality (RQ2) ──────────
+%% ── Slide 15: Batch Makespan / Sub-Optimality (RQ2) ──────────
 \begin{frame}{Batch Results: Makespan and Sub-Optimality (RQ2)}
   \begin{columns}[T]
     \begin{column}{0.55\textwidth}
@@ -1003,7 +1003,7 @@
 \section{Results: Steady-State Mode}
 %% ============================================================
 
-%% ── Slide 15: Steady-State Throughput Heatmap ────────────────
+%% ── Slide 16: Steady-State Throughput Heatmap ────────────────
 \begin{frame}{Steady-State: Throughput Heatmap (Warehouse Small)}
   \begin{columns}[T]
     \begin{column}{0.50\textwidth}
@@ -1038,7 +1038,7 @@
   \end{columns}
 \end{frame}
 
-%% ── Slide 16: Steady-State Throughput Degradation ────────────
+%% ── Slide 17: Steady-State Throughput Degradation ────────────
 \begin{frame}{Steady-State: Throughput Degradation by Comm Range}
   \begin{columns}[T]
     \begin{column}{0.50\textwidth}
@@ -1077,7 +1077,7 @@
   \end{columns}
 \end{frame}
 
-%% ── Slide 17: Capacity Frontier & Tradeoff ───────────────────
+%% ── Slide 18: Capacity Frontier & Tradeoff ───────────────────
 \begin{frame}{Steady-State: Capacity Frontier and Throughput--Wait Tradeoff}
   \begin{columns}[T]
     \begin{column}{0.49\textwidth}
@@ -1121,7 +1121,7 @@
 \section{Results: Allocation Efficiency}
 %% ============================================================
 
-%% ── Slide 18: Allocation Efficiency ──────────────────────────
+%% ── Slide 19: Allocation Efficiency ──────────────────────────
 \begin{frame}{Allocation Efficiency: Speed Across the Spectrum}
   \begin{columns}[T]
     \begin{column}{0.50\textwidth}
@@ -1165,7 +1165,7 @@
 \section{Results: Path Planner Comparison}
 %% ============================================================
 
-%% ── Slide 19: Path Planner Comparison (RQ3) ──────────────────
+%% ── Slide 20: Path Planner Comparison (RQ3) ──────────────────
 \begin{frame}{Path Planner Comparison (RQ3)}
   \begin{columns}[T]
     \begin{column}{0.55\textwidth}\raggedright
@@ -1228,7 +1228,7 @@
 \section{Conclusions}
 %% ============================================================
 
-%% ── Slide 20: Conclusions / Contributions ────────────────────
+%% ── Slide 21: Conclusions / Contributions ────────────────────
 \begin{frame}{Conclusions: Contributions}
   \begin{columns}[T]
     \begin{column}{0.56\textwidth}
@@ -1295,7 +1295,7 @@
   \end{columns}
 \end{frame}
 
-%% ── Slide 21: Limitations & Future Work ──────────────────────
+%% ── Slide 22: Limitations & Future Work ──────────────────────
 \begin{frame}{Limitations \& Future Work}
   \begin{columns}[T]
     \begin{column}{0.49\textwidth}\raggedright
@@ -1339,7 +1339,7 @@
   \end{columns}
 \end{frame}
 
-%% ── Slide 22: Thank You ──────────────────────────────────────
+%% ── Slide 23: Thank You ──────────────────────────────────────
 \begin{frame}[plain]
 \begin{tikzpicture}[remember picture, overlay]
   \node[anchor=center]
