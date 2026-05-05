@@ -1137,67 +1137,54 @@
 %% ── Slide 21: Conclusions / Contributions ────────────────────
 \begin{frame}{Conclusions: Contributions}
   \begin{columns}[T]
-    \begin{column}{0.56\textwidth}
+    \begin{column}{0.54\textwidth}
       \subheader{Five Contributions}\par\vspace{6pt}
-      \begin{columns}[T]
-        \begin{column}{0.49\textwidth}
-          \begin{numcard}{1}
-            \subheader{LCBA Algorithm}\par\vspace{4pt}
-            \smallcap{Component-local consensus + timestamped
-                      reconnection + event-driven replanning;
-                      inherits the $\leq 2\times$ allocation-utility
-                      worst-case guarantee.}
-          \end{numcard}
-          \vspace{6pt}
-          \begin{numcard}{2}
-            \subheader{Hybrid Pipeline}\par\vspace{4pt}
-            \smallcap{Modular allocation + 3 interchangeable path
-                      planners; layers independently configurable.}
-          \end{numcard}
-          \vspace{6pt}
-          \begin{numcard}{3}
-            \subheader{Dual-Mode Simulation}\par\vspace{4pt}
-            \smallcap{Batch (completion, makespan) and steady-state
-                      (throughput, wait, queue depth) in one
-                      environment.}
-          \end{numcard}
-        \end{column}
-        \begin{column}{0.49\textwidth}
-          \begin{numcard}{4}
-            \subheader{Empirical Evaluation}\par\vspace{4pt}
-            \smallcap{432+ runs, 6 environments, 6--200 agents,
-                      full factorial sweep.}
-          \end{numcard}
-          \vspace{6pt}
-          \begin{numcard}{5}
-            \subheader{Operational Realism}\par\vspace{4pt}
-            \smallcap{Proactive charging, energy-budget bid filter,
-                      wait stations for idle agents.}
-          \end{numcard}
-        \end{column}
-      \end{columns}
+
+      \subheader{\textcolor{TextMuted}{01}\hspace{6pt}LCBA Algorithm}\par\vspace{2pt}
+      \smallcap{Component-local consensus + timestamped reconnection + event-driven replanning; inherits the $\leq 2\times$ allocation-utility worst-case guarantee.}
+
+      \vspace{8pt}
+      \subheader{\textcolor{TextMuted}{02}\hspace{6pt}Hybrid Pipeline}\par\vspace{2pt}
+      \smallcap{Modular allocation + 3 interchangeable path planners; layers independently configurable.}
+
+      \vspace{8pt}
+      \subheader{\textcolor{TextMuted}{03}\hspace{6pt}Dual-Mode Simulation}\par\vspace{2pt}
+      \smallcap{Batch (completion, makespan) and steady-state (throughput, wait, queue depth) in one environment.}
+
+      \vspace{10pt}
+      \subheader{\textcolor{TextMuted}{04}\hspace{6pt}Empirical Evaluation}\par\vspace{2pt}
+      \smallcap{432+ runs, 6 environments, 6--200 agents, full factorial sweep.}
+
+      \vspace{8pt}
+      \subheader{\textcolor{TextMuted}{05}\hspace{6pt}Operational Realism}\par\vspace{2pt}
+      \smallcap{Proactive charging, energy-budget bid filter, wait stations for idle agents.}
+
     \end{column}
 
-    \begin{column}{0.41\textwidth}
+    \begin{column}{0.44\textwidth}
+      \vspace{-0.5cm}
       \begin{infobox}
+        {\rmfamily\footnotesize
         \rqlabel{RQ1.} 100\% completion at all comm ranges at light
         load; maintains throughput where baselines fail.
 
-        \vspace{6pt}
+        \vspace{4pt}
         \rqlabel{RQ2.} On the connected case, LCBA is close to the
         SOTA baseline (DMCHBA), and it is much more stable under
         disconnection.
 
-        \vspace{6pt}
+        \vspace{4pt}
         \rqlabel{RQ3.} Results generalize across 6 diverse
         environments (6--200 agents, 30$\times$30 to 161$\times$63);
         consistent robustness at all scales.
+        }
       \end{infobox}
-      \vspace{8pt}
+      \vspace{1pt}
       \begin{warnbox}
-        \textbf{Broader applicability.} Underwater surveys,
-        disaster response, space robotics — any domain where
+        {\rmfamily\footnotesize
+        \textbf{Broader applicability.} Any domain where
         communication reliability cannot be guaranteed.
+        }
       \end{warnbox}
     \end{column}
   \end{columns}
