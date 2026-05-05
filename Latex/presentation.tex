@@ -781,67 +781,67 @@
 \end{frame}
 
 %% ── Slide 12: Six Evaluation Environments ────────────────────
-\begin{frame}{Six Evaluation Environments}
-  \begin{columns}[T]
-    \begin{column}{0.245\textwidth}
-      \begin{mapcard}{Warehouse Small}
-        \includegraphics[width=\linewidth, height=2.3cm, keepaspectratio]%
-          {figures/gridworld_warehouse_small/gridworld_warehouse_small.png}\par
-        \vspace{4pt}\smallcap{30$\times$30 $\cdot$ 6 agents\\
-        \textcolor{AccentNavyDeep}{Main analysis}}
-      \end{mapcard}
-    \end{column}
-    \begin{column}{0.245\textwidth}
-      \begin{mapcard}{Crossdock}
-        \includegraphics[width=\linewidth, height=2.3cm, keepaspectratio]%
-          {figures/gridworld_crossdock/gridworld_crossdock.png}\par
-        \vspace{4pt}\smallcap{44$\times$28 $\cdot$ 12 agents\\
-        \textcolor{AccentNavyDeep}{Main analysis}}
-      \end{mapcard}
-    \end{column}
-    \begin{column}{0.245\textwidth}
-      \begin{mapcard}{Warehouse Large}
-        \includegraphics[width=\linewidth, height=2.3cm, keepaspectratio]%
-          {figures/gridworld_warehouse_large/gridworld_warehouse_large.png}\par
-        \vspace{4pt}\smallcap{60$\times$60 $\cdot$ 18 agents\\
-        \textcolor{AccentNavyDeep}{Main analysis}}
-      \end{mapcard}
-    \end{column}
-    \begin{column}{0.245\textwidth}
-      \begin{mapcard}{Kiva}
-        \includegraphics[width=\linewidth, height=2.3cm, keepaspectratio]%
-          {figures/gridworld_kiva/gridworld_kiva.png}\par
-        \vspace{4pt}\smallcap{36$\times$36 $\cdot$ 20 agents\\
-        \textcolor{TextMuted}{Secondary}}
-      \end{mapcard}
-    \end{column}
-  \end{columns}
-
-  \vspace{10pt}
-  \begin{columns}[T]
-    \begin{column}{0.49\textwidth}
-      \begin{mapcard}{Kiva Large}
-        \includegraphics[width=\linewidth, height=2.3cm, keepaspectratio]%
-          {figures/gridworld_kiva_large/gridworld_kiva_large.png}\par
-        \vspace{4pt}\smallcap{72$\times$72 $\cdot$ 80 agents\quad
-        \textcolor{DangerRedRule}{Stress regime}}
-      \end{mapcard}
-    \end{column}
-    \begin{column}{0.49\textwidth}
-      \begin{mapcard}{Shelf Aisle}
-        \includegraphics[width=\linewidth, height=2.3cm, keepaspectratio]%
-          {figures/gridworld_shelf_aisle/gridworld_shelf_aisle.png}\par
-        \vspace{4pt}\smallcap{161$\times$63 $\cdot$ 200 agents\quad
-        \textcolor{DangerRedRule}{Stress regime}}
-      \end{mapcard}
-    \end{column}
-  \end{columns}
-
-  \vspace{6pt}
-  \mutedtext{Main-analysis maps provide stable, timeout-free
-    comparisons. Stress maps probe robustness at the limits of
-    scale and congestion.}
-\end{frame}
+% \begin{frame}{Six Evaluation Environments}
+%   \begin{columns}[T]
+%     \begin{column}{0.245\textwidth}
+%       \begin{mapcard}{Warehouse Small}
+%         \includegraphics[width=\linewidth, height=2.3cm, keepaspectratio]%
+%           {figures/gridworld_warehouse_small/gridworld_warehouse_small.png}\par
+%         \vspace{4pt}\smallcap{30$\times$30 $\cdot$ 6 agents\\
+%         \textcolor{AccentNavyDeep}{Main analysis}}
+%       \end{mapcard}
+%     \end{column}
+%     \begin{column}{0.245\textwidth}
+%       \begin{mapcard}{Crossdock}
+%         \includegraphics[width=\linewidth, height=2.3cm, keepaspectratio]%
+%           {figures/gridworld_crossdock/gridworld_crossdock.png}\par
+%         \vspace{4pt}\smallcap{44$\times$28 $\cdot$ 12 agents\\
+%         \textcolor{AccentNavyDeep}{Main analysis}}
+%       \end{mapcard}
+%     \end{column}
+%     \begin{column}{0.245\textwidth}
+%       \begin{mapcard}{Warehouse Large}
+%         \includegraphics[width=\linewidth, height=2.3cm, keepaspectratio]%
+%           {figures/gridworld_warehouse_large/gridworld_warehouse_large.png}\par
+%         \vspace{4pt}\smallcap{60$\times$60 $\cdot$ 18 agents\\
+%         \textcolor{AccentNavyDeep}{Main analysis}}
+%       \end{mapcard}
+%     \end{column}
+%     \begin{column}{0.245\textwidth}
+%       \begin{mapcard}{Kiva}
+%         \includegraphics[width=\linewidth, height=2.3cm, keepaspectratio]%
+%           {figures/gridworld_kiva/gridworld_kiva.png}\par
+%         \vspace{4pt}\smallcap{36$\times$36 $\cdot$ 20 agents\\
+%         \textcolor{TextMuted}{Secondary}}
+%       \end{mapcard}
+%     \end{column}
+%   \end{columns}
+%
+%   \vspace{10pt}
+%   \begin{columns}[T]
+%     \begin{column}{0.49\textwidth}
+%       \begin{mapcard}{Kiva Large}
+%         \includegraphics[width=\linewidth, height=2.3cm, keepaspectratio]%
+%           {figures/gridworld_kiva_large/gridworld_kiva_large.png}\par
+%         \vspace{4pt}\smallcap{72$\times$72 $\cdot$ 80 agents\quad
+%         \textcolor{DangerRedRule}{Stress regime}}
+%       \end{mapcard}
+%     \end{column}
+%     \begin{column}{0.49\textwidth}
+%       \begin{mapcard}{Shelf Aisle}
+%         \includegraphics[width=\linewidth, height=2.3cm, keepaspectratio]%
+%           {figures/gridworld_shelf_aisle/gridworld_shelf_aisle.png}\par
+%         \vspace{4pt}\smallcap{161$\times$63 $\cdot$ 200 agents\quad
+%         \textcolor{DangerRedRule}{Stress regime}}
+%       \end{mapcard}
+%     \end{column}
+%   \end{columns}
+%
+%   \vspace{6pt}
+%   \mutedtext{Main-analysis maps provide stable, timeout-free
+%     comparisons. Stress maps probe robustness at the limits of
+%     scale and congestion.}
+% \end{frame}
 
 %% ============================================================
 \section{Results: Batch Mode}
@@ -1063,44 +1063,44 @@
 \end{frame}
 
 %% ── Slide 18: Capacity Frontier & Tradeoff ───────────────────
-\begin{frame}{Steady-State: Capacity Frontier and Throughput--Wait Tradeoff}
-  \begin{columns}[T]
-    \begin{column}{0.49\textwidth}
-      \begin{mapcard}{Capacity Frontier}
-        \includegraphics[width=\linewidth, height=5.0cm, keepaspectratio]%
-          {figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_capacity_curve.png}\par
-        \vspace{4pt}\smallcap{Highest $\lambda$ sustaining
-          near-peak throughput.}
-      \end{mapcard}
-    \end{column}
-    \begin{column}{0.49\textwidth}
-      \begin{mapcard}{Throughput--Wait Tradeoff}
-        \includegraphics[width=\linewidth, height=5.0cm, keepaspectratio]%
-          {figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_tradeoff.png}\par
-        \vspace{4pt}\smallcap{Efficiency vs.\ responsiveness.}
-      \end{mapcard}
-    \end{column}
-  \end{columns}
-
-  \vspace{10pt}
-  \begin{columns}[T]
-    \begin{column}{0.49\textwidth}
-      \begin{infobox}
-        \textbf{Capacity frontier.} LCBA sustains high throughput up
-        to $\approx$0.85$\times$ estimated capacity at all comm
-        ranges. Baselines' frontier collapses at low $\comm$.
-      \end{infobox}
-    \end{column}
-    \begin{column}{0.49\textwidth}
-      \begin{infobox}
-        \textbf{Tradeoff.} At the same throughput level, LCBA
-        achieves lower wait time at low $\comm$ — event-driven
-        replanning responds quickly to new arrivals, reducing queue
-        build-up.
-      \end{infobox}
-    \end{column}
-  \end{columns}
-\end{frame}
+% \begin{frame}{Steady-State: Capacity Frontier and Throughput--Wait Tradeoff}
+%   \begin{columns}[T]
+%     \begin{column}{0.49\textwidth}
+%       \begin{mapcard}{Capacity Frontier}
+%         \includegraphics[width=\linewidth, height=5.0cm, keepaspectratio]%
+%           {figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_capacity_curve.png}\par
+%         \vspace{4pt}\smallcap{Highest $\lambda$ sustaining
+%           near-peak throughput.}
+%       \end{mapcard}
+%     \end{column}
+%     \begin{column}{0.49\textwidth}
+%       \begin{mapcard}{Throughput--Wait Tradeoff}
+%         \includegraphics[width=\linewidth, height=5.0cm, keepaspectratio]%
+%           {figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_tradeoff.png}\par
+%         \vspace{4pt}\smallcap{Efficiency vs.\ responsiveness.}
+%       \end{mapcard}
+%     \end{column}
+%   \end{columns}
+%
+%   \vspace{10pt}
+%   \begin{columns}[T]
+%     \begin{column}{0.49\textwidth}
+%       \begin{infobox}
+%         \textbf{Capacity frontier.} LCBA sustains high throughput up
+%         to $\approx$0.85$\times$ estimated capacity at all comm
+%         ranges. Baselines' frontier collapses at low $\comm$.
+%       \end{infobox}
+%     \end{column}
+%     \begin{column}{0.49\textwidth}
+%       \begin{infobox}
+%         \textbf{Tradeoff.} At the same throughput level, LCBA
+%         achieves lower wait time at low $\comm$ — event-driven
+%         replanning responds quickly to new arrivals, reducing queue
+%         build-up.
+%       \end{infobox}
+%     \end{column}
+%   \end{columns}
+% \end{frame}
 
 %% ============================================================
 \section{Results: Allocation Efficiency}
@@ -1142,69 +1142,6 @@
       \mutedtext{LCBA and CBBA converge in allocation cost at full
         connectivity (same consensus rounds). SGA and DMCHBA are
         always fast due to their centralized structure.}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-%% ============================================================
-\section{Results: Path Planner Comparison}
-%% ============================================================
-
-%% ── Slide 20: Path Planner Comparison (RQ3) ──────────────────
-\begin{frame}{Path Planner Comparison (RQ3)}
-  \begin{columns}[T]
-    \begin{column}{0.55\textwidth}\raggedright
-      \begin{infobox}
-        \textbf{All three planners maintain zero vertex conflicts}
-        across all tested runs on Warehouse Small (verified by
-        post-hoc safety audit).
-      \end{infobox}
-      \vspace{6pt}
-      \subheader{Performance Characteristics}\par\vspace{6pt}
-      {\rmfamily\small
-      \begin{tightitemize}
-        \item \textbf{CA*} (Cooperative A*) — plans all agents
-              jointly each call. Best path quality; highest compute.
-              Comparable to PBS at small scale ($\Na \leq 12$).
-        \item \textbf{PBS} (Priority-Based Search) — prioritized
-              sequential replanning. Similar quality and cost to
-              CA* at small-to-medium scale.
-        \item \textbf{RHCR} (Rolling Horizon Collision Resolution) —
-              fixed-horizon window; most bounded per-call cost.
-              Preferred under heavy load or large agent counts
-              ($\Na \geq 18$).
-      \end{tightitemize}}
-    \end{column}
-
-    \begin{column}{0.42\textwidth}
-      \begin{plaincard}{Allocation timing (Warehouse Small, light load, connected)}
-        \vspace{-2pt}
-        {\rmfamily\small
-        \renewcommand{\arraystretch}{1.3}
-        \resizebox{\linewidth}{!}{%
-        \begin{tabular}{@{}l c@{}}
-          \toprule
-          \textbf{Method} & \textbf{Avg.\ alloc time (ms)}\\
-          \midrule
-          \textbf{LCBA}   & 1.0--5.5 \\
-          CBBA            & 1.2--8.4 \\
-          SGA             & 0.3--0.6 \\
-          DMCHBA          & 0.04--0.05 \\
-          \bottomrule
-        \end{tabular}}}
-      \end{plaincard}
-      \vspace{8pt}
-      \begin{warnbox}
-        \textbf{No single planner dominates.} CA* is best for small
-        fleets; RHCR is preferred for large agent counts or high
-        conflict density. Modular design lets operators swap
-        planners without modifying allocation.
-      \end{warnbox}
-      \vspace{6pt}
-      \mutedtext{\textbf{Safety:} deadlocks at high load / low
-        $\comm$ (6--99 per run) were \emph{all} resolved automatically
-        by the stuck-detection replanning trigger — no manual
-        intervention required.}
     \end{column}
   \end{columns}
 \end{frame}
@@ -1267,8 +1204,9 @@
         $2\times$ bound.
 
         \vspace{6pt}
-        \rqlabel{RQ3.} CA* preferred for small fleets;
-        RHCR for large or high-load settings.
+        \rqlabel{RQ3.} Results generalize across 6 diverse
+        environments (6--200 agents, 30$\times$30 to 161$\times$63);
+        consistent robustness at all scales.
       \end{infobox}
       \vspace{8pt}
       \begin{warnbox}
@@ -1446,7 +1384,66 @@
   \end{columns}
 \end{frame}
 
-%% ── Backup 4: Steady-State Metrics Definitions ───────────────
+%% ── Backup 4: Path Planner Comparison ─────────────────────────
+\begin{frame}{Backup: Path Planner Comparison}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}\raggedright
+      \begin{infobox}
+        \textbf{All three planners maintain zero vertex conflicts}
+        across all tested runs on Warehouse Small (verified by
+        post-hoc safety audit).
+      \end{infobox}
+      \vspace{6pt}
+      \subheader{Performance Characteristics}\par\vspace{6pt}
+      {\rmfamily\small
+      \begin{tightitemize}
+        \item \textbf{CA*} (Cooperative A*) — plans all agents
+              jointly each call. Best path quality; highest compute.
+              Comparable to PBS at small scale ($\Na \leq 12$).
+        \item \textbf{PBS} (Priority-Based Search) — prioritized
+              sequential replanning. Similar quality and cost to
+              CA* at small-to-medium scale.
+        \item \textbf{RHCR} (Rolling Horizon Collision Resolution) —
+              fixed-horizon window; most bounded per-call cost.
+              Preferred under heavy load or large agent counts
+              ($\Na \geq 18$).
+      \end{tightitemize}}
+    \end{column}
+
+    \begin{column}{0.42\textwidth}
+      \begin{plaincard}{Allocation timing (Warehouse Small, light load, connected)}
+        \vspace{-2pt}
+        {\rmfamily\small
+        \renewcommand{\arraystretch}{1.3}
+        \resizebox{\linewidth}{!}{%
+        \begin{tabular}{@{}l c@{}}
+          \toprule
+          \textbf{Method} & \textbf{Avg.\ alloc time (ms)}\\
+          \midrule
+          \textbf{LCBA}   & 1.0--5.5 \\
+          CBBA            & 1.2--8.4 \\
+          SGA             & 0.3--0.6 \\
+          DMCHBA          & 0.04--0.05 \\
+          \bottomrule
+        \end{tabular}}}
+      \end{plaincard}
+      \vspace{8pt}
+      \begin{warnbox}
+        \textbf{No single planner dominates.} CA* is best for small
+        fleets; RHCR is preferred for large agent counts or high
+        conflict density. Modular design lets operators swap
+        planners without modifying allocation.
+      \end{warnbox}
+      \vspace{6pt}
+      \mutedtext{\textbf{Safety:} deadlocks at high load / low
+        $\comm$ (6--99 per run) were \emph{all} resolved automatically
+        by the stuck-detection replanning trigger — no manual
+        intervention required.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ── Backup 5: Steady-State Metrics Definitions ───────────────
 \begin{frame}{Backup: Steady-State Metric Definitions}
   \begin{columns}[T]
     \begin{column}{0.50\textwidth}\raggedright
