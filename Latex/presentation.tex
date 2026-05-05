@@ -849,45 +849,35 @@
 
 %% ── Slide 13: Batch Completion Rate Heatmaps ─────────────────
 \begin{frame}{Batch Results: Completion Rate Heatmaps}
+  \vspace{-0.2cm}
   \begin{columns}[T]
-    \begin{column}{0.32\textwidth}
-      \begin{mapcard}{Crossdock $\cdot$ 12 agents}
-        \includegraphics[width=\linewidth, height=4.3cm, keepaspectratio]%
-          {figures/gridworld_crossdock/20260425_022224/batch_results/compact_views/compact_heatmap_completion_rate.png}
-      \end{mapcard}
-    \end{column}
-    \begin{column}{0.32\textwidth}
+    \begin{column}{0.45\textwidth}
+    \vspace{-0.5cm}
       \begin{mapcard}{Warehouse Small $\cdot$ 6 agents}
-        \includegraphics[width=\linewidth, height=4.3cm, keepaspectratio]%
+        \includegraphics[width=\linewidth, height=2.8cm, keepaspectratio]%
           {figures/gridworld_warehouse_small/20260425_012846/batch_results/compact_views/compact_heatmap_completion_rate.png}
       \end{mapcard}
-    \end{column}
-    \begin{column}{0.32\textwidth}
+      \vspace{-0.4cm}
       \begin{mapcard}{Warehouse Large $\cdot$ 18 agents}
-        \includegraphics[width=\linewidth, height=4.3cm, keepaspectratio]%
+        \includegraphics[width=\linewidth, height=2.8cm, keepaspectratio]%
           {figures/gridworld_warehouse_large/20260425_044219/batch_results/compact_views/compact_heatmap_completion_rate.png}
       \end{mapcard}
     \end{column}
-  \end{columns}
 
-  \vspace{10pt}
-  \begin{columns}[T]
-    \begin{column}{0.32\textwidth}
+    \begin{column}{0.52\textwidth}\raggedright
+    \vspace{-0.2cm}
       \begin{infobox}
-        \textbf{LCBA.} 100\% completion at \emph{all} comm ranges
+        \textbf{LCBA. (top-left)} 100\% completion at \emph{all} comm ranges
         at light load; reliable from $\comm=8$ upward at moderate load.
       \end{infobox}
-    \end{column}
-    \begin{column}{0.32\textwidth}
+      \vspace{2pt}
       \begin{warnbox}
-        \textbf{CBBA.} Fails on both seeds at $\comm=4$ and
+        \textbf{CBBA. (top-right)} Fails on both seeds at $\comm=4$ and
         $\comm=25$ at 96 tasks; timeouts grow sharply with load.
       \end{warnbox}
-    \end{column}
-    \begin{column}{0.32\textwidth}
+      \vspace{2pt}
       \begin{dangerbox}
-        \textbf{SGA / DMCHBA.} SGA times out on seed~42 at higher
-        loads. DMCHBA: $\approx$2725\,ts at $\comm=4$ vs.\ 515\,ts
+        \textbf{DMCHBA. (bottom-left)} $\approx$2725\,ts at $\comm=4$ vs.\ 515\,ts
         connected.
       \end{dangerbox}
     \end{column}
