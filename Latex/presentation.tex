@@ -652,25 +652,25 @@
       % \end{tightitemize}}
     \end{column}
 
-    \begin{column}{0.45\textwidth}
+    \begin{column}{0.48\textwidth}
     \vspace{-15pt}
-      \begin{plaincard}{LCBA Event-Driven Replanning Triggers:}
+      \begin{plaincard}[top=4pt, bottom=4pt]{LCBA Event-Driven Replanning Triggers:}
+        {\rmfamily\footnotesize
         \begin{tightenum}
-          \item $t = 0$ or system restart — always allocate.
-          \item Charging state change (agent starts or finishes
-                charging).
-          \item New tasks injected \textsc{and} idle agents present.
-          \item $\geq \lceil \Na/3 \rceil$ task completions since
-                last run \textsc{and} cooldown elapsed.
-          \item Pending unassigned tasks exist \textsc{and} idle
-                agents present \textsc{and} cooldown elapsed.
-        \end{tightenum}
+          \item $t = 0$ or restart.
+          \item Charging state changes.
+          \item New tasks arrive \textsc{and} idle agents exist.
+          \item $\geq \lceil \Na/3 \rceil$ completions since last run
+                \textsc{and} cooldown done.
+          \item Pending tasks remain \textsc{and} idle agents exist
+                \textsc{and} cooldown done.
+        \end{tightenum}}
       \end{plaincard}
-      \vspace{8pt}
-      \begin{infobox}
+      \vspace{-5pt}
+      \begin{infobox}[top=4pt, bottom=4pt]
         \textbf{Why event-driven?} Fixed-interval replanning either
         wastes compute at low load or misses surges at high load.
-        Triggers 3--5 adapt naturally to task arrival rate.
+        Triggers 3--5 adapt naturally to task rate.
       \end{infobox}
     \end{column}
   \end{columns}
