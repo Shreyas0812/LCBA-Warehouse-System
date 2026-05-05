@@ -1205,8 +1205,6 @@
         \item \textbf{Simulation only:} discrete gridworld does not
               capture sensor noise, actuation uncertainty, curved
               aisles, or human pedestrians.
-        \item \textbf{Homogeneous fleet:} identical speeds, batteries,
-              capabilities; real fleets are heterogeneous.
         \item \textbf{Per-component SGA reference} is conservative
               on disconnected graphs — true global optimal is higher.
         \item \textbf{Timestep ceiling:} worst-case data at extreme
@@ -1222,16 +1220,15 @@
         \item \textbf{Fully decentralized collision avoidance:}
               per-component CBS, distributed RHCR, or PIBT to remove
               the central reservation table.
-        \item \textbf{Deadline-constrained tasks:} extend RPT utility
-              with soft-deadline penalties for SLA compliance.
+        % \item \textbf{Deadline-constrained tasks:} extend RPT utility
+        %       with soft-deadline penalties for SLA compliance.
         \item \textbf{Heterogeneous fleets:} mixed speeds, payloads,
               battery capacities.
         \item \textbf{Scaling beyond 200 agents:} real warehouse
               floor plans from operational data.
-        \item \textbf{Hardware-in-the-loop validation:} measure the
-              simulation-to-deployment gap.
-        \item \textbf{Learned topology prediction:} proactively
-              reallocate \emph{before} agents disconnect.
+        \item \textbf{Hardware validation:} basic deployment on some hardware.
+        % \item \textbf{Learned topology prediction:} proactively
+        %       reallocate \emph{before} agents disconnect.
       \end{tightitemize}}
     \end{column}
   \end{columns}
