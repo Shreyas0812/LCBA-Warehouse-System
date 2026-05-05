@@ -716,8 +716,8 @@
 \section{Experimental Setup}
 %% ============================================================
 
-%% ── Slide 11: Experimental Setup (Part I) ────────────────────
-\begin{frame}{Experimental Setup — Part I}
+%% ── Slide 11: Experimental Setup ────────────────────
+\begin{frame}{Experimental Setup}
   \begin{columns}[T]
     \begin{column}{0.58\textwidth}\raggedright
       \subheader{Parameter Sweep}\par\vspace{6pt}
@@ -735,24 +735,26 @@
       \end{tightitemize}}
     \end{column}
 
-    \begin{column}{0.40\textwidth}\raggedright
-      \vspace{2pt}
+    \begin{column}{0.45\textwidth}\raggedright
+      \vspace{-2pt}
       \subheader{Evaluation Modes}\par\vspace{6pt}
       \begin{plaincard}{Batch}
         \smallcap{Fixed task set; primary metric = completion rate;
                   secondary = completed-only makespan.}
       \end{plaincard}
-      \vspace{4pt}
+      \vspace{-2pt}
       \begin{plaincard}{Steady-State}
         \smallcap{Continuous arrivals; throughput over 1500 ts;
-                  first 300 (warmup) excluded.}
+                  Metrics: throughput,
+                  mean latency, 95\%-latency, completion rate,
+                  agent utilization.}
       \end{plaincard}
     \end{column}
   \end{columns}
 \end{frame}
 
-%% ── Slide 12: Experimental Setup (Part II) ───────────────────
-\begin{frame}{Experimental Setup — Part II}
+%% ── Slide 12: Baselines ───────────────────
+\begin{frame}{Baselines}
   \subheader{Evaluation Environments}\par\vspace{6pt}
   \vspace{6pt}
   \mutedtext{\small \textbf{Baselines.} CBBA — decentralized, pairwise
