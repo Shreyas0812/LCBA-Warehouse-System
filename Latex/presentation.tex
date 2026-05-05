@@ -938,7 +938,7 @@
       \begin{infobox}
         \rqlabel{RQ2 answer.} On connected graphs,
         LCBA is within the same batch-time range as the SOTA reference (DMCHBA) on the connected case, while degrading much more gracefully as connectivity drops.
-        In the table, LCBA goes from 640 to 685\,ts (7\%), compared with DMCHBA's 515 to 2725\,ts (430\%).
+        % In the table, LCBA goes from 640 to 685\,ts (7\%), compared with DMCHBA's 515 to 2725\,ts (430\%).
       \end{infobox}
     \end{column}
 
@@ -1006,43 +1006,43 @@
 \end{frame}
 
 %% ── Slide 17: Steady-State Throughput Degradation ────────────
-\begin{frame}{Steady-State: Throughput Degradation by Comm Range}
-  \begin{columns}[T]
-    \begin{column}{0.50\textwidth}
-      \begin{mapcard}{Throughput vs.\ comm range across arrival rates}
-        \includegraphics[width=\linewidth, height=5.4cm, keepaspectratio]%
-          {figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_throughput_degradation_by_comm_range.png}\par
-        \vspace{4pt}\smallcap{Warehouse Small}
-      \end{mapcard}
-    \end{column}
-    \begin{column}{0.47\textwidth}\raggedright
-      \subheader{Reading the plot}\par\vspace{4pt}
-      {\rmfamily\small
-      \begin{tightitemize}
-        \item Each line = a different arrival rate $\lambda$.
-        \item X-axis: $\comm$ from fully isolated (left) to fully
-              connected (right).
-        \item Flat = communication-robust; steep = performance cliff.
-      \end{tightitemize}}
-      \vspace{8pt}
-      \subheader{Key findings}\par\vspace{4pt}
-      {\rmfamily\small
-      \begin{tightitemize}
-        \item \textbf{LCBA} lines are nearly flat across the full
-              spectrum; only a $\approx$14\% graceful drop at the
-              absolute minimum range.
-        \item All baselines show steep leftward drops — a clear
-              performance cliff at the connectivity threshold.
-        \item DMCHBA's cliff is steepest ($\approx$75\% drop).
-      \end{tightitemize}}
-      \vspace{8pt}
-      \begin{infobox}
-        \rqlabel{RQ1 answer.} \textbf{Yes.} LCBA maintains
-        throughput across the full comm spectrum; baselines do not.
-      \end{infobox}
-    \end{column}
-  \end{columns}
-\end{frame}
+% \begin{frame}{Steady-State: Throughput Degradation by Comm Range}
+%   \begin{columns}[T]
+%     \begin{column}{0.50\textwidth}
+%       \begin{mapcard}{Throughput vs.\ comm range across arrival rates}
+%         \includegraphics[width=\linewidth, height=5.4cm, keepaspectratio]%
+%           {figures/gridworld_warehouse_small/20260426_135556/ss_results/compact_views/compact_throughput_degradation_by_comm_range.png}\par
+%         \vspace{4pt}\smallcap{Warehouse Small}
+%       \end{mapcard}
+%     \end{column}
+%     \begin{column}{0.47\textwidth}\raggedright
+%       \subheader{Reading the plot}\par\vspace{4pt}
+%       {\rmfamily\small
+%       \begin{tightitemize}
+%         \item Each line = a different arrival rate $\lambda$.
+%         \item X-axis: $\comm$ from fully isolated (left) to fully
+%               connected (right).
+%         \item Flat = communication-robust; steep = performance cliff.
+%       \end{tightitemize}}
+%       \vspace{8pt}
+%       \subheader{Key findings}\par\vspace{4pt}
+%       {\rmfamily\small
+%       \begin{tightitemize}
+%         \item \textbf{LCBA} lines are nearly flat across the full
+%               spectrum; only a $\approx$14\% graceful drop at the
+%               absolute minimum range.
+%         \item All baselines show steep leftward drops — a clear
+%               performance cliff at the connectivity threshold.
+%         \item DMCHBA's cliff is steepest ($\approx$75\% drop).
+%       \end{tightitemize}}
+%       \vspace{8pt}
+%       \begin{infobox}
+%         \rqlabel{RQ1 answer.} \textbf{Yes.} LCBA maintains
+%         throughput across the full comm spectrum; baselines do not.
+%       \end{infobox}
+%     \end{column}
+%   \end{columns}
+% \end{frame}
 
 %% ── Slide 18: Capacity Frontier & Tradeoff ───────────────────
 % \begin{frame}{Steady-State: Capacity Frontier and Throughput--Wait Tradeoff}
