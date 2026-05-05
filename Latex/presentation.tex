@@ -936,9 +936,11 @@
       \end{plaincard}
       \vspace{-10pt}
       \begin{infobox}
+        {\rmfamily\scriptsize
         \rqlabel{RQ2 answer.} On connected graphs,
         LCBA is within the same batch-time range as the SOTA reference (DMCHBA) on the connected case, while degrading much more gracefully as connectivity drops.
         % In the table, LCBA goes from 640 to 685\,ts (7\%), compared with DMCHBA's 515 to 2725\,ts (430\%).
+        }
       \end{infobox}
     \end{column}
 
@@ -957,7 +959,7 @@
       \end{tightitemize}}
       \vspace{1pt}
       \begin{warnbox}
-        {\rmfamily\footnotesize
+        {\rmfamily\scriptsize
         \textbf{Takeaway.} LCBA achieves near SOTA quality on
         connected graphs and degrades much more gracefully than
         baselines as connectivity drops.}
@@ -981,22 +983,22 @@
       \end{mapcard}
     \end{column}
     \begin{column}{0.47\textwidth}\raggedright
-      \subheader{How to read the heatmap}\par\vspace{4pt}
-      {\rmfamily\small
+      \subheader{Heatmap}\par\vspace{2pt}
+      {\rmfamily\footnotesize
       \begin{tightitemize}
         \item Rows = arrival rate ($\lambda$); cols = comm range ($\comm$).
-        \item Bright = high throughput; dark/gray = low or missing.
+        % \item Bright = high throughput; dark/gray = low or missing.
         \item Each method is a separate panel.
       \end{tightitemize}}
-      \vspace{8pt}
+      \vspace{1pt}
       \subheader{Key findings}\par\vspace{4pt}
-      {\rmfamily\small
+      {\rmfamily\footnotesize
       \begin{tightitemize}
         \item \textbf{LCBA:} near-uniform brightness across all comm
               ranges at each arrival rate.
         \item \textbf{DMCHBA:} drops sharply to 0.017\,tasks/ts at
-              $\comm=4$ (vs.\ 0.067 connected) — $\approx$75\% loss.
-        \item \textbf{CBBA:} moderate $\approx$15\% drop at
+              $\comm=4$ (vs.\ 0.067 connected)
+        \item \textbf{CBBA:} moderate drop at
               $\comm=8$ (0.039 vs.\ 0.046\,tasks/ts).
         \item At full connectivity, all methods reach the same
               throughput ceiling — \textbf{LCBA adds no overhead}.
@@ -1098,33 +1100,33 @@
         \vspace{4pt}\smallcap{Warehouse Large (60$\times$60, 18 agents)}
       \end{mapcard}
     \end{column}
-    \begin{column}{0.47\textwidth}\raggedright
+        \begin{column}{0.47\textwidth}\raggedright
       \subheader{Why LCBA is faster at low $\comm$}\par\vspace{6pt}
-      {\rmfamily\small
+      {\rmfamily\footnotesize
       \begin{tightitemize}
         \item CBBA runs $N_{\min} \times D$ rounds where $D$ is the
-              \emph{full graph diameter} — independent of fragmentation.
+          \emph{full graph diameter} — independent of fragmentation.
         \item LCBA runs $2d_k$ rounds where $d_k$ is the
-              \emph{component diameter} — smaller when the graph
-              is broken.
+          \emph{component diameter} — smaller when the graph
+          is broken.
         \item At 18 agents: CBBA = 31.6 rounds (47\,ms) vs.\ LCBA =
-              15.8 rounds (15\,ms) $\Rightarrow$
-              \textbf{3$\times$ speedup}.
+          15.8 rounds (15\,ms) $\Rightarrow$
+          \textbf{3$\times$ speedup}.
       \end{tightitemize}}
-      \vspace{8pt}
+      \vspace{2pt}
       \subheader{LCBA vs.\ DMCHBA}\par\vspace{6pt}
-      {\rmfamily\small
+      {\rmfamily\footnotesize
       \begin{tightitemize}
         \item DMCHBA clones the full task list and runs Hungarian
-              matching independently per component.
+          matching independently per component.
         \item Overhead grows multiplicatively with component count;
-              LCBA avoids this.
+          LCBA avoids this.
       \end{tightitemize}}
       \vspace{6pt}
-      \mutedtext{LCBA and CBBA converge in allocation cost at full
+      {\rmfamily\footnotesize\mutedtext{LCBA and CBBA converge in allocation cost at full
         connectivity (same consensus rounds). SGA and DMCHBA are
-        always fast due to their centralized structure.}
-    \end{column}
+        always fast due to their centralized structure.}}
+        \end{column}
   \end{columns}
 \end{frame}
 
