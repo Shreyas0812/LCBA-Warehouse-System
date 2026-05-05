@@ -716,10 +716,10 @@
 \section{Experimental Setup}
 %% ============================================================
 
-%% ── Slide 11: Experimental Setup ─────────────────────────────
-\begin{frame}{Experimental Setup}
+%% ── Slide 11: Experimental Setup (Part I) ────────────────────
+\begin{frame}{Experimental Setup — Part I}
   \begin{columns}[T]
-    \begin{column}{0.48\textwidth}\raggedright
+    \begin{column}{0.58\textwidth}\raggedright
       \subheader{Parameter Sweep}\par\vspace{6pt}
       {\rmfamily\small
       \begin{tightitemize}
@@ -733,48 +733,32 @@
               $0.25\times$ – $1.4\times$ estimated capacity.
         \item \textbf{2 random seeds:} 42 and 123.
       \end{tightitemize}}
-      \vspace{8pt}
+    \end{column}
+
+    \begin{column}{0.40\textwidth}\raggedright
+      \vspace{2pt}
       \subheader{Evaluation Modes}\par\vspace{6pt}
       \begin{plaincard}{Batch}
         \smallcap{Fixed task set; primary metric = completion rate;
-                  secondary = completed-only makespan.
-                  Ceiling: 3000 timesteps.}
+                  secondary = completed-only makespan.}
       \end{plaincard}
-      \vspace{6pt}
+      \vspace{4pt}
       \begin{plaincard}{Steady-State}
         \smallcap{Continuous arrivals; throughput over 1500 ts;
                   first 300 (warmup) excluded.}
       \end{plaincard}
     \end{column}
-
-    \begin{column}{0.50\textwidth}\raggedright
-      \subheader{Evaluation Environments}\par\vspace{6pt}
-      \begin{plaincard}[]{}
-        \vspace{-2pt}
-        {\rmfamily\small
-        \renewcommand{\arraystretch}{1.3}
-        \resizebox{\linewidth}{!}{%
-        \begin{tabular}{@{}l r r l@{}}
-          \toprule
-          \textbf{Environment} & \textbf{Grid} & \textbf{Agents}
-                               & \textbf{Role}\\
-          \midrule
-          Warehouse Small & 30$\times$30  & 6   & Main analysis\\
-          Crossdock       & 44$\times$28  & 12  & Main analysis\\
-          Warehouse Large & 60$\times$60  & 18  & Main analysis\\
-          Kiva            & 36$\times$36  & 20  & Secondary\\
-          Kiva Large      & 72$\times$72  & 80  & Stress regime\\
-          Shelf Aisle     & 161$\times$63 & 200 & Stress regime\\
-          \bottomrule
-        \end{tabular}}}
-      \end{plaincard}
-      \vspace{8pt}
-      \mutedtext{\textbf{Baselines.} CBBA — decentralized, pairwise
-        consensus. SGA — centralized greedy reference, run
-        per-component when disconnected. DMCHBA — state-of-the-art
-        decentralized; Hungarian matching per component.}
-    \end{column}
   \end{columns}
+\end{frame}
+
+%% ── Slide 12: Experimental Setup (Part II) ───────────────────
+\begin{frame}{Experimental Setup — Part II}
+  \subheader{Evaluation Environments}\par\vspace{6pt}
+  \vspace{6pt}
+  \mutedtext{\small \textbf{Baselines.} CBBA — decentralized, pairwise
+    consensus. SGA — centralized greedy reference, run
+    per-component when disconnected. DMCHBA — state-of-the-art
+    decentralized; Hungarian matching per component.}
 \end{frame}
 
 %% ── Slide 12: Six Evaluation Environments ────────────────────
