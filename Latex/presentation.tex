@@ -755,12 +755,29 @@
 
 %% ── Slide 12: Baselines ───────────────────
 \begin{frame}{Baselines}
-  \subheader{Evaluation Environments}\par\vspace{6pt}
-  \vspace{6pt}
-  \mutedtext{\small \textbf{Baselines.} CBBA — decentralized, pairwise
-    consensus. SGA — centralized greedy reference, run
-    per-component when disconnected. DMCHBA — state-of-the-art
-    decentralized; Hungarian matching per component.}
+  \begin{columns}[T]
+    \begin{column}{0.33\textwidth}
+      \begin{plaincard}{CBBA}
+        \smallcap{Decentralized auctions with pairwise consensus. Local
+                  decisions; robust to partial connectivity but may
+                  fragment into components.}
+      \end{plaincard}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \begin{plaincard}{SGA}
+        \smallcap{Centralized greedy reference. High performance when
+                  fully connected; degrades to per-component greedy
+                  behavior under disconnection.}
+      \end{plaincard}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \begin{plaincard}{DMCHBA}
+        \smallcap{State-of-the-art decentralized matching; uses local
+                  Hungarian matching per component for near-optimal
+                  assignments locally.}
+      \end{plaincard}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 %% ── Slide 12: Six Evaluation Environments ────────────────────
