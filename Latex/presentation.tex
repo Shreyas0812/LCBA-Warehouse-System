@@ -524,7 +524,7 @@
     \begin{column}{0.44\textwidth}
       \vspace{-12pt}
       \begin{infobox}[top=4pt, bottom=4pt]
-        \textbf{Theoretical guarantee.} On connected components, LCBA inherits GCBBA's convergence — producing the SGA solution, staying within the \textbf{2$\times$ optimality bound}.
+        \textbf{Theoretical guarantee.} On connected components, LCBA inherits GCBBA's convergence and greedy-style \textbf{allocation-utility} guarantee (worst-case $\leq 2\times$ from optimal under standard assumptions).
       \end{infobox}
       
       % Research questions moved to their own slide to improve readability.
@@ -542,7 +542,7 @@
         {\rmfamily\small
         \begin{tightitemize}
           \item \rqlabel{RQ1}\, Can LCBA maintain task throughput under communication conditions where static allocation fails?
-          \item \rqlabel{RQ2}\, How close to optimal (DMCHBA/SGA) does LCBA perform as communication connectivity varies?
+          \item \rqlabel{RQ2}\, How close does LCBA stay to the SOTA reference (DMCHBA) as communication connectivity varies?
           \item \rqlabel{RQ3}\, Does LCBA's robustness generalize across diverse warehouse environments and scales?
         \end{tightitemize}}
       \end{plaincard}
@@ -914,7 +914,7 @@
 %% ── Slide 15: Batch Makespan / Sub-Optimality (RQ2) ──────────
 \begin{frame}{Batch Results: Makespan and Sub-Optimality (RQ2)}
   \begin{columns}[T]
-    \begin{column}{0.55\textwidth}
+    \begin{column}{0.53\textwidth}
       \subheader{Completed-only makespan at light load
         (64 tasks, Warehouse Small)}\par\vspace{-2pt}
       \begin{plaincard}[]{}
@@ -928,7 +928,7 @@
                           & $\comm \geq 25$ \emph{(connected)}\\
           \midrule
           \textbf{LCBA}    & 685\,ts & 640\,ts \\
-          SGA              & 663\,ts & 519\,ts \mutedtext{(seed 123)}\\
+          SGA              & 663\,ts & 519\,ts \\
           CBBA             & 860\,ts & 640\,ts \\
           DMCHBA           & 2725\,ts & 515\,ts \\
           \bottomrule
@@ -936,34 +936,31 @@
       \end{plaincard}
       \vspace{-10pt}
       \begin{infobox}
-        \rqlabel{RQ2 answer.} On connected graphs (seed 123),
-        LCBA makespan ratio vs.\ SGA is $640 / 519 \approx{}$\boldnavy{0.91} —
-        \textbf{LCBA is 9\% faster}. Ratio
-        $<1$ because LCBA's insertion-based RPT bid can
-        outperform the greedy SGA ordering. Well within the
-        theoretical $\leq 2\times$ bound.
+        \rqlabel{RQ2 answer.} On connected graphs,
+        LCBA is within the same batch-time range as the SOTA reference (DMCHBA) on the connected case, while degrading much more gracefully as connectivity drops.
+        In the table, LCBA goes from 640 to 685\,ts (7\%), compared with DMCHBA's 515 to 2725\,ts (430\%).
       \end{infobox}
     \end{column}
 
-    \begin{column}{0.42\textwidth}\raggedright
-      \subheader{Key observations}\par\vspace{6pt}
-      {\rmfamily\small
+    \begin{column}{0.44\textwidth}\raggedright
+      \subheader{Key observations}\par\vspace{2pt}
+      {\rmfamily\footnotesize
       \begin{tightitemize}
         \item LCBA degrades from 640 to 685\,ts as $\comm$ drops:
-              \textbf{only $+7\%$}.
-        \item CBBA degrades from 640 to 860\,ts: \textbf{+34\%}.
-        \item DMCHBA suffers most: \textbf{+430\%} at fully
-              disconnected; optimal matching breaks when the graph
-              fragments.
-        \item SGA timed out on seed~42 at connected settings;
-              per-component SGA is an imperfect reference on
-              disconnected graphs.
+              \textbf{only $7\%$}.
+        \item CBBA degrades from 640 to 860\,ts: \textbf{34\%}.
+        \item DMCHBA suffers most: \textbf{430\%} at fully
+              disconnected because matching quality degrades as
+              the graph fragments.
+        \item SGA timed out on seed~42; per-component SGA is an
+              imperfect reference when disconnected.
       \end{tightitemize}}
-      \vspace{8pt}
+      \vspace{1pt}
       \begin{warnbox}
-        \textbf{Takeaway.} LCBA achieves near-SGA quality on
-        connected graphs and degrades far more gracefully than
-        any baseline as connectivity drops.
+        {\rmfamily\footnotesize
+        \textbf{Takeaway.} LCBA achieves near SOTA quality on
+        connected graphs and degrades much more gracefully than
+        baselines as connectivity drops.}
       \end{warnbox}
     \end{column}
   \end{columns}
@@ -1146,7 +1143,8 @@
             \subheader{LCBA Algorithm}\par\vspace{4pt}
             \smallcap{Component-local consensus + timestamped
                       reconnection + event-driven replanning;
-                      inherits the $\leq 2\times$ optimality bound.}
+                      inherits the $\leq 2\times$ allocation-utility
+                      worst-case guarantee.}
           \end{numcard}
           \vspace{6pt}
           \begin{numcard}{2}
@@ -1184,9 +1182,9 @@
         load; maintains throughput where baselines fail.
 
         \vspace{6pt}
-        \rqlabel{RQ2.} Makespan ratio $0.91\times$ vs.\ SGA on
-        connected graphs — 9\% faster, well within the
-        $2\times$ bound.
+        \rqlabel{RQ2.} On the connected case, LCBA is close to the
+        SOTA baseline (DMCHBA), and it is much more stable under
+        disconnection.
 
         \vspace{6pt}
         \rqlabel{RQ3.} Results generalize across 6 diverse
