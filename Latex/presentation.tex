@@ -682,42 +682,24 @@
 
 %% ── Slide 10: System Architecture ─────────────────────────────
 \begin{frame}{System Architecture: Full Coordination Pipeline}
-  \begin{columns}[T]
-    \begin{column}{0.46\textwidth}
-      \centering
-      \resizebox{\linewidth}{!}{%
-        \input{figures/IntegrationOrchestrator_flowchart_slide.tex}%
-      }
-    \end{column}
-    \begin{column}{0.51\textwidth}\raggedright
-      \subheader{Modular, Planner-Agnostic Design}\par\vspace{6pt}
-      {\rmfamily\small
-      \begin{tightitemize}
-        \item \textbf{LCBA} handles task allocation (logically
-              decentralized); produces per-agent assignments.
-        \item Three interchangeable path planners share a central
-              space-time reservation table:
-              \textbf{CA*} (cooperative, optimal, expensive),
-              \textbf{PBS} (prioritized sequential),
-              \textbf{RHCR} (rolling-horizon, most scalable).
-        \item Task, charging, and idle-parking agents each use
-              independently configured planners.
-      \end{tightitemize}}
-    \end{column}
-  \end{columns}
+  \centering
+  \vspace{2pt}
+  \resizebox{0.99\linewidth}{!}{%
+    \input{figures/IntegrationOrchestrator_flowchart_slide_3part.tex}%
+  }
+\end{frame}
 
-  \vspace{12pt}
+\begin{frame}{Operational Safeguards}
   \begin{columns}[T]
     \begin{column}{0.32\textwidth}
       \begin{plaincard}{Proactive Charging}
         \smallcap{Agents navigate to chargers before battery
-                  depletion — bid filter rejects tasks that
-                  exceed remaining range.}
+                  depletion.}
       \end{plaincard}
     \end{column}
     \begin{column}{0.32\textwidth}
       \begin{plaincard}{Energy-Budget Filter}
-        \smallcap{LCBA skips bids on tasks an agent cannot reach
+        \smallcap{LCBA skips bids on tasks an agent cannot complete
                   before needing to charge.}
       \end{plaincard}
     \end{column}

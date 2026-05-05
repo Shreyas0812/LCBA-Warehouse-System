@@ -1,0 +1,78 @@
+%% IntegrationOrchestrator Per-Timestep Loop — 3-Part Slide Version
+%% Usage: \resizebox{\linewidth}{!}{\input{figures/IntegrationOrchestrator_flowchart_slide_3part.tex}}
+
+\begin{tikzpicture}[
+  node distance=0.72cm,
+  every node/.style={font=\scriptsize},
+  decision/.style={diamond, draw, line width=0.9pt,
+    minimum width=1.65cm, minimum height=0.85cm,
+    inner sep=0.04cm, fill=yellow!20},
+  process/.style={rectangle, draw, line width=0.9pt,
+    minimum width=2.25cm, minimum height=0.52cm,
+    inner sep=0.05cm, fill=blue!10, align=center},
+  startstop/.style={rectangle, rounded corners=2.5pt, draw, line width=0.9pt,
+    minimum width=2.25cm, minimum height=0.52cm,
+    inner sep=0.05cm, fill=green!20, align=center},
+  panel/.style={rectangle, rounded corners=3pt, draw, line width=0.9pt,
+    minimum width=2.8cm, minimum height=0.55cm,
+    inner sep=0.05cm, fill=gray!10, font=\scriptsize\bfseries},
+  arrow/.style={-Latex, line width=1.0pt},
+  lbl/.style={font=\tiny\bfseries}
+]
+
+%% Panel 1: Allocation ----------------------------------------------------
+\begin{scope}[xshift=0cm]
+  \node[panel] (p1) {Part 1: Allocation};
+
+  \node[startstop, below=0.55cm of p1] (start) {Start Timestep $t$};
+  \node[process, below=of start] (inject) {Task Injection};
+  \node[decision, below=of inject] (trig) {Alloc\\Trigger?};
+  \node[process, below=0.9cm of trig] (lcba) {Invoke LCBA};
+
+  \draw[arrow] (start) -- (inject);
+  \draw[arrow] (inject) -- (trig);
+  \draw[arrow] (trig.south) -- node[lbl, right=2pt] {YES} (lcba.north);
+
+  \coordinate (trig_no) at ([xshift=1.4cm] trig.east);
+  \draw[arrow] (trig.east) -- node[lbl, above] {NO} (trig_no);
+\end{scope}
+
+%% Panel 2: Planning ------------------------------------------------------
+\begin{scope}[xshift=4.8cm]
+  \node[panel] (p2) {Part 2: Planning};
+
+  \node[process, below=0.55cm of p2] (roles) {Classify Roles};
+  \node[process, below=of roles] (planner) {Select Planner\\per Role};
+  \node[process, below=of planner] (paths) {Path Planning};
+
+  \draw[arrow] (roles) -- (planner);
+  \draw[arrow] (planner) -- (paths);
+\end{scope}
+
+%% Panel 3: Execution and Energy -----------------------------------------
+\begin{scope}[xshift=9.6cm]
+  \node[panel] (p3) {Part 3: Execution + Energy};
+
+  \node[process, below=0.55cm of p3] (exec) {Agent Execution};
+  \node[decision, below=of exec] (energy) {Energy\\Low?};
+  \node[process, below=0.9cm of energy] (charge) {Reroute to\\Charger};
+  \node[process, below=0.65cm of charge] (metrics) {Record Metrics};
+  \node[startstop, below=of metrics] (end) {End Timestep $t$};
+
+  \draw[arrow] (exec) -- (energy);
+  \draw[arrow] (energy.south) -- node[lbl, right=2pt] {YES} (charge.north);
+  \draw[arrow] (charge) -- (metrics);
+
+  \coordinate (energy_no) at ([xshift=1.45cm] energy.east);
+  \draw[arrow] (energy.east) -- node[lbl, above] {NO} (energy_no);
+  \draw[arrow] (energy_no) |- (metrics.east);
+
+  \draw[arrow] (metrics) -- (end);
+\end{scope}
+
+%% Inter-panel flow connectors -------------------------------------------
+\draw[arrow] ([xshift=1.4cm] trig.east) -- ++(0.55cm,0) |- (roles.west);
+\draw[arrow] (lcba.east) -- ++(0.55cm,0) |- (roles.west);
+\draw[arrow] (paths.east) -- ++(0.55cm,0) |- (exec.west);
+
+\end{tikzpicture}
