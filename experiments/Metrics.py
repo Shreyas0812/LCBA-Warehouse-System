@@ -5,10 +5,10 @@ from typing import List
 @dataclass
 class RunMetrics:
     """
-    Per-run metrics collected for all allocation methods (GCBBA, CBBA, SGA).
+    Per-run metrics collected for all allocation methods (LCBA, CBBA, SGA).
 
     Theoretical complexity per allocation call:
-      GCBBA  : O(n² · k)   n=agents, k=tasks
+      LCBA   : O(n² · k)   n=agents, k=tasks
       CBBA   : O(n² · k)   same structure, different convergence constant
       SGA    : O(n · k)    single greedy pass, 1 round
     """
@@ -66,7 +66,7 @@ class RunMetrics:
     avg_tasks_per_allocation_call: float = 0.0     # secondary — context: pending tasks per call
 
     # ── Communication requirements ─────────────────────────────────────────────
-    # SGA has 0 rounds by definition. GCBBA should converge in fewer rounds than CBBA.
+    # SGA has 0 rounds by definition. LCBA should converge in fewer rounds than CBBA.
     avg_consensus_rounds_per_call: float = 0.0     # PRIMARY
     total_consensus_rounds: int = 0                # secondary
 

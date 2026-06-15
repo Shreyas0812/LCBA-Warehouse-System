@@ -21,7 +21,7 @@ git --version
 
 ```bash
 git clone <your-repo-url>
-cd GCBBA_Warehouse_System
+cd LCBA_Warehouse_System
 ```
 
 ---
@@ -105,12 +105,12 @@ Per-map strategy:
 
 | Map | N | Config | Methods |
 |-----|---|--------|---------|
-| warehouse_small | 6 | `all` | GCBBA + CBBA + SGA + DMCHBA, ss + batch |
-| warehouse_large | 18 | `all` | GCBBA + CBBA + SGA + DMCHBA, ss + batch |
-| crossdock | 50 | `gcbba_dmchba` | GCBBA + DMCHBA, ss + batch |
-| kiva | 100 | `gcbba_dmchba` | GCBBA + DMCHBA, ss + batch |
-| kiva_large | 200 | `gcbba_dmchba` | GCBBA + DMCHBA, ss + batch |
-| shelf_aisle | 470 | `gcbba_dmchba` | GCBBA + DMCHBA, ss + batch |
+| warehouse_small | 6 | `all` | LCBA + CBBA + SGA + DMCHBA, ss + batch |
+| warehouse_large | 18 | `all` | LCBA + CBBA + SGA + DMCHBA, ss + batch |
+| crossdock | 50 | `gcbba_dmchba` | LCBA + DMCHBA, ss + batch |
+| kiva | 100 | `gcbba_dmchba` | LCBA + DMCHBA, ss + batch |
+| kiva_large | 200 | `gcbba_dmchba` | LCBA + DMCHBA, ss + batch |
+| shelf_aisle | 470 | `gcbba_dmchba` | LCBA + DMCHBA, ss + batch |
 
 CBBA and SGA are only run on the two smallest maps (N=6, N=18) where they are computationally feasible for both steady-state and batch modes. DMCHBA (SOTA baseline) runs on all maps.
 
@@ -137,11 +137,11 @@ Use `--workers 0` to auto-detect and use all cores on a dedicated machine.
 | `all` | Everything — all methods, ss + batch |
 | `ss_only` | Steady-state configs only (task_arrival_rate > 0) |
 | `batch_only` | Batch configs only (initial_tasks > 0, rate = 0) |
-| `gcbba_dmchba` | GCBBA (all variants) + DMCHBA, ss + batch. No CBBA/SGA |
-| `gcbba_only` | GCBBA variants only (static + dynamic + sensitivity sweep), ss + batch |
+| `gcbba_dmchba` | LCBA (all variants) + DMCHBA, ss + batch. No CBBA/SGA |
+| `gcbba_only` | LCBA variants only (static + dynamic + sensitivity sweep), ss + batch |
 | `baselines_only` | CBBA + SGA + DMCHBA, ss + batch |
-| `static_only` | Static GCBBA ss only |
-| `dynamic_only` | Dynamic GCBBA (canonical + ri sweep) ss only |
+| `static_only` | Static LCBA ss only |
+| `dynamic_only` | Dynamic LCBA (canonical + ri sweep) ss only |
 | `cbba_only` | CBBA ss only |
 | `sga_only` | SGA ss only |
 | `dmchba_only` | DMCHBA ss + batch |
@@ -191,7 +191,7 @@ source .venv/bin/activate
 
 Or add it to your shell rc file if you want it automatic:
 ```bash
-echo "source ~/GCBBA_Warehouse_System/.venv/bin/activate" >> ~/.bashrc
+echo "source ~/LCBA_Warehouse_System/.venv/bin/activate" >> ~/.bashrc
 ```
 
 ---
@@ -206,4 +206,4 @@ DMCHBA is a distributed SOTA baseline and scales significantly better — it run
 
 ### Thesis framing
 
-> "GCBBA scales to N=470 agents with stable throughput. CBBA and SGA are computationally intractable at this scale, consistently exceeding the per-call allocation timeout of 10s, preventing meaningful simulation progress. DMCHBA, as a distributed SOTA baseline, is evaluated across all environments."
+> "LCBA scales to N=470 agents with stable throughput. CBBA and SGA are computationally intractable at this scale, consistently exceeding the per-call allocation timeout of 10s, preventing meaningful simulation progress. DMCHBA, as a distributed SOTA baseline, is evaluated across all environments."

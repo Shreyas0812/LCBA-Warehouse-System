@@ -54,7 +54,7 @@ The full simulation pipeline integrates:
 ## Repository Structure
 
 ```
-GCBBA_Warehouse_System/
+LCBA_Warehouse_System/
 ├── gcbba/                          # Core LCBA/GCBBA implementation
 │   ├── GCBBA_Agent.py              # Agent: bundle building, bidding, consensus, conflict resolution
 │   ├── GCBBA_Orchestrator.py       # Orchestrator: manages allocation rounds across all agents
@@ -133,8 +133,8 @@ Each environment includes obstacle regions (perimeter walls, structural columns,
 ### Installation
 
 ```bash
-git clone https://github.com/shreyas0812/GCBBA_Warehouse_System.git
-cd GCBBA_Warehouse_System
+git clone https://github.com/shreyas0812/LCBA_Warehouse_System.git
+cd LCBA_Warehouse_System
 
 python3 -m venv .venv
 source .venv/bin/activate   # Linux/macOS

@@ -1,6 +1,6 @@
 """
 Integration Orchestrator for Multi-Agent Task Allocation and Path Planning
-- "gcbba" (default): GCBBA with ADD bundle building + global consensus
+- "gcbba" (default): LCBA — bundle building + local consensus on connected components
 - "sga": Centralized Sequential Greedy Algorithm
 - "cbba": Standard CBBA with FULLBUNDLE + local consensus
 - "dmchba": Distributed Matching-by-Clones Hungarian (Samiei & Sun, IEEE T-RO 2024)
