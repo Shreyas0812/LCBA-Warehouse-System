@@ -326,12 +326,6 @@ The simulation runs as a single-threaded Python process (CPython, subject to the
 
 ---
 
-## Note on Repository Structure
-
-This repository consolidates code developed across multiple separate repositories during the thesis. For detailed git histories and development timelines of individual components, refer to the original repositories from which each module was integrated.
-
----
-
 ## Contact
 
 **Shreyas Raorane** — [raorane@seas.upenn.edu](mailto:raorane@seas.upenn.edu)
