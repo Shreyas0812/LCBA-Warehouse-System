@@ -6,7 +6,7 @@
 
 This repository implements **LCBA** (Local Consensus-based Bundle Algorithm), a decentralized multi-robot task allocation algorithm designed for real-time warehouse operations under intermittent communication. LCBA extends GCBBA (Global Consensus-based Bundle Algorithm) with local subgraph consensus, enabling correct operation on disconnected and dynamically changing communication graphs.
 
-Developed as part of a Master's thesis at the **University of Pennsylvania, Department of Robotics (ROBO)**.
+Developed as part of a Master's thesis at the **University of Pennsylvania, Department of Robotics (ROBO)**. The full thesis is available [here](presentation/raorane-thesis.pdf).
 
 ---
 
