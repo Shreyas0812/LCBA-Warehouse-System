@@ -1,4 +1,4 @@
-# LCBA / GCBBA Warehouse System
+# LCBA Warehouse System
 
 **Decentralized Multi-Robot Task Allocation for Warehouse Automation**
 
@@ -6,7 +6,7 @@
 
 This repository implements **LCBA** (Local Consensus-based Bundle Algorithm), a decentralized multi-robot task allocation algorithm designed for real-time warehouse operations under intermittent communication. LCBA extends GCBBA (Global Consensus-based Bundle Algorithm) with local subgraph consensus, enabling correct operation on disconnected and dynamically changing communication graphs.
 
-Developed as part of a Master's thesis at the **University of Pennsylvania, Department of Robotics (ROBO)**, with an accompanying paper submitted to **IROS 2026** ("Decentralized Task Allocation via Local Consensus on Intermittently Connected Communication Graphs").
+Developed as part of a Master's thesis at the **University of Pennsylvania, Department of Robotics (ROBO)**.
 
 ---
 
@@ -55,7 +55,7 @@ The full simulation pipeline integrates:
 
 ```
 LCBA_Warehouse_System/
-├── gcbba/                          # Core LCBA/GCBBA implementation
+├── gcbba/                          # Core LCBA implementation (named gcbba/ for historical reasons — LCBA evolved from an earlier GCBBA prototype)
 │   ├── GCBBA_Agent.py              # Agent: bundle building, bidding, consensus, conflict resolution
 │   ├── GCBBA_Orchestrator.py       # Orchestrator: manages allocation rounds across all agents
 │   ├── GCBBA_Task.py               # Task model: paired induct (pickup) → eject (delivery)
