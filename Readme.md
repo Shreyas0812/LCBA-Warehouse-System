@@ -246,7 +246,14 @@ python experiments/animate_trajectory.py \
 
 Useful flags: `--step N` (use every Nth timestep), `--start/--end` (window a time range), `--fps` (playback speed), `--trail` (motion-trail length). Station colors mirror the RViz config so stills/clips match the ROS visualizer. See **[VISUALS.md](VISUALS.md)** for the full workflow, parameter rationale, and the exact commands used to produce the committed assets.
 
-For an interactive, drivable replay (and live grid rendering), the companion **[gridworld_rviz](https://github.com/Shreyas0812/gridworld_rviz)** workspace replays the same `trajectories.csv` in RViz2 via its `trajectory_executor` node.
+For an interactive, drivable replay (and live grid rendering), the companion **[gridworld_rviz](https://github.com/Shreyas0812/gridworld_rviz)** workspace replays the same `trajectories.csv` in RViz2 via its `trajectory_executor` node — the same run, in a full ROS2 robotics stack:
+
+<p align="center">
+  <img src="media/lcba_rviz.gif" width="420" alt="The same LCBA run replayed in RViz2: 6 robots ferrying induct→eject in a 30x30 warehouse, driven by the gridworld_rviz trajectory_executor node over ROS2."/>
+</p>
+<p align="center">
+  <sub>The same seed-2025 run replayed in <strong>ROS2 / RViz2</strong> via <a href="https://github.com/Shreyas0812/gridworld_rviz">gridworld_rviz</a> — induct (blue), eject (orange), charging (green-teal) stations, agents in magenta.</sub>
+</p>
 
 ---
 
