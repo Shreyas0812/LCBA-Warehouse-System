@@ -4,6 +4,18 @@
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 
+<p align="center">
+  <img src="media/lcba_warehouse_small.gif" width="520" alt="LCBA allocating tasks to 6 robots in a 30x30 warehouse — robots ferry items from induct (blue) to eject (orange) stations while routing collision-free around obstacles."/>
+</p>
+
+<p align="center">
+  <em>LCBA in action: 6 robots performing collision-free induct→eject transport on the <code>warehouse_small</code> map. Blue = induct, orange = eject, green = chargers, red = obstacles.</em>
+</p>
+
+<p align="center">
+  <sub>Rendered directly from simulator output — regenerate with <code>python experiments/animate_trajectory.py</code> (see <a href="#visualization">Visualization</a>). For an interactive ROS2/RViz2 replay, see <a href="https://github.com/Shreyas0812/gridworld_rviz">gridworld_rviz</a>.</sub>
+</p>
+
 This repository implements **LCBA** (Local Consensus-based Bundle Algorithm), a decentralized multi-robot task allocation algorithm designed for real-time warehouse operations under intermittent communication. LCBA extends GCBBA (Global Consensus-based Bundle Algorithm) with local subgraph consensus, enabling correct operation on disconnected and dynamically changing communication graphs.
 
 Developed as part of a Master's thesis at the **University of Pennsylvania, Department of Robotics (ROBO)**. The full thesis is available [here](presentation/raorane-thesis.pdf).
@@ -217,6 +229,24 @@ python run_experiments.py --mode full --output results/my_run --workers 4
 > **Windows note**: Avoid `--workers 0`. Use an explicit N (e.g. `--workers 4`) or `--workers 1` for sequential. Python uses spawn-based multiprocessing on Windows; `--workers 0` uses all cores but can produce duplicated output headers.
 
 See [SETUP.md](SETUP.md) for detailed instructions on parallelism tuning, large-map baseline strategies, and results interpretation.
+
+---
+
+## Visualization
+
+The headline animation is generated directly from simulator output — no ROS required. Generate a clean demo trajectory with `python experiments/run_demo.py`, then render any run's `trajectories.csv` plus its map config to MP4/GIF:
+
+```bash
+python experiments/animate_trajectory.py \
+  --config config/gridworld_warehouse_small.yaml \
+  --traj   results/demo_warehouse_small/trajectories.csv \
+  --out    media/lcba_warehouse_small \
+  --fps 15 --format both
+```
+
+Useful flags: `--step N` (use every Nth timestep), `--start/--end` (window a time range), `--fps` (playback speed), `--trail` (motion-trail length). Station colors mirror the RViz config so stills/clips match the ROS visualizer. See **[VISUALS.md](VISUALS.md)** for the full workflow, parameter rationale, and the exact commands used to produce the committed assets.
+
+For an interactive, drivable replay (and live grid rendering), the companion **[gridworld_rviz](https://github.com/Shreyas0812/gridworld_rviz)** workspace replays the same `trajectories.csv` in RViz2 via its `trajectory_executor` node.
 
 ---
 
